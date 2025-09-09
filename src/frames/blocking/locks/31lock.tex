@@ -1,0 +1,919 @@
+\mode*
+
+\begin{frame}[fragile]{Exemple de programme parallèle}
+  \begin{block}{Calcul de $\pi$ par la méthode de Monte-Carlo}
+    \begin{center}
+      \begin{tikzpicture}
+        \draw[->] (0,-0.5) -- (0,2.5);
+        \draw[->] (-0.5,0) -- (2.5,0);
+
+        \draw[fill=alertColor!30] (0,0) rectangle (2,2);
+        \draw[fill=exampleColor!30] (0,0) -- (2,0) arc (0:90:2) -- (0,0);
+        \draw[alertColor] (1.7,1.7) node{$\mathcal{A_\mathcal{C}}$};
+        \draw[exampleColor] (0.3,0.3) node{$\mathcal{A_\mathcal{D}}$};
+        \draw (0,2) node[left]{1};
+        \draw (2,0) node[below]{1};
+        \draw (0,0) node[below left]{0};
+        \draw (2.5,1.5) node[right]{$\mathcal{A_\mathcal{C}} = 1$};
+        \draw (2.5,1) node[right]{$\mathcal{A_\mathcal{D}} = \frac{\pi}{4}$};
+        \draw (2.5,0.5) node[right]{$\pi = 4\times \mathbb{P}(x^2 + y^2 < 1 | (x, y) \in [0; 1]^2) $};
+      \end{tikzpicture}
+    \end{center}
+  \end{block}
+  \begin{exampleblock}{Expérience}
+    \begin{itemize}
+    \item Tirer \lstinline{nbIterations} points dans l'intervalle $[0; 1]^2$
+    \item Paralléliser entre \lstinline{nbThreads} threads
+    \item Mesurer le temps d'exécution en fonction de \lstinline{nbIterations} et \lstinline{nbThreads}
+    \end{itemize}
+  \end{exampleblock}
+\begin{citing}
+\jitem Comparer \lstinline{cm3/Pi1_Sequential.java} et \lstinline{cm3/Pi2_Parallel.java}
+\end{citing}
+\end{frame}
+
+
+\begin{frame}[fragile]{Tirer des nombres aléatoires en Java}
+  \begin{shadequote}{Javadoc de \lstinline{java.util.Random}}
+    Instances of \lstinline{java.util.Random} are threadsafe.
+    However, the concurrent use of the same \lstinline{java.util.Random}
+    instance across threads may encounter contention and consequent poor performance.
+    Consider instead using \lstinline{ThreadLocalRandom} in multithreaded designs.
+  \end{shadequote}
+
+  \begin{block}{Définition -- thread safety}
+    Un objet est \structure{thread safe} s'il a été conçu pour s'exécuter dans un environnement concurrent
+
+    \begin{itemize}
+    \item Pas de spécification formelle
+    \item Tout objet partagé entre plusieurs threads doit être thread-safe
+    \item Tout objet immutable est thread-safe
+    \item Tout objet mutable thread-safe a des coûts liés à la synchronisation
+    \end{itemize}
+  \end{block}
+
+\end{frame}
+
+
+
+\begin{frame}[fragile]{Expérience : 8 threads tirent 10 000 000 pièces}
+\vspace{-2mm}
+\begin{enumerate}
+\item Expérience : \uncover<2->{\structure{$7736ms$}}
+
+\vspace{-3mm}
+  \begin{tikzpicture}
+    \fill[structure!20, rounded corners] (2.45,5.54) rectangle (6.95,5.84);
+    \draw (5,5) node{\begin{minipage}{5cm}\begin{lstlisting}[numbers=none]
+var random = new Random();
+for(int i = 0; i < 8; i++) new Thread(() -> {
+  for(int j = 0; j < 10000000; j++)
+    random.nextBoolean();
+}).start();
+\end{lstlisting}\end{minipage}};
+  \end{tikzpicture}
+
+  \vspace{-2mm}
+\item Expérience : \uncover<2->{\structure{$126ms$}}
+
+\vspace{-3mm}
+  \begin{tikzpicture}
+    \fill[structure!20, rounded corners] (2.8,5.2) rectangle (7.31,5.5);
+    \draw (5,5) node{\begin{minipage}{5cm}\begin{lstlisting}[numbers=none]
+for(int i = 0; i < 8; i++) new Thread(() -> {
+  var random = new Random();
+  for(int j = 0; j < 10000000; j++)
+    random.nextBoolean();
+}).start();
+\end{lstlisting}\end{minipage}};
+  \end{tikzpicture}
+
+\vspace{-2mm}
+\item Expérience : \uncover<2->{\structure{$17ms$}}
+
+\vspace{-3mm}
+  \begin{tikzpicture}
+    \fill[structure!20, rounded corners] (2.8,5.2) rectangle (10,5.5);
+    \draw (5,5) node{\begin{minipage}{5cm}\begin{lstlisting}[numbers=none]
+for(int i = 0; i < 8; i++) new Thread(() -> {
+  var random = ThreadLocalRandom.current();
+  for(int j = 0; j < 10000000; j++)
+    random.nextBoolean();
+}).start();
+\end{lstlisting}\end{minipage}};
+  \end{tikzpicture}
+\end{enumerate}
+
+\vspace{-2mm}
+  \begin{citing}
+  \jitem \lstinline{cm3/RandomExperiment.java}
+  \end{citing}
+\end{frame}
+
+
+
+\begin{frame}[fragile]{Retour sur le calcul de $\pi$}
+  \vfill
+\vspace{-3mm}
+  \begin{tikzpicture}
+    \fill[structure!20, rounded corners] (3.6,4.3) rectangle (11.2,6.4);
+    \fill[alertColor!20, rounded corners] (5.9,8.0) rectangle (7.9,8.3);
+    \fill[alertColor!20, rounded corners] (7.3,4.7) rectangle (9.1,5);
+    \fill[alertColor!20, rounded corners] (6.2,2.0) rectangle (7.4,2.3);
+    \draw (5,5) node{\begin{minipage}{5cm}\begin{lstlisting}[numbers=none]
+private static int result = 0;
+
+public void pi(int nbThreads, int nbIterations) {
+  threads = new Thread[n];
+  for(int i = 0; i<nbThreads; i++) {
+     threads[i] = new Thread(() -> {
+       var random = ThreadLocalRandom.current();
+       for(int i = 0; i<nbIterations; i++) {
+         double x = random.nextDouble();
+	 double y = random.nextDouble();
+	 if(x*x + y*y < 1) result++;
+       }
+     });
+  }
+   
+  for(var t : threads) t.start();
+  for(var t : threads) t.join();
+   
+  System.out.println(result);
+}
+\end{lstlisting}\end{minipage}};
+  \end{tikzpicture}
+  \vfill
+\begin{citing}
+\jitem \lstinline{cm3/Pi3_ThreadLocalRandom.java}
+\end{citing}
+\end{frame}
+
+\begin{frame}[fragile]{Explications}
+  \begin{block}{Code simplifié}
+\vspace{-3mm}
+\begin{lstlisting}[numbers=none]
+class Task implements Runnable {
+  static int result = 0;
+  public void run() {
+    result++;
+  }
+}
+\end{lstlisting}
+\color{exampleColor}{On lance deux fois la tâche en parallèle, que devrait valoir \lstinline{result} à la fin ?}
+  \end{block}
+\pause
+\vfill
+  \begin{block}{Code décompilé : \lstinline[language=bash]{javap -c Task.class}}
+  \vspace{-3mm}
+\begin{verbatim}
+public void run();
+   Code:
+      0: getstatic   #2    // Field result:I
+      3: iconst_1
+      4: iadd
+      5: putstatic   #2    // Field result:I
+      8: return
+\end{verbatim}
+  \end{block}
+\end{frame}
+
+\begin{frame}{Ce que l'on a}
+\begin{center}
+\begin{tikzpicture}
+
+   \draw[fill=black!10, ultra thin, rounded corners]
+     (0,6)    +(-.6,-.35) rectangle +(.7,.35);
+   \draw[exampleColor]
+     (0,6)  +(0,.2)   node[left]{\tiny$t1$}    node {\tiny:} node[right]{\tiny$\mathit{get()}$};
+   \draw[alertColor]
+     (0,6)  +(0,0)    node[left]{\tiny$t2$}    node {\tiny:} node[right]{\tiny$\mathit{get()}$};
+   \draw
+     (0,6)  +(0,-.2)  node[left]{\tiny$result$} node {\tiny=} node[right]{\tiny 0};
+
+   \draw[fill=black!10, ultra thin, rounded corners]
+     (2,6)    +(-.6,-.35) rectangle +(.7,.35);
+   \draw[exampleColor]
+     (2,6)  +(0,.2)   node[left]{\tiny$t1$}    node {\tiny:} node[right]{\tiny$\mathit{put(1)}$};
+   \draw[alertColor]
+     (2,6)  +(0,0)    node[left]{\tiny$t2$}    node {\tiny:} node[right]{\tiny$\mathit{get()}$};
+   \draw
+     (2,6)  +(0,-.2)  node[left]{\tiny$result$} node {\tiny=} node[right]{\tiny 0};
+
+   \draw[fill=black!10, ultra thin, rounded corners]
+     (6,6)    +(-.6,-.35) rectangle +(.7,.35);
+   \draw
+     (6,6)  +(0,.2)   node[left]{\tiny$t1$}    node {\tiny:} node[right]{\tiny$\textsc{term.}$};
+   \draw[alertColor]
+     (6,6)  +(0,0)    node[left]{\tiny$t2$}    node {\tiny:} node[right]{\tiny$\mathit{get()}$};
+   \draw
+     (6,6)  +(0,-.2)  node[left]{\tiny$result$} node {\tiny=} node[right]{\tiny 1};
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+   \draw[fill=black!10, ultra thin, rounded corners]
+     (0,5)    +(-.6,-.35) rectangle +(.7,.35);
+   \draw[exampleColor]
+     (0,5)  +(0,.2)   node[left]{\tiny$t1$}    node {\tiny:} node[right]{\tiny$\mathit{get()}$};
+   \draw[alertColor]
+     (0,5)  +(0,0)    node[left]{\tiny$t2$}    node {\tiny:} node[right]{\tiny$\mathit{put(1)}$};
+   \draw
+     (0,5)  +(0,-.2)  node[left]{\tiny$result$} node {\tiny=} node[right]{\tiny 0};
+
+   \draw[fill=black!10, ultra thin, rounded corners]
+     (2,5)    +(-.6,-.35) rectangle +(.7,.35);
+   \draw[exampleColor]
+     (2,5)  +(0,.2)   node[left]{\tiny$t1$}    node {\tiny:} node[right]{\tiny$\mathit{put(1)}$};
+   \draw[alertColor]
+     (2,5)  +(0,0)    node[left]{\tiny$t2$}    node {\tiny:} node[right]{\tiny$\mathit{put(1)}$};
+   \draw
+     (2,5)  +(0,-.2)  node[left]{\tiny$result$} node {\tiny=} node[right]{\tiny 0};
+
+   \draw[fill=black!10, ultra thin, rounded corners]
+     (4,5)    +(-.6,-.35) rectangle +(.7,.35);
+   \draw
+     (4,5)  +(0,.2)   node[left]{\tiny$t1$}    node {\tiny:} node[right]{\tiny$\textsc{term.}$};
+   \draw[alertColor]
+     (4,5)  +(0,0)    node[left]{\tiny$t2$}    node {\tiny:} node[right]{\tiny$\mathit{put(1)}$};
+   \draw
+     (4,5)  +(0,-.2)  node[left]{\tiny$result$} node {\tiny=} node[right]{\tiny 1};
+
+   \draw[fill=black!10, ultra thin, rounded corners]
+     (6,5)    +(-.6,-.35) rectangle +(.7,.35);
+   \draw
+     (6,5)  +(0,.2)   node[left]{\tiny$t1$}    node {\tiny:} node[right]{\tiny$\textsc{term.}$};
+   \draw[alertColor]
+     (6,5)  +(0,0)    node[left]{\tiny$t2$}    node {\tiny:} node[right]{\tiny$\mathit{put(2)}$};
+   \draw
+     (6,5)  +(0,-.2)  node[left]{\tiny$result$} node {\tiny=} node[right]{\tiny 1};
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+   \draw[fill=black!10, ultra thin, rounded corners]
+     (2,4)    +(-.6,-.35) rectangle +(.7,.35);
+   \draw[exampleColor]
+     (2,4)  +(0,.2)   node[left]{\tiny$t1$}    node {\tiny:} node[right]{\tiny$\mathit{put(1)}$};
+   \draw
+     (2,4)  +(0,0)    node[left]{\tiny$t2$}    node {\tiny:} node[right]{\tiny$\textsc{term.}$};
+   \draw
+     (2,4)  +(0,-.2)  node[left]{\tiny$result$} node {\tiny=} node[right]{\tiny 1};
+
+   \draw[alertColor, fill=alertColor!20, ultra thin, rounded corners]
+     (4,4)    +(-.65,-.4) rectangle +(.75,.4);
+   \draw[alertColor, fill=alertColor!20, ultra thin, rounded corners]
+     (4,4)    +(-.6,-.35) rectangle +(.7,.35);
+   \draw
+     (4,4)  +(0,.2)   node[left]{\tiny$t1$}    node {\tiny:} node[right]{\tiny$\textsc{term.}$};
+   \draw
+     (4,4)  +(0,0)    node[left]{\tiny$t2$}    node {\tiny:} node[right]{\tiny$\textsc{term.}$};
+   \draw
+     (4,4)  +(0,-.2)  node[left]{\tiny$result$} node {\tiny=} node[right]{\tiny 1};
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+   \draw[fill=black!10, ultra thin, rounded corners]
+     (0,3)    +(-.6,-.35) rectangle +(.7,.35);
+   \draw[exampleColor]
+     (0,3)  +(0,.2)   node[left]{\tiny$t1$}    node {\tiny:} node[right]{\tiny$\mathit{get()}$};
+   \draw
+     (0,3)  +(0,0)    node[left]{\tiny$t2$}    node {\tiny:} node[right]{\tiny$\textsc{term.}$};
+   \draw
+     (0,3)  +(0,-.2)  node[left]{\tiny$result$} node {\tiny=} node[right]{\tiny 1};
+
+   \draw[fill=black!10, ultra thin, rounded corners]
+     (2,3)    +(-.6,-.35) rectangle +(.7,.35);
+   \draw[exampleColor]
+     (2,3)  +(0,.2)   node[left]{\tiny$t1$}    node {\tiny:} node[right]{\tiny$\mathit{put(2)}$};
+   \draw
+     (2,3)  +(0,0)    node[left]{\tiny$t2$}    node {\tiny:} node[right]{\tiny$\textsc{term.}$};
+   \draw
+     (2,3)  +(0,-.2)  node[left]{\tiny$result$} node {\tiny=} node[right]{\tiny 1};
+
+   \draw[structure, fill=structure!10, ultra thin, rounded corners]
+     (6,3)    +(-.65,-.4) rectangle +(.75,.4);
+   \draw[structure, fill=structure!10, ultra thin, rounded corners]
+     (6,3)    +(-.6,-.35) rectangle +(.7,.35);
+   \draw
+     (6,3)  +(0,.2)   node[left]{\tiny$t1$}    node {\tiny:} node[right]{\tiny$\textsc{term.}$};
+   \draw
+     (6,3)  +(0,0)    node[left]{\tiny$t2$}    node {\tiny:} node[right]{\tiny$\textsc{term.}$};
+   \draw
+     (6,3)  +(0,-.2)  node[left]{\tiny$result$} node {\tiny=} node[right]{\tiny 2};
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+   \draw[-latex] (-.8,6)  -- (-.6,6) ;
+   \draw[exampleColor,-latex] (0.7,6)  -- (1.4,6) ;
+   \draw[exampleColor,-latex] (2.7,6)  -- (5.4,6) ;
+
+   \draw[exampleColor,-latex] (0.7,5)  -- (1.4,5) ;
+   \draw[exampleColor,-latex] (2.7,5)  -- (3.4,5) ;
+   \draw[exampleColor,-latex] (4.7,5)  -- (5.4,5) ;
+
+   \draw[exampleColor,-latex] (2.7,4)  -- (3.35,4) ;
+
+   \draw[exampleColor,-latex] (0.7,3)  -- (1.4,3) ;
+   \draw[exampleColor,-latex] (2.7,3)  -- (5.35,3) ;
+
+   \draw[alertColor,-latex] (0,5.65)  -- (0,5.35) ;
+   \draw[alertColor,-latex] (0,4.65)  -- (0,3.35) ;
+
+   \draw[alertColor,-latex] (2,5.65)  -- (2,5.35) ;
+   \draw[alertColor,-latex] (2,4.65)  -- (2,4.35) ;
+   \draw[alertColor,-latex] (2,3.65)  -- (2,3.35) ;
+
+   \draw[alertColor,-latex] (4,4.65)  -- (4,4.4) ;
+
+   \draw[alertColor,-latex] (6,5.65)  -- (6,5.35) ;
+   \draw[alertColor,-latex] (6,4.65)  -- (6,3.4) ;
+
+     \end{tikzpicture}
+   \end{center}
+  \begin{block}{Quelques entrelacements possibles}
+    \begin{itemize}
+    \item ${\color{exampleColor}t_1:get();~} {\color{exampleColor}t_1:put(1);~} {\color{alertColor}t_2:get();~} {\color{alertColor}t_2:put(2);}$ \hspace{5mm} $result=2$
+    \item ${\color{exampleColor}t_1:get();~} {\color{alertColor}t_2:get();~} {\color{exampleColor}t_1:put(1);~} {\color{alertColor}t_2:put(1);}$ \hspace{5mm} $result=1$
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]{Ce que l'on voudrait}
+
+\begin{block}{Rappel : exécution séquentiellement cohérente}
+  Le résultat observable d'une exécution est le même que celui d'un entrelacement de l'ordre ``happened before''
+\end{block}
+
+
+\begin{center}
+\begin{tikzpicture}
+   \draw (8.5, 4.25) node{\begin{minipage}{4cm}\begin{lstlisting}[numbers=none]
+interface Counter {
+  void increment() ;
+  int get() ;
+}
+\end{lstlisting}\end{minipage}};
+   \draw[fill=black!10, ultra thin, rounded corners]
+     (1.5,5)    +(-.6,-.35) rectangle +(1.1,.35);
+   \draw[exampleColor]
+     (1.5,5)  +(0,.2)   node[left]{\tiny$t1$}    node {\tiny:} node[right]{\tiny$\mathit{increment()}$};
+   \draw[alertColor]
+     (1.5,5)  +(0,0)    node[left]{\tiny$t2$}    node {\tiny:} node[right]{\tiny$\mathit{increment()}$};
+   \draw
+     (1.5,5)  +(0,-.2)  node[left]{\tiny$result$} node {\tiny=} node[right]{\tiny 0};
+
+   \draw[fill=black!10, ultra thin, rounded corners]
+     (4,5)    +(-.6,-.35) rectangle +(1.1,.35);
+   \draw
+     (4,5)  +(0,.2)   node[left]{\tiny$t1$}    node {\tiny:} node[right]{\tiny$\textsc{terminated}$};
+   \draw[alertColor]
+     (4,5)  +(0,0)    node[left]{\tiny$t2$}    node {\tiny:} node[right]{\tiny$\mathit{increment()}$};
+   \draw
+     (4,5)  +(0,-.2)  node[left]{\tiny$result$} node {\tiny=} node[right]{\tiny 1};
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+   \draw[fill=black!10, ultra thin, rounded corners]
+     (1.5,3.5)    +(-.6,-.35) rectangle +(1.1,.35);
+   \draw[exampleColor]
+     (1.5,3.5)  +(0,.2)   node[left]{\tiny$t1$}    node {\tiny:} node[right]{\tiny$\mathit{increment()}$};
+   \draw
+     (1.5,3.5)  +(0,0)    node[left]{\tiny$t2$}    node {\tiny:} node[right]{\tiny$\textsc{terminated}$};
+   \draw
+     (1.5,3.5)  +(0,-.2)  node[left]{\tiny$result$} node {\tiny=} node[right]{\tiny 1};
+
+   \draw[structure, fill=structure!10, ultra thin, rounded corners]
+     (4,3.5)    +(-.65,-.4) rectangle +(1.15,.4);
+   \draw[structure, fill=structure!10, ultra thin, rounded corners]
+     (4,3.5)    +(-.6,-.35) rectangle +(1.1,.35);
+   \draw
+     (4,3.5)  +(0,.2)   node[left]{\tiny$t1$}    node {\tiny:} node[right]{\tiny$\textsc{terminated}$};
+   \draw
+     (4,3.5)  +(0,0)    node[left]{\tiny$t2$}    node {\tiny:} node[right]{\tiny$\textsc{terminated}$};
+   \draw
+     (4,3.5)  +(0,-.2)  node[left]{\tiny$result$} node {\tiny=} node[right]{\tiny 2};
+
+   \draw[-latex] (.6,5)  -- (.9,5) ;
+   \draw[exampleColor,-latex] (2.6,5)  -- (3.4,5) ;
+   \draw[exampleColor,-latex] (2.6,3.5)  -- (3.35,3.5) ;
+
+   \draw[alertColor,-latex] (1.75,4.65)  -- (1.75,3.85) ;
+   \draw[alertColor,-latex] (4.25,4.65)  -- (4.25,3.9) ;
+
+     \end{tikzpicture}
+   \end{center}
+
+  \begin{block}{Entrelacements possibles}
+  \vspace{-2mm}
+    \begin{itemize}
+    \item ${\color{exampleColor}t_1:increment();~} {\color{alertColor}t_2:increment();~}$ \hspace{5mm} $result=2$
+    \item ${\color{exampleColor}t_1:get();~} {\color{alertColor}t_2:get();~} {\color{exampleColor}t_1:put(1);~} {\color{alertColor}t_2:put(1);}$ \hspace{5mm} $result=1$
+    \end{itemize}
+  \end{block}
+
+\pause
+
+  \vspace{-1mm}
+  \begin{block}{Notion d'atomicité}
+  \vspace{-2mm}
+    \begin{itemize}
+    \item À quelle granularité définit-on les \structure{événements} d'une exécution ?  
+    \item \alert{Section critique} : portion de code qui doit être exécutée \structure{atomiquement}
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+
+
+\begin{frame}[fragile]{Verrou}
+\vspace{-5mm}
+\begin{tikzpicture}
+  \fill[structure!20, rounded corners] (2.8,8.9) rectangle (10.4,9.2);
+  \fill[structure!20, rounded corners] (0.4,4.05) rectangle (2,4.35);
+  \fill[structure!20, rounded corners] (6.9,4.05) rectangle (8.5,4.35);
+
+  \draw[structure] (7,8.5) node{Exclusion mutuelle};
+  \draw[structure] (4.5,4.2) node{Section critique};
+  \draw[structure,->] (3.3,4.2) -- (2.2,4.2);
+  \draw[structure,->] (5.7,4.2) -- (6.7,4.2);
+
+  \draw (0,8.5) node[right]{\begin{minipage}{\textwidth} 
+  \begin{block}{java.util.concurrent.locks.Lock}
+    Objet informatique qui ne peut être possédé que par un thread à la fois.
+  \begin{lstlisting}
+interface Lock {
+  void lock()
+  void unlock()
+  ...
+}
+\end{lstlisting}
+\end{block}\end{minipage}};
+
+  \draw (0,5) node[right]{\begin{minipage}{.55\textwidth}
+\begin{exampleblock}{Java}
+    \begin{lstlisting}
+int value = 0;
+Lock lock = new ReentrantLock();
+
+void increment() {
+  lock.lock();
+  ++value;  
+  lock.unlock();
+}
+    \end{lstlisting}
+  \end{exampleblock}
+\end{minipage}};
+
+  \draw (6.5,5) node[right]{\begin{minipage}{.4\textwidth}
+  \begin{exampleblock}{C++}
+\begin{lstlisting}
+int value = 0;
+mutex lock;
+ 
+void increment() {
+  lock.lock();
+  ++value;
+  lock.unlock();
+}
+\end{lstlisting}
+  \end{exampleblock}
+\end{minipage}};
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}{Incrémentations concurrentes}
+\begin{center}
+\begin{tikzpicture}
+
+   \draw[fill=black!10, ultra thin, rounded corners] (0,6.0)  +(-.7,-.4) rectangle +(.7,.4);
+   \draw[exampleColor]                               (0,6.0)  +(-.1,.3)  node[left]{\tiny$t1$}    node {\tiny:} node[right]{\tiny$\mathit{lock()}$};
+   \draw[alertColor]                                 (0,6.0)  +(-.1,.1)  node[left]{\tiny$t2$}    node {\tiny:} node[right]{\tiny$\mathit{lock()}$};
+   \draw                                             (0,6.0)  +(-.1,-.1) node[left]{\tiny$value$} node {\tiny=} node[right]{\tiny 0};
+   \draw                                             (0,6.0)  +(-.1,-.3) node[left]{\tiny$lock$} node {\tiny=} node[right]{\tiny free};
+   \draw[fill=black!10, ultra thin, rounded corners] (2,6.0)  +(-.7,-.4) rectangle +(.7,.4);
+   \draw[exampleColor]                               (2,6.0)  +(-.1,.3)  node[left]{\tiny$t1$}    node {\tiny:} node[right]{\tiny$\mathit{get()}$};
+   \draw                                             (2,6.0)  +(-.1,.1)  node[left]{\tiny$t2$}    node {\tiny:} node[right]{\tiny$\mathit{lock()}$};
+   \draw                                             (2,6.0)  +(-.1,-.1) node[left]{\tiny$value$} node {\tiny=} node[right]{\tiny 0};
+   \draw                                             (2,6.0)  +(-.1,-.3) node[left]{\tiny$lock$} node {\tiny=} node[right]{\tiny ${\color{exampleColor} t1}$};
+   \draw[fill=black!10, ultra thin, rounded corners] (4,6.0)  +(-.7,-.4) rectangle +(.7,.4);
+   \draw[exampleColor]                               (4,6.0)  +(-.1,.3)  node[left]{\tiny$t1$}    node {\tiny:} node[right]{\tiny$\mathit{set(1)}$};
+   \draw                                             (4,6.0)  +(-.1,.1)  node[left]{\tiny$t2$}    node {\tiny:} node[right]{\tiny$\mathit{lock()}$};
+   \draw                                             (4,6.0)  +(-.1,-.1) node[left]{\tiny$value$} node {\tiny=} node[right]{\tiny 0};
+   \draw                                             (4,6.0)  +(-.1,-.3) node[left]{\tiny$lock$} node {\tiny=} node[right]{\tiny ${\color{exampleColor} t1}$};
+   \draw[fill=black!10, ultra thin, rounded corners] (6,6.0)  +(-.7,-.4) rectangle +(.7,.4);
+   \draw[exampleColor]                               (6,6.0)  +(-.1,.3)  node[left]{\tiny$t1$}    node {\tiny:} node[right]{\tiny$\mathit{unlock()}$};
+   \draw                                             (6,6.0)  +(-.1,.1)  node[left]{\tiny$t2$}    node {\tiny:} node[right]{\tiny$\mathit{lock()}$};
+   \draw                                             (6,6.0)  +(-.1,-.1) node[left]{\tiny$value$} node {\tiny=} node[right]{\tiny 1};
+   \draw                                             (6,6.0)  +(-.1,-.3) node[left]{\tiny$lock$} node {\tiny=} node[right]{\tiny ${\color{exampleColor} t1}$};
+   \draw[fill=black!10, ultra thin, rounded corners] (8,6.0)  +(-.7,-.4) rectangle +(.7,.4);
+   \draw                                             (8,6.0)  +(-.1,.3)  node[left]{\tiny$t1$}    node {\tiny:} node[right]{\tiny$\textsc{term.}$};
+   \draw[alertColor]                                 (8,6.0)  +(-.1,.1)  node[left]{\tiny$t2$}    node {\tiny:} node[right]{\tiny$\mathit{lock()}$};
+   \draw                                             (8,6.0)  +(-.1,-.1) node[left]{\tiny$value$} node {\tiny=} node[right]{\tiny 1};
+   \draw                                             (8,6.0)  +(-.1,-.3) node[left]{\tiny$lock$} node {\tiny=} node[right]{\tiny free};
+
+
+   \draw[fill=black!10, ultra thin, rounded corners] (0,4.5)  +(-.7,-.4) rectangle +(.7,.4);
+   \draw                                             (0,4.5)  +(-.1,.3)  node[left]{\tiny$t1$}    node {\tiny:} node[right]{\tiny$\mathit{lock()}$};
+   \draw[alertColor]                                 (0,4.5)  +(-.1,.1)  node[left]{\tiny$t2$}    node {\tiny:} node[right]{\tiny$\mathit{get()}$};
+   \draw                                             (0,4.5)  +(-.1,-.1) node[left]{\tiny$value$} node {\tiny=} node[right]{\tiny 0};
+   \draw                                             (0,4.5)  +(-.1,-.3) node[left]{\tiny$lock$} node {\tiny=} node[right]{\tiny ${\color{alertColor} t2}$};
+   \draw[fill=black!10, ultra thin, rounded corners] (0,3.0)  +(-.7,-.4) rectangle +(.7,.4);
+   \draw                                             (0,3.0)  +(-.1,.3)  node[left]{\tiny$t1$}    node {\tiny:} node[right]{\tiny$\mathit{lock()}$};
+   \draw[alertColor]                                 (0,3.0)  +(-.1,.1)  node[left]{\tiny$t2$}    node {\tiny:} node[right]{\tiny$\mathit{set(1)}$};
+   \draw                                             (0,3.0)  +(-.1,-.1) node[left]{\tiny$value$} node {\tiny=} node[right]{\tiny 0};
+   \draw                                             (0,3.0)  +(-.1,-.3) node[left]{\tiny$lock$} node {\tiny=} node[right]{\tiny ${\color{alertColor} t2}$};
+   \draw[fill=black!10, ultra thin, rounded corners] (0,1.5)  +(-.7,-.4) rectangle +(.7,.4);
+   \draw                                             (0,1.5)  +(-.1,.3)  node[left]{\tiny$t1$}    node {\tiny:} node[right]{\tiny$\mathit{lock()}$};
+   \draw[alertColor]                                 (0,1.5)  +(-.1,.1)  node[left]{\tiny$t2$}    node {\tiny:} node[right]{\tiny$\mathit{unlock()}$};
+   \draw                                             (0,1.5)  +(-.1,-.1) node[left]{\tiny$value$} node {\tiny=} node[right]{\tiny 1};
+   \draw                                             (0,1.5)  +(-.1,-.3) node[left]{\tiny$lock$} node {\tiny=} node[right]{\tiny ${\color{alertColor} t2}$};
+
+   \draw[fill=black!10, ultra thin, rounded corners] (8,4.5)  +(-.7,-.4) rectangle +(.7,.4);
+   \draw                                             (8,4.5)  +(-.1,.3)  node[left]{\tiny$t1$}    node {\tiny:} node[right]{\tiny$\textsc{term.}$};
+   \draw[alertColor]                                 (8,4.5)  +(-.1,.1)  node[left]{\tiny$t2$}    node {\tiny:} node[right]{\tiny$\mathit{get()}$};
+   \draw                                             (8,4.5)  +(-.1,-.1) node[left]{\tiny$value$} node {\tiny=} node[right]{\tiny 1};
+   \draw                                             (8,4.5)  +(-.1,-.3) node[left]{\tiny$lock$} node {\tiny=} node[right]{\tiny ${\color{alertColor} t2}$};
+   \draw[fill=black!10, ultra thin, rounded corners] (8,3.0)  +(-.7,-.4) rectangle +(.7,.4);
+   \draw                                             (8,3.0)  +(-.1,.3)  node[left]{\tiny$t1$}    node {\tiny:} node[right]{\tiny$\textsc{term.}$};
+   \draw[alertColor]                                 (8,3.0)  +(-.1,.1)  node[left]{\tiny$t2$}    node {\tiny:} node[right]{\tiny$\mathit{set(2)}$};
+   \draw                                             (8,3.0)  +(-.1,-.1) node[left]{\tiny$value$} node {\tiny=} node[right]{\tiny 1};
+   \draw                                             (8,3.0)  +(-.1,-.3) node[left]{\tiny$lock$} node {\tiny=} node[right]{\tiny ${\color{alertColor} t2}$};
+   \draw[fill=black!10, ultra thin, rounded corners] (8,1.5)  +(-.7,-.4) rectangle +(.7,.4);
+   \draw                                             (8,1.5)  +(-.1,.3)  node[left]{\tiny$t1$}    node {\tiny:} node[right]{\tiny$\textsc{term.}$};
+   \draw[alertColor]                                 (8,1.5)  +(-.1,.1)  node[left]{\tiny$t2$}    node {\tiny:} node[right]{\tiny$\mathit{unlock()}$};
+   \draw                                             (8,1.5)  +(-.1,-.1) node[left]{\tiny$value$} node {\tiny=} node[right]{\tiny 2};
+   \draw                                             (8,1.5)  +(-.1,-.3) node[left]{\tiny$lock$} node {\tiny=} node[right]{\tiny ${\color{alertColor} t2}$};
+
+   \draw[fill=black!10, ultra thin, rounded corners] (0,0)  +(-.7,-.4) rectangle +(.7,.4);
+   \draw[exampleColor]                               (0,0)  +(-.1,.3)  node[left]{\tiny$t1$}    node {\tiny:} node[right]{\tiny$\mathit{lock()}$};
+   \draw                                             (0,0)  +(-.1,.1)  node[left]{\tiny$t2$}    node {\tiny:} node[right]{\tiny$\textsc{term.}$};
+   \draw                                             (0,0)  +(-.1,-.1) node[left]{\tiny$value$} node {\tiny=} node[right]{\tiny 1};
+   \draw                                             (0,0)  +(-.1,-.3) node[left]{\tiny$lock$} node {\tiny=} node[right]{\tiny free};
+   \draw[fill=black!10, ultra thin, rounded corners] (2,0)  +(-.7,-.4) rectangle +(.7,.4);
+   \draw[exampleColor]                               (2,0)  +(-.1,.3)  node[left]{\tiny$t1$}    node {\tiny:} node[right]{\tiny$\mathit{get()}$};
+   \draw                                             (2,0)  +(-.1,.1)  node[left]{\tiny$t2$}    node {\tiny:} node[right]{\tiny$\textsc{term.}$};
+   \draw                                             (2,0)  +(-.1,-.1) node[left]{\tiny$value$} node {\tiny=} node[right]{\tiny 1};
+   \draw                                             (2,0)  +(-.1,-.3) node[left]{\tiny$lock$} node {\tiny=} node[right]{\tiny ${\color{exampleColor} t1}$};
+   \draw[fill=black!10, ultra thin, rounded corners] (4,0)  +(-.7,-.4) rectangle +(.7,.4);
+   \draw[exampleColor]                               (4,0)  +(-.1,.3)  node[left]{\tiny$t1$}    node {\tiny:} node[right]{\tiny$\mathit{set(2)}$};
+   \draw                                             (4,0)  +(-.1,.1)  node[left]{\tiny$t2$}    node {\tiny:} node[right]{\tiny$\textsc{term.}$};
+   \draw                                             (4,0)  +(-.1,-.1) node[left]{\tiny$value$} node {\tiny=} node[right]{\tiny 1};
+   \draw                                             (4,0)  +(-.1,-.3) node[left]{\tiny$lock$} node {\tiny=} node[right]{\tiny ${\color{exampleColor} t1}$};
+   \draw[fill=black!10, ultra thin, rounded corners] (6,0)  +(-.7,-.4) rectangle +(.7,.4);
+   \draw[exampleColor]                               (6,0)  +(-.1,.3)  node[left]{\tiny$t1$}    node {\tiny:} node[right]{\tiny$\mathit{unlock()}$};
+   \draw                                             (6,0)  +(-.1,.1)  node[left]{\tiny$t2$}    node {\tiny:} node[right]{\tiny$\textsc{term.}$};
+   \draw                                             (6,0)  +(-.1,-.1) node[left]{\tiny$value$} node {\tiny=} node[right]{\tiny 2};
+   \draw                                             (6,0)  +(-.1,-.3) node[left]{\tiny$lock$} node {\tiny=} node[right]{\tiny ${\color{exampleColor} t1}$};
+   \draw[structure, fill=structure!10, ultra thin, rounded corners] (8,0)  +(-.75,-.45) rectangle +(.75,.45);
+   \draw[structure, fill=structure!10, ultra thin, rounded corners] (8,0)  +(-.7,-.4) rectangle +(.7,.4);
+   \draw                                             (8,0)  +(-.1,.3)  node[left]{\tiny$t1$}    node {\tiny:} node[right]{\tiny$\textsc{term.}$};
+   \draw                                             (8,0)  +(-.1,.1)  node[left]{\tiny$t2$}    node {\tiny:} node[right]{\tiny$\textsc{term.}$};
+   \draw                                             (8,0)  +(-.1,-.1) node[left]{\tiny$value$} node {\tiny=} node[right]{\tiny 2};
+   \draw                                             (8,0)  +(-.1,-.3) node[left]{\tiny$lock$} node {\tiny=} node[right]{\tiny free};
+
+   \draw[-latex] (-1,6)  -- (-.7,6) ;
+   \draw[exampleColor,-latex] (0.7,6)  -- (1.3,6) ;
+   \draw[exampleColor,-latex] (2.7,6)  -- (3.3,6) ;
+   \draw[exampleColor,-latex] (4.7,6)  -- (5.3,6) ;
+   \draw[exampleColor,-latex] (6.7,6)  -- (7.3,6) ;
+
+   \draw[exampleColor,-latex] (0.7,0)  -- (1.3,0) ;
+   \draw[exampleColor,-latex] (2.7,0)  -- (3.3,0) ;
+   \draw[exampleColor,-latex] (4.7,0)  -- (5.3,0) ;
+   \draw[exampleColor,-latex] (6.7,0)  -- (7.25,0) ;
+
+   \draw[alertColor,-latex]   (0,5.6)  -- (0,4.9) ;
+   \draw[alertColor,-latex]   (0,4.1)  -- (0,3.4) ;
+   \draw[alertColor,-latex]   (0,2.6)  -- (0,1.9) ;
+   \draw[alertColor,-latex]   (0,1.1)  -- (0,0.4) ;
+
+   \draw[alertColor,-latex]   (8,5.6)  -- (8,4.9) ;
+   \draw[alertColor,-latex]   (8,4.1)  -- (8,3.4) ;
+   \draw[alertColor,-latex]   (8,2.6)  -- (8,1.9) ;
+   \draw[alertColor,-latex]   (8,1.1)  -- (8,0.45) ;
+
+%   \draw<2>   (4,3.5)  node{\begin{minipage}{6cm}\begin{block}{Point de linéarisation}
+%\begin{itemize}
+%\item N'importe où en section critique
+%\end{itemize}
+%\vspace{3mm}
+%   \scalebox{.5}{\begin{tikzpicture}
+%        \draw[exampleColor, fill=exampleColor!20, rounded corners] (0.6,0.6)  rectangle (10.1,1.4);
+%        \draw[alertColor, fill=alertColor!20, rounded corners] (0.6,-0.4) rectangle (5.8,0.4);
+% 
+%        \draw[structure, -latex] (0,2) node[left]{$counter$} +(.2,.15) node{$0$} +(0,0) -- (10.5,2);
+%        \draw[exampleColor,-latex] (0,1) node[left]{$t1$} -- (10.5,1);
+%        \draw[alertColor, -latex] (0,0) node[left]{$t2$} -- (10.5,0);
+%        \draw[structure, -latex] (0,-1   ) node[left]{\scriptsize $value$} +(.15,.12) node{\scriptsize $0$} +(0,0) -- (10.5,-1   );
+%        \draw[structure, -latex] (0,-1.25) node[left]{\scriptsize $lock$}  +(0,0) -- (10.5,-1.25);
+% 
+%        \draw[exampleColor, thick, densely dotted] (7.9 ,1.4) node{$\bullet$} -- (7.9 ,2) node{$\bullet$} ++(0,.15) node[left]{\footnotesize$increment()$} node[right]{\footnotesize$2$}; 
+%        \draw[alertColor,   thick, densely dotted] (3.6 ,0.4) node{$\bullet$} -- (3.6 ,2) node{$\bullet$} ++(0,.15) node[left]{\footnotesize$increment()$} node[right]{\footnotesize$1$}; 
+% 
+%        \draw[alertColor,   ultra thick] (1.2 ,-1.25) -- (5.0 ,-1.25) ; 
+%        \draw[exampleColor, ultra thick] (5.75 ,-1.25) -- (9.3 ,-1.25) ; 
+% 
+% 
+%        \draw[structure, thick, densely dotted] (5.75 ,1) -- (5.75 ,-1.25) node{$\bullet$} +(.15,.12) ; 
+%        \draw[structure, thick, densely dotted] (6.7 ,1) -- (6.7 ,-1   ) node{$\bullet$} +(.15,.12) node{\scriptsize $1$}; 
+%        \draw[structure, thick, densely dotted] (7.9 ,1) -- (7.9 ,-1   ) node{$\bullet$} +(.15,.12) node{\scriptsize $2$}; 
+%        \draw[structure, thick, densely dotted] (9.3 ,1) -- (9.3 ,-1.25) node{$\bullet$} +(.15,.12) ; 
+%        \draw[structure, thick, densely dotted] (1.2 ,0) -- (1.2 ,-1.25) node{$\bullet$} +(.15,.12) ; 
+%        \draw[structure, thick, densely dotted] (2.4 ,0) -- (2.4 ,-1   ) node{$\bullet$} +(.15,.12) node{\scriptsize $0$}; 
+%        \draw[structure, thick, densely dotted] (3.6 ,0) -- (3.6 ,-1   ) node{$\bullet$} +(.15,.12) node{\scriptsize $1$}; 
+%        \draw[structure, thick, densely dotted] (5.0 ,0) -- (5.0 ,-1.25) node{$\bullet$} +(.15,.12) ; 
+% 
+% 
+%        \draw[structure, fill=structure!20, rounded corners] (3.0 ,1)  +(-2.3,-0.3) rectangle +(3.0,0.3) +(0,0) node{$lock()$};
+%        \draw[structure, fill=structure!20, rounded corners] (6.7 ,1)  +(-0.5,-0.3) rectangle +(0.5,0.3) +(0,0) node{$get()$};
+%        \draw[structure, fill=structure!20, rounded corners] (7.9 ,1)  +(-0.5,-0.3) rectangle +(0.5,0.3) +(0,0) node{$set(2)$};
+%        \draw[structure, fill=structure!20, rounded corners] (9.3 ,1)  +(-0.7,-0.3) rectangle +(0.7,0.3) +(0,0) node{$unlock()$};
+%        \draw[structure, fill=structure!20, rounded corners] (1.2 ,0)  +(-0.5,-0.3) rectangle +(0.5,0.3) +(0,0) node{$lock()$};
+%        \draw[structure, fill=structure!20, rounded corners] (2.4 ,0)  +(-0.5,-0.3) rectangle +(0.5,0.3) +(0,0) node{$get()$};
+%        \draw[structure, fill=structure!20, rounded corners] (3.6 ,0)  +(-0.5,-0.3) rectangle +(0.5,0.3) +(0,0) node{$set(1)$};
+%        \draw[structure, fill=structure!20, rounded corners] (5.0 ,0)  +(-0.7,-0.3) rectangle +(0.7,0.3) +(0,0) node{$unlock()$};
+% 
+% 
+%        \end{tikzpicture}}\end{block}\end{minipage}};
+        
+     \end{tikzpicture}
+ 
+\end{center}
+\end{frame}
+
+
+
+\begin{frame}[fragile]{Point vocabulaire}
+
+\vspace{-1mm}
+  \begin{block}{Section critique}
+    Séquence d'instructions qui manipule des données partagées.
+  \end{block}
+
+  \begin{block}{Exclusion mutuelle}
+    Prédicat logique \\ \og à tout instant, il y a au plus un thread en section critique\fg.
+  \end{block}
+
+  \begin{block}{Verrou}
+    Objet informatique qui ne peut être possédé que par un thread à la fois.
+  \end{block}
+
+  \begin{alertblock}{Attention}
+  \begin{itemize}
+    \item Un \alert{verrou} (\emph{objet informatique}) protège une
+    \alert{section critique} (\emph{portion de code})
+    pour en assurer l'\alert{exclusion mutuelle} (\emph{propriété logique}).
+    \item Attention au mot ``Mutex''
+    \begin{description}
+    \item[Origine :] contraction de ``mutual exclusion''
+    \item[En C++ :] synonyme de ``verrou''
+    \end{description}
+    \end{itemize}
+  \end{alertblock}
+  \vfill
+\end{frame}
+
+\begin{frame}{Mot-clé \alert{synchronized} en Java}
+
+  \begin{alertblock}{Moniteur d'exécution en Java}
+    Un \alert{verrou} est associé à chaque :
+    \begin{itemize}
+    \item objet instancié dans la JVM,
+    \item classe.
+    \end{itemize}
+  \end{alertblock}
+  
+  \begin{block}{Mot-clé \alert{synchronized}}
+    \begin{itemize}
+    \item Méthode  déclarée \alert{synchronized} :\\le  verrou est pris
+      pour la durée de l'exécution de la méthode. 
+    \item Bloc \alert{synchronized\{\}} :\\le  verrou est pris
+      pour la durée de l'exécution du bloc.
+    \end{itemize}
+  \end{block}
+
+  \pause
+
+  \begin{minipage}{.47\textwidth}
+    \begin{exampleblock}{Avantages}
+      \begin{itemize}
+      \item Simple d'utilisation.
+      \item Mise en \oe uvre efficace.
+      \end{itemize}
+    \end{exampleblock}
+  \end{minipage}
+  \hfill
+  \begin{minipage}{.47\textwidth}
+    \begin{alertblock}{Inconvénients}
+      \begin{itemize}
+      \item Peu flexible dans l'utilisation.
+      \item Une seule sorte de verrou 
+      \end{itemize}
+    \end{alertblock}
+  \end{minipage}
+\end{frame}
+
+\begin{frame}[fragile]{Exemple}
+\vspace{-5mm}
+\begin{tikzpicture}
+  \draw (0,5) node[right]{\begin{minipage}{.55\textwidth}
+\begin{exampleblock}{Synchronisation sur membre privé}
+    \begin{lstlisting}
+class Counter {
+
+  private int value = 0;
+  private Object lock
+    = new Object();
+  
+  void increment() {
+    synchronized(lock) {
+      ++value;  
+    }
+  }
+
+  int get() {
+    synchronized(lock) {
+      return value;  
+    }
+  }
+
+}
+    \end{lstlisting}
+  \end{exampleblock}
+\end{minipage}};
+
+  \draw (6.5,5) node[right]{\begin{minipage}{.4\textwidth}
+  \begin{exampleblock}{Synchronisation sur \lstinline{this}}
+\begin{lstlisting}
+class Counter {
+
+  private int value = 0;
+
+
+
+  void increment() {
+    synchronized(this) {
+      ++value;  
+    }
+  }
+
+  int synchronized get() {
+    return value;  
+  }
+
+
+
+}
+\end{lstlisting}
+  \end{exampleblock}
+\end{minipage}};
+\end{tikzpicture}
+\begin{citing}
+\jitem \lstinline{cm3/Pi4_Synchronized.java}
+\end{citing}
+\end{frame}
+
+
+
+%\begin{frame} 
+%  \frametitle{Notion de réentrance}
+%  \begin{alertblock}{TP 1}
+%    \begin{enumerate}
+%    \item Étudier le programme \texttt{Reentrance.java}.
+%      \bigskip
+%    \item Exécuter le programme. Que remarquez-vous ?
+%      \bigskip 
+%    \item À la ligne 5, remplacer \texttt{NonReentrantLock} par \texttt{ReentrantLock}. \\ Que constatez-vous ?
+%    \end{enumerate}
+%  \end{alertblock}
+%  \bigskip
+%  \begin{block}{Bonne nouvelle}
+%    Les blocks \lstinline{synchronized} et les verrous C++ sont réentrants.
+%  \end{block}
+%\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+
+\begin{frame}
+  \frametitle{Grain de verrouillage}
+
+\vfill
+\begin{block}{Verrouillage à gros grains}
+    \begin{itemize}
+    \item Un seul verrou pour une structure de données
+    \item Chaque méthode est entièrement protégée par le verrou
+    \item Avantage : très simple à mettre en place
+    \item Inconvénient : très inefficace
+    \end{itemize}
+  \end{block}
+
+\vfill
+  \begin{block}{Verrouillage à grains fins}
+    \begin{itemize}
+    \item Plusieurs verrous pour une structure de données
+    \item Chaque verrou protège une partie des données
+    \item Attention à quels verrous doivent être pris
+    \end{itemize}
+  \end{block}
+\vfill
+
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Verrous à lectures et écritures}
+\vfill
+\begin{block}{En java (\lstinline{java.util.concurrent})}
+   \lstinline{ReadWriteLock lock = new ReentrantReadWriteLock();}
+   \begin{itemize}
+    \item \lstinline{Lock writeLock = lock.writeLock();}
+      \begin{enumerate}
+      \item Récupère le verrou \alert{exclusif} pour protéger les écritures
+      \end{enumerate}
+    \item \lstinline{Lock readLock = lock.readLock();}
+      \begin{enumerate}
+      \item Récupère le verrou \alert{non exclusif} pour protéger les lectures
+      \end{enumerate}
+    \end{itemize}
+  \end{block}
+
+\vfill
+\begin{block}{En C++ (\lstinline{boost::thread} avant C++ 17, \lstinline{std} depuis C++ 17)}
+   \lstinline{shared_mutex lock;} 
+    \begin{itemize}
+    \item \lstinline{unique_lock<shared_mutex> writeLock(lock);}
+      \begin{enumerate}
+      \item Crée un verrou \alert{exclusif} pour protéger les écritures
+      \end{enumerate}
+    \item \lstinline{shared_lock<shared_mutex> readLock(lock);}
+      \begin{enumerate}
+      \item Crée un verrou \alert{non exclusif} pour protéger les lectures
+      \end{enumerate}
+    \end{itemize}
+  \end{block}
+\vfill
+\end{frame}
+
+
+\begin{frame}[fragile]{Exemple}
+  \begin{tikzpicture}
+%    \fill<2>[exampleColor!20, rounded corners] (3.2,3) rectangle (7.2,3.3);
+%    \fill<2>[exampleColor!20, rounded corners] (3.2,2.35) rectangle (7.55,2.65);
+    \draw (5,4.3) node{\begin{minipage}{5cm}\begin{lstlisting}[numbers=none]
+class Compteur {
+ 
+  private int v = 0;
+  private ReadWriteLock lock = new ReentrantReadWriteLock();
+    
+  public void increment() {
+    lock.writeLock().lock();
+    try {
+      ++v;
+    } finally {
+      lock.writeLock().unlock();
+    }
+  }
+  
+  public int get() {
+    lock.readLock().lock();
+    try {
+      return v;
+    } finally {
+      lock.readLock().unlock();
+    }
+  }
+}
+\end{lstlisting}\end{minipage}};
+  \end{tikzpicture}
+%  \pause
+%  \vspace{-3mm}
+%  \begin{exampleblock}{Question}
+%  \begin{itemize}
+%    \item À quoi sert le verrou sur la lecture ?
+%  \end{itemize}
+%  \end{exampleblock}
+\end{frame}
+
+\begin{frame}{Thread quittant du code en exclusion mutuelle}
+  
+  \begin{block}{Quand un thread quitte une exclusion mutuelle}
+    Deux cas de figure pour le verrou de l'objet :
+    \begin{itemize}
+    \item  Il  passé  automatiquement à  l'un  des threads  bloqués
+      (ordre indéterminé).
+    \item Il est libéré si aucun thread n'est bloqué.
+    \end{itemize}
+  \end{block}
+ 
+  \bigskip
+  
+  \begin{alertblock}{Avant la terminaison d'un Thread}
+    Il faut :
+    \begin{itemize}
+    \item \alert{libérer tous les verrous en sa possession.}
+    \item être certain qu'il laisse les données partagées dans un état cohérent.
+    \item être certain qu'aucune autre tâche n'attend une action de sa part.
+    \end{itemize}
+  \end{alertblock}
+\end{frame}
+
+\mode<all>

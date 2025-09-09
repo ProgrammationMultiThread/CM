@@ -1,0 +1,130 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+
+\title[Programmation concurrente en multi-threads]{Programmation concurrente en multi-threads}
+
+\author[Matthieu Perrin]{
+  \structure{Matthieu \textsc{Perrin}}\\[2mm]
+  Nantes Université\\
+  Laboratoire des Sciences du Numérique de Nantes \\
+  UMR CNRS 6004\\
+  Bureau 410, bâtiment 34 \\
+  \url{matthieu.perrin@univ-nantes.fr}\\
+}
+
+\date{
+  Nantes Université\\
+  Master en Informatique, première année\\
+  Parcours ALMA\\
+  2025-2026
+}
+
+\begin{document}
+
+\begin{frame}[plain,noframenumbering]
+  \titlepage
+  \on[text, bottom=-5mm]{\scriptsize
+    \begin{description}
+    \item[Licence :] \href{https://creativecommons.org/licenses/by-sa/4.0/}{CC BY-SA 4.0} (\ccbysa{}) — Matthieu Perrin
+    \item[Code source :]\vspace{-.5mm}  \url{https://github.com/ProgrammationMultiThread/}
+    \end{description}
+  }
+\end{frame}
+
+\part{Introduction}
+
+\begin{frame}{Vue générale}
+
+  \begin{shadequote}{Ancienne documentation de Java}
+    If you can get away with it, avoid using threads. Threads can be difficult to use, and they make programs harder to debug.
+  \end{shadequote}
+  
+  \begin{alertblock}{But du cours}
+    \begin{itemize}
+    \item Comprendre les problèmes inhérents aux systèmes répartis
+    \item Apprendre à raisonner sur la concurrence
+    \item Déjouer les fausses intuitions
+    \item Être en mesure de lire les documentations officielles
+    \item Mettre en œuvre les solutions les plus simples
+    \end{itemize}
+  \end{alertblock}
+  \begin{alertblock}{Langages}
+    \begin{itemize}
+    \item Principalement Java
+    \item Généralisations bienvenues
+    \end{itemize}
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}{Bibliographie}
+  %\vfill
+  \begin{block}{Sites Web}
+    \begin{itemize}
+    \item \href{http://docs.oracle.com/javase/tutorial/essential/concurrency/index.html}{docs.oracle.com/javase/tutorial/essential/concurrency/index.html}
+    \item \href{https://jenkov.com/tutorials/java-concurrency/index.html}{https://jenkov.com/tutorials/java-concurrency/index.html}
+    \end{itemize}
+  \end{block}
+
+  \vfill
+
+  \begin{block}{Ouvrages}
+    \begin{itemize}
+    \item \textit{The Art of Multiprocessor Programming}\\ Maurice Herlihy \& Nir Shavit (Morgan Kaufmann 2008)
+    \item \textit{Concurrent Programming -- Algorithms, Principles, and Foundations}\\ Michel Raynal (Springer 2013)
+    \item \textit{Concurrent Programming in Java: Design Principles and Patterns}\\ Doug Lea (Addison-Wesley 1996)
+    \end{itemize}
+  \end{block}
+  
+  \vfill
+  \vfill
+  
+  \begin{citing}
+  \item Les articles et ouvrages sont sur Madoc.
+    \jitem Les exemples de code du cours et les TP sont dans un projet sur Madoc.
+  \end{citing}
+\end{frame}
+
+
+\section{Du parallélisme à la concurrence}
+\subsection{Motivations}
+\input{introduction/motivations/11motivations}
+\subsection{Programmation parallèle}
+\input{introduction/parallelism/12parallelisme}
+\subsection{Limites de la parallélisation}
+\input{introduction/amdahl/13amdahl}
+\subsection{Introduction à la concurrence}
+\input{introduction/concurrency/14concurrence}
+ 
+\section{Exécutions d'un programme concurrent}
+\input{executions/2execution}
+ 
+\section{Synchronisation bloquante}
+\subsection{Section critique et verrouillage}
+\input{blocking/locks/31lock}
+\subsection{Problèmes de vivacité}
+\input{blocking/liveness/32vivacite}
+\subsection{Spécification d'un problème concurrent}
+\input{blocking/specification/33specification}
+ 
+\section{Moniteurs}
+\input{monitors/4moniteurs}
+ 
+\section{Implémentation des verrous}
+\input{locks/5verrous}
+ 
+\section{Cohérence des données partagées}
+\subsection{Registres atomiques et instructions spéciales}
+\input{consistency/instructions/61instructions}
+\subsection{La linéarisabilité}
+\input{consistency/linearizability/62linearisabilite}
+\subsection{Modèles de mémoire}
+\input{consistency/memory/63memoire}
+ 
+\section{Conclusion}
+\subsection{Bilan}
+\input{conclusion/7conclusion}
+
+
+\end{document}
+
+\endinput

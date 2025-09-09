@@ -1,0 +1,93 @@
+\begin{frame}{Spécification d'un problème réparti}
+  \begin{block}{Sûreté (Safety)}
+    \begin{itemize}
+      \item Rien de mal ne se produit
+      $$\forall t. P(t)$$
+      \item Thread-safe : fonctionne correctement en multi-thread (très imprécis)
+    \end{itemize}
+  \end{block}
+  \begin{block}{Vivacité (Liveness)}
+    \begin{itemize}
+      \item Quelque chose de bien finira par se produire
+      $$\exists t. P(t)$$
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{Exemple : programme qui calcule $\pi$}
+    \begin{itemize}
+    \item[Sûreté :] \alert{À tout instant}, un préfixe
+      de l'écriture décimale de $\pi$ est affiché.
+    \item[Vivacité :] Pour tout $n$,
+      au moins $n$ chiffres \alert{finiront par} être affichés.
+    \end{itemize}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}{Sûreté et vivacité}
+  \begin{alertblock}{Infirmez ou confirmez les affirmations suivante}
+    \begin{enumerate}
+    \item Tous les empires sont des agglomérats de royaumes.
+    \item Tous les empires finissent par s'effondrer.
+    \end{enumerate}
+  \end{alertblock}
+  \begin{alertblock}{Propriété de sûreté ou de vivacité ?}
+    \begin{enumerate}
+    \item Si deux voitures attendent à une intersection, l'une d'elle va finir par passer.
+    \item Il n'y aura pas d'accident à l'intersection.
+    \item Le feu va passer au vert.
+    \item Le feu va passer au vert dans les cinq prochaines minutes.
+    \item Seules deux choses sont certaines : la mort et les impôts.
+    \end{enumerate}
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}{Condition de vivacité}
+
+  \begin{block}{Progrès global}
+    \alert{Au moins un} thread progresse dans son exécution.
+    \begin{itemize}
+    \item propriété violée lors d'un interblocage circulaire.
+    \end{itemize}
+  \end{block}
+
+  \begin{block}{Progrès local}
+    \alert{Tous les threads} progressent dans leur exécution.
+    \begin{itemize}
+    \item propriété violée lors d'une famine.
+    \end{itemize}
+  \end{block}
+
+\pause
+  \begin{alertblock}{Équité (fairness) des verrous}
+    \begin{itemize}
+    \item Les blocks \lstinline{synchronized}, les verrous \lstinline{ReentrantLock} et les \lstinline{mutex} ne garantissent que le progrès global.
+    \item En Java, le constructeur de \lstinline{ReentrantLock} a un argument optionnel :\\
+      \lstinline{public ReentrantLock(boolean fair)}
+    \end{itemize}
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}{Caractérisation du progrès global}
+
+  \begin{block}{Deux définitions équivalentes si le nombre de threads est fini}
+    Un objet $O$ vérifie le progrès global si, pour toute exécution :
+    \begin{enumerate}
+    \item Pour tout suffixe de l'exécution, il existe un thread dont toutes les opérations sur $O$ se terminent.
+    \item Si l'exécution contient un nombre fini d'opérations sur $O$, elles se terminent toutes.
+    \end{enumerate}
+  \end{block}
+
+  \begin{exampleblock}{Idée de démonstration : $1 \implies 2$}
+    Par récurrence sur le nombre de threads dans l'exécution :
+    \begin{enumerate}
+    \item S'il n'y a qu'un seul thread, toutes ses opérations se terminent
+    \item S'il y a $n+1$ threads, l'un d'entre eux termine toutes ses opérations,
+      et on se retrouve avec un suffixe avec $n$ threads. 
+    \end{enumerate}
+  \end{exampleblock}
+
+  \begin{exampleblock}{Idée de démonstration : $2 \implies 1$}
+    Par l'absurde : si aucun thread ne terminait l'une de ses opérations, il y aurait un nombre fini d'opérations dans l'exécution, donc elles termineraient toutes. 
+  \end{exampleblock}
+
+\end{frame}
+

@@ -1,0 +1,92 @@
+\begin{frame}[fragile]{Bilan}
+
+  \vfill
+  \begin{block}{Calcul réparti en mémoire partagée}
+    \begin{itemize}
+    \item La concurrence crée de nouveaux problèmes de sûreté
+    \item La synchronisation pour les résoudre limite la vivacité
+    \end{itemize}
+  \end{block}
+  \vfill
+  \begin{block}{Attention aux contre-intuitions !}
+    \begin{itemize}
+    \item \lstinline{x++} \alert{ne signifie pas} \og incrémenter \lstinline{x} \fg
+    \item \lstinline{A ; B} \alert{ne signifie pas} \og exécuter \lstinline{A} puis \lstinline{B} \fg
+    \item \og Écrire dans une variable \fg{} est une notion très floue
+    \item ...
+    \end{itemize}
+  \end{block}
+  \vfill
+  \begin{alertblock}{Limiter le partage des données}
+    \begin{itemize}
+    \item Utiliser des objets immutables
+    \item Ne pas partager si possible
+    \end{itemize}
+  \end{alertblock}
+  \vfill
+\end{frame}
+
+
+\subsection{Perspectives}
+
+\begin{frame}[fragile]{Un monde en constante évolution}
+
+ \begin{block}{Modèles à passage de messages}
+    \begin{itemize}
+    \item Cloud computing
+    \item Réseaux pair-à-pair
+    \end{itemize}
+  \end{block}
+
+ \begin{block}{Algorithmique du réparti en calcul réparti}
+    \begin{itemize}
+    \item Problèmes de calculabilité
+    \item Problèmes de complexité
+    \end{itemize}
+ \end{block}
+
+   \begin{block}{Modèles de programmation concurrente}
+    \begin{itemize}
+    \item Loom project et Java 21
+    \begin{itemize}
+    \item Threads virtuels
+    \item Concurrence structurée
+    \end{itemize}
+    \item Modèles de concurrence de Go, Gleam, Rust...
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]{Mémoire transactionelle}
+  \vFill
+  \begin{block}{Mémoire transactionelle logicielle}
+    \begin{lstlisting}
+void increment (Register<Integer> X) {
+  Transaction t = new STMTransaction();
+  while (!t.isCommited()) {
+    try {
+      t.begin();
+      X.write(t, X.read(t) + 1);
+      t.try_to_commit();
+    } catch (AbortException e) {}
+  }
+}
+    \end{lstlisting}
+  \end{block}
+  \pause
+  \begin{alertblock}{TP4}
+    \begin{enumerate}
+    \item Lire l'article sur Madoc
+ 
+    \item Implémenter l'algorithme TL2
+    \end{enumerate}
+  \end{alertblock}
+  \vFill
+  
+  \begin{citing}
+  \item[IR09] Damien Imbs et Michel Raynal. \textit{Software transactional memories: an approach for multicore programming}. PaCT 2009
+    \end{citing}
+\end{frame}
