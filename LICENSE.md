@@ -26,21 +26,12 @@ Unless otherwise stated in the file header, these files are licensed under **CC 
 - **ShareAlike required:** Yes.
 
 *Suggested attribution example:*  
-“*Languages and Automata* — © 2025 Matthieu Perrin, CC BY-SA 4.0, changes: none”  
+“*Concurrent Programming in Multi-Thread* — © 2025 Matthieu Perrin, CC BY-SA 4.0, changes: none”  
 (or describe changes if you made any).
 
 ## Images
 
 Images in `src/img/` have varying licenses:
-
-- `Chomsky.jpg` — **CC BY-SA 2.0** (Augusto Starita, 2015)
-  <https://commons.wikimedia.org/wiki/File:Noam_Chomsky_portrait_2015.jpg>
-- `Rabin.jpg` — **CC BY-SA 2.0** (Konrad Jacobs)  
-  <https://commons.wikimedia.org/wiki/File:M_O_Rabin.jpg>
-- `Scott.jpg` — **CC BY-SA 2.5** (Andrej Bauer, 2003)  
-  <https://commons.wikimedia.org/wiki/File:Scott_Dana_small.jpg>
-- `Thompson.jpg` — **CC BY-SA 4.0** (A.C.Diller, 2019)  
-  <https://commons.wikimedia.org/wiki/File:Brian_Kernighan_and_Ken_Thompson.jpg>
 
 Please verify third-party licenses before redistributing compiled PDFs that include those images.
 

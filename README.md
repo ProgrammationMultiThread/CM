@@ -1,11 +1,11 @@
-# Languages and Automata
+# Concurrent Programming in Multi-Threads
 
-This repository contains modular and reusable teaching materials for a university-level course on formal languages and automata.
+This repository contains modular and reusable teaching materials for a university-level course on concurrent programming in a multi-threaded environment.
 
 
 ## Latest PDFs:
-- [Slides](https://LangagesEtAutomates.github.io/CM/slides.pdf): full animated version
-- [Handout](https://LangagesEtAutomates.github.io/CM/handout.pdf): printable version
+- [Slides](https://ProgrammationMultiThread.github.io/CM/slides.pdf): full animated version
+- [Handout](https://ProgrammationMultiThread.github.io/CM/handout.pdf): printable version
 
 
 ## Structure
@@ -83,6 +83,5 @@ Use pull requests to suggest changes.
 
 You may also be interested in:
 - [latex-libs](https://github.com/MatthieuPerrin/latex-libs): the graphical/style library used here
-- [Main organization](https://github.com/LangagesEtAutomates/): additional resources for exercises and labs 
-- [Calculabilité et Complexité](https://github.com/CalculabiliteEtComplexite): a course on Turing machines, computability, and complexity
+- [Main organization](https://github.com/ProgrammationMultiThread/): additional resources for exercises and labs 
 
