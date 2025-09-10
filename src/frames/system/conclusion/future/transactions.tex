@@ -1,0 +1,42 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+% Part: 
+% Section: 
+% Sub-section: 
+% Frame: 
+
+\begingroup
+
+\begin{frame}[fragile]{Mémoire transactionelle}
+  \vFill
+  \begin{block}{Mémoire transactionelle logicielle}
+    \begin{lstlisting}
+      void increment (Register<Integer> X) {
+        Transaction t = new STMTransaction();
+        while (!t.isCommited()) {
+          try {
+            t.begin();
+            X.write(t, X.read(t) + 1);
+            t.try_to_commit();
+          } catch (AbortException e) {}
+        }
+      }
+    \end{lstlisting}
+  \end{block}
+  \pause
+  \begin{alertblock}{TP4}
+    \begin{enumerate}
+    \item Lire l'article sur Madoc
+      
+    \item Implémenter l'algorithme TL2
+    \end{enumerate}
+  \end{alertblock}
+  \vFill
+  
+  \begin{citing}
+  \item[IR09] Damien Imbs et Michel Raynal. \textit{Software transactional memories: an approach for multicore programming}. PaCT 2009
+  \end{citing}
+\end{frame}
+
+\endgroup
+\endinput

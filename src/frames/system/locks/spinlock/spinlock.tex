@@ -1,0 +1,51 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+% Part: 
+% Section: 
+% Sub-section: 
+% Frame: 
+
+\begingroup
+
+\begin{frame}[fragile]{L'algorithme spin-lock}
+
+  \begin{lstlisting}
+    class SpinLock {
+      private (*\Structure{AtomicBoolean taken = new AtomicBoolean(false);}*)
+
+      public void lock() {
+        while( (*\Structure{taken.getAndSet(true)}*) );
+      }
+
+      public void unlock() {
+        (*\Structure{taken.set(false);}*)
+      }
+    }
+  \end{lstlisting}
+
+  \begin{block}{L'opération \alert{atomique} test-and-set}
+    \begin{lstlisting}[gobble=4]
+      getAndSet(T val) {
+        T old = get();
+        set(val);
+        return old;
+      }
+    \end{lstlisting}
+  \end{block}
+
+  \on[right=.5\textwidth, y=-15mm]{
+    \begin{description}
+    \item [Java :] \lstinline{T getAndSet(T val)}
+    \item [C++ :] \lstinline{T exchange(T val)}
+    \end{description}
+  }
+  
+  \vFill
+  \begin{citing}
+  \item[D62] Edsger W. Dijkstra. \textit{Over de sequentialiteit van procesbeschrijvingen (About the sequentiality of process descriptions)} (1962-1963)
+    \jitem \lstinline{cm5/SpinLock.java}
+  \end{citing}
+\end{frame}
+
+\endgroup
+\endinput

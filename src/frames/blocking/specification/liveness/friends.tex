@@ -1,0 +1,42 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+% Part: 
+% Section: 
+% Sub-section: 
+% Frame: 
+
+\begingroup
+
+\begin{frame}[fragile]{Que fait ce programme ?}
+
+  \begin{lstlisting}[gobble=2]
+    public record Friend(String nom) {
+      
+      public synchronized void salute(Friend friend) {
+        System.out.println(nom + " salutes " + friend.nom);
+        friend.answer(this);
+      }
+      
+      public synchronized void answer(Friend friend) {
+        System.out.println(nom + " answers to " + friend.nom);
+      }
+      
+      public static void main(String[] args) {
+        var alphonse = new Friend("Alphonse");
+        var gaston = new Friend("Gaston");
+        var Ta = new Thread(() -> (*\Alert{alphonse.salute(gaston)}*));
+        var Tg = new Thread(() -> (*\Example{gaston.salute(alphonse)}*));
+        Ta.start();
+        Tg.start();
+      }
+      
+    }
+  \end{lstlisting}
+  
+  \begin{citing}
+    \jitem \lstinline{tp1/Friends.java}
+  \end{citing}
+\end{frame}
+
+\endgroup
+\endinput

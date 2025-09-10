@@ -1,0 +1,43 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+% Part: 
+% Section: 
+% Sub-section: 
+% Frame: 
+
+\begingroup
+
+\begin{frame}{Structures de données non-bloquante en Java}
+  \begin{itemize}
+  \item Compteur : \lstinline{java.util.concurrent.atomic.LongAdder}
+    \begin{itemize}
+    \item \lstinline{void add(long x)} : incrémente
+    \item \lstinline{long sum()} : lit
+    \item \alert{Attention : cohérence ?}
+    \end{itemize}
+  \item File : \lstinline{java.util.concurrent.ConcurrentLinkedQueue<E>} :
+    \begin{itemize}
+    \item \lstinline{void add(E e)} : ajoute en queue
+    \item \lstinline{E peek()} : lit la tête
+    \item \lstinline{E poll()} : lit et supprime la tête
+    \end{itemize}
+  \item Liste doublement chaînée : \lstinline{java.util.concurrent.ConcurrentLinkedDeque<E>}
+    \begin{itemize}
+    \item \lstinline{void addFirst(E e)}, \lstinline{E getFirst()}, \lstinline{E pollFirst()} : accède la tête
+    \item \lstinline{void addLast(E e)}, \lstinline{E getLast()}, \lstinline{E pollLast()} : accède la queue
+    \end{itemize}
+  \item Table de hashage : \lstinline{java.util.concurrent.ConcurrentHashMap<K,V>}
+    \begin{itemize}
+    \item \lstinline{put(K key, V value)} : ajoute
+    \item \lstinline{get(K key)} : lit
+    \item \lstinline{remove(K key)} : supprime une clé
+    \item \lstinline{putIfAbsent(K key, V value)} : ajoute ou retourne la valeur
+    \end{itemize}
+  \end{itemize}
+  \begin{citing}
+  \item Présentation de Scott sur les structures de données non-bloquantes
+  \end{citing}
+\end{frame}
+
+\endgroup
+\endinput

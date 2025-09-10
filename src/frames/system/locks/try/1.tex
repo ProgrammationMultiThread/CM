@@ -1,0 +1,88 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+% Part: 
+% Section: 
+% Sub-section: 
+% Frame: 
+
+\begingroup
+
+\tikzset{
+  sshape/.style={
+    text width=20mm,
+    rectangle,
+    rounded corners,
+    fill=black!10,
+  },
+}
+
+\newcommand\scontent[3]{\begin{tabular}{@{}r@{~}c@{~}l@{}}
+    \tiny \structure{\texttt{taken}}   & \tiny \structure{=}  & \tiny \structure{#1}   \\[-1mm]
+    \tiny \color{black} $t_1$ & \tiny \color{black}: & \tiny \color{black}#2  \\[-1mm]
+    \tiny \color{black} $t_2$ & \tiny \color{black}: & \tiny \color{black}#3
+\end{tabular}}
+
+\newcommand\thetaken{\texttt{taken}}
+\newcommand\whiletaken{\texttt{while(taken)}}
+\newcommand\takentrue{\texttt{taken = true}}
+\newcommand\SC{\alert{section critique}}
+
+
+\begin{frame}[fragile]{Un premier essai}
+
+  \vspace{-30mm}
+  \begin{lstlisting}[gobble=2]
+    class NaiveLock1 implements Lock {
+      private (*\Example{boolean taken = false;}*)
+      public void lock() {
+        while( (*\Structure{taken}*) );
+        (*\Structure{taken = true;}*)
+      }
+      public void unlock() {
+        (*\Alert{taken = false;}*)
+      }
+    }
+  \end{lstlisting}
+  
+  \obExampleBlock<1>[anchor=north, y=5mm]{Exercice}{
+    \vspace{5mm}
+    Deux threads, $t_1$ et $t_2$, veulent entrer concurrament en section critique.
+    \begin{itemize}
+    \item Tracer la machine à états du système. 
+    \item Montrer que l'\example{exclusion mutuelle} n'est pas respectée
+    \item Montrer que la \example{starvation-freedom} n'est pas respectée
+    \end{itemize}
+  }
+
+  \onExampleBlock<2->[anchor=north, y=5mm]{Exercice}{\centering
+    \begin{tikzpicture}[automaton, x=10mm,y=12mm]
+      \state[alert ob=<3-4>,example ob=<2>, sshape,initial] (s02) at (0,2) {\scontent{\False}{\whiletaken}{\whiletaken}};
+      \state[alert ob=<3-4>,sshape,]                        (s12) at (3,2) {\scontent{\False}{\takentrue}{\whiletaken}};
+      \state[alert ob=<4>,sshape,]                          (s22) at (6,2) {\scontent{\True} {\SC}          {\whiletaken}};
+      \state[sshape,]                                       (s01) at (0,1) {\scontent{\False}{\whiletaken}{\takentrue}};
+      \state[alert ob=<3>,sshape,]                          (s11) at (3,1) {\scontent{\False}{\takentrue}{\takentrue}};
+      \state[sshape,]                                       (s21) at (6,1) {\scontent{\True} {\SC          }{\takentrue}};
+      \state[sshape,]                                       (s00) at (0,0) {\scontent{\True} {\whiletaken}{\SC}          };
+      \state[alert ob=<3>,sshape,]                          (s10) at (3,0) {\scontent{\True} {\takentrue}{\SC}          };
+      \state[alert ob=<3>, sshape,accepting]                (s20) at (6,0) {\scontent{\True} {\SC}          {\SC}};
+
+      \path[structure, alert ob=<3-4>] (s02) edge                          (s12);
+      \path[structure, alert ob=<4>]   (s12) edge                          (s22);
+      \path[structure]                 (s01) edge                          (s11);
+      \path[structure]                 (s11) edge                          (s21);
+      \path[structure]                 (s00) edge[loop right, looseness=2] (s00);
+      \path[structure, alert ob=<3>]   (s10) edge                          (s20);
+      \path[structure]                 (s02) edge                          (s01);
+      \path[structure]                 (s01) edge                          (s00);
+      \path[structure, alert ob=<3>]   (s12) edge                          (s11);
+      \path[structure, alert ob=<3>]   (s11) edge                          (s10);
+      \path[structure, alert ob=<4>]   (s22) edge[loop right, looseness=2] (s22);
+      \path[structure]                 (s21) edge                          (s20);
+      \path[alert, ob=<4>]             (s22) edge[bend right=5mm]          (s02);
+    \end{tikzpicture}
+  }
+
+\end{frame}
+
+\endgroup
+\endinput

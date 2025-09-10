@@ -1,0 +1,46 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+% Part: 
+% Section: 
+% Sub-section: 
+% Frame: 
+
+\begingroup
+
+\begin{frame}[fragile]{Le moniteur universel en Java (\lstinline|java.lang.Object|)}
+
+  \vfill    
+  \begin{block}{\lstinline|public final void java.lang.Object.wait() throws InterruptedException|}
+    \begin{itemize}
+    \item Met le thread en attente sur l'objet verrouillé.
+    \item Il doit \alert{posséder} le verrou de l'objet sur lequel il se met en attente.
+    \item Lorsqu'il entre en attente, il \alert{relâche}  le verrou.
+    \end{itemize}
+  \end{block}
+
+  \vfill    
+  \begin{block}{\lstinline|public final void java.lang.Object.notify()|}
+    \begin{itemize}
+    \item Réveille un des threads en attente sur l'objet verrouillé.
+    \item Le thread réveillé doit \alert{acquérir} le verrou.
+    \end{itemize}
+  \end{block}
+
+  \vfill    
+  \begin{block}{\lstinline|public final void java.lang.Object.notifyAll()|}
+    \begin{itemize}
+    \item Pareil mais réveille tous les threads en attente sur l'objet verrouillé.
+    \end{itemize}
+  \end{block}
+  \vfill
+  \begin{alertblock}{Point vocabulaire}
+    \begin{itemize}
+    \item Un thread demandant l'accès à un code déjà verrouillé est \alert{bloqué}.
+    \item Un  thread qui  est mis  en pause  par l'opération wait est \alert{en attente}.      
+    \end{itemize}
+  \end{alertblock}
+  \vfill
+\end{frame}
+
+\endgroup
+\endinput

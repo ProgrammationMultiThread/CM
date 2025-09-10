@@ -1,0 +1,42 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+% Part: 
+% Section: 
+% Sub-section: 
+% Frame: 
+
+\begingroup
+
+\begin{frame}[fragile]{Composabilité des critères de cohérence}
+  \begin{lstlisting}[numbers=none]
+    public static void main(String[] args) {    
+      var x = new SequentiallyConsistentCounter(0);
+      var y = new SequentiallyConsistentCounter(0);
+      
+      new Thread(() ->
+      x.increment();
+      System.out.print(y.get());
+      ).start();
+      
+      new Thread(() ->
+      y.increment();
+      System.out.print(x.get());
+      ).start();
+    }
+  \end{lstlisting}
+
+  \vspace{-3mm}
+  \begin{center}
+    \color{exampleColor} Quelles sont les sorties possibles ? 
+  \end{center}
+  \pause
+  \begin{block}{Composabilité}
+    \begin{itemize}
+    \item Si deux objets sont cohérents, leur composition est cohérente 
+    \item \alert{La cohérence séquentielle n'est pas composable !}
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\endgroup
+\endinput

@@ -1,0 +1,43 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+% Part: 
+% Section: 
+% Sub-section: 
+% Frame: 
+
+\begingroup
+
+\begin{frame}[fragile]{Exemple de programme parallèle}
+  \begin{block}{Calcul de $\pi$ par la méthode de Monte-Carlo}
+    \begin{center}
+      \begin{tikzpicture}
+        \draw[->] (0,-0.5) -- (0,2.5);
+        \draw[->] (-0.5,0) -- (2.5,0);
+
+        \draw[fill=alertColor!30] (0,0) rectangle (2,2);
+        \draw[fill=exampleColor!30] (0,0) -- (2,0) arc (0:90:2) -- (0,0);
+        \draw[alertColor] (1.7,1.7) node{$\mathcal{A_\mathcal{C}}$};
+        \draw[exampleColor] (0.3,0.3) node{$\mathcal{A_\mathcal{D}}$};
+        \draw (0,2) node[left]{1};
+        \draw (2,0) node[below]{1};
+        \draw (0,0) node[below left]{0};
+        \draw (2.5,1.5) node[right]{$\mathcal{A_\mathcal{C}} = 1$};
+        \draw (2.5,1) node[right]{$\mathcal{A_\mathcal{D}} = \frac{\pi}{4}$};
+        \draw (2.5,0.5) node[right]{$\pi = 4\times \mathbb{P}(x^2 + y^2 < 1 | (x, y) \in [0; 1]^2) $};
+      \end{tikzpicture}
+    \end{center}
+  \end{block}
+  \begin{exampleblock}{Expérience}
+    \begin{itemize}
+    \item Tirer \lstinline{nbIterations} points dans l'intervalle $[0; 1]^2$
+    \item Paralléliser entre \lstinline{nbThreads} threads
+    \item Mesurer le temps d'exécution en fonction de \lstinline{nbIterations} et \lstinline{nbThreads}
+    \end{itemize}
+  \end{exampleblock}
+\begin{citing}
+\jitem Comparer \lstinline{cm3/Pi1_Sequential.java} et \lstinline{cm3/Pi2_Parallel.java}
+\end{citing}
+\end{frame}
+
+\endgroup
+\endinput

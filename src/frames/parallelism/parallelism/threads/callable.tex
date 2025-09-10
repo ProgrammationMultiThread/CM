@@ -1,0 +1,40 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+% Part: 
+% Section: 
+% Sub-section: 
+% Frame: 
+
+\begingroup
+
+\begin{frame}[fragile]{Tâche retournant un résultat}
+
+  \begin{block}{L'interface \lstinline{Callable}}
+    Version générique d'une tâche qui retourne un résultat.
+
+    \begin{lstlisting}[numbers=none]
+public interface Callable<V> {
+  V call() throws Exception;
+}
+    \end{lstlisting}
+  \end{block}
+  
+  \bigskip
+
+  \begin{block}{L'interface \lstinline{Future}}
+    Version générique du résultat d'un calcul \textit{asynchrone}. 
+
+    \begin{lstlisting}[numbers=none]
+public interface Future<V> {
+  boolean cancel( boolean evenIfRunning );
+  V get() throws InterruptedException, ExecutionException;
+  V get( long timeout, TimeUnit unit ) throws...;
+  boolean isCancelled();
+  boolean isDone();
+}
+    \end{lstlisting}
+  \end{block}
+\end{frame}
+
+\endgroup
+\endinput

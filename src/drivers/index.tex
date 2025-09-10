@@ -31,74 +31,195 @@
   }
 \end{frame}
 
-\part{Introduction}
 
-\section{Avant-propos}
-
-\subsection{Généralités}
-\input{introduction/overview}
-\input{introduction/bibliography}
-
-
-\section{Du parallélisme à la concurrence}
-
+\part{Du parallélisme à la concurrence}
+ 
+\section{Généralités}
+ 
+\subsection{Vue générale}
+\input{parallelism/generalities/overview/overview}
+ 
+\subsection{Bibliographie}
+\input{parallelism/generalities/bibliography/bibliography}
+ 
+ 
+\section{Programmation parallèle}
+ 
 \subsection{Motivations}
-\input{introduction/motivations/11motivations}
-
-\subsection{Programmation parallèle}
-\input{introduction/parallelism/12parallelisme}
-
+\input{parallelism/parallelism/motivations/moore}
+\input{parallelism/parallelism/motivations/goal}
+\input{parallelism/parallelism/motivations/approaches1}
+\input{parallelism/parallelism/motivations/approaches2}
+\input{parallelism/parallelism/motivations/languages}
+ 
+\subsection{Gestion des threads}
+\input{parallelism/parallelism/threads/task}
+\input{parallelism/parallelism/threads/thread}
+\input{parallelism/parallelism/threads/methods}
+\input{parallelism/parallelism/threads/interrupt}
+\input{parallelism/parallelism/threads/executorservice}
+\input{parallelism/parallelism/threads/callable}
+\input{parallelism/parallelism/threads/threadpools}
+\input{parallelism/parallelism/threads/strategies}
+ 
 \subsection{Limites de la parallélisation}
-\input{introduction/amdahl/13amdahl}
-
+\input{parallelism/parallelism/amdahl/amdahl}
+\input{parallelism/parallelism/amdahl/limits}
+\input{parallelism/parallelism/amdahl/exercise}
+\input{parallelism/parallelism/amdahl/hypotheses}
+ 
 \subsection{Introduction à la concurrence}
-\input{introduction/concurrency/14concurrence}
+\input{parallelism/parallelism/concurrency/problem}
+\input{parallelism/parallelism/concurrency/multithreading}
+\input{parallelism/parallelism/concurrency/differences}
+\input{parallelism/parallelism/concurrency/vocabulary}
+\input{parallelism/parallelism/concurrency/exercise}
  
-
-\section{Exécutions d'un programme concurrent}
-\input{executions/2execution}
-
-
-\section{Synchronisation bloquante}
-
-\subsection{Section critique et verrouillage}
-\input{blocking/locks/31lock}
-
+ 
+\section{Exécutions concurrentes}
+ 
+\subsection{Notion d'asynchronisme}
+\input{parallelism/executions/asynchrony/example}
+\input{parallelism/executions/asynchrony/nondeterminism}
+ 
+\subsection{Relation happened before}
+\input{parallelism/executions/causal/lamport}
+\input{parallelism/executions/causal/hb}
+\input{parallelism/executions/causal/example}
+ 
+\subsection{Cohérence séquentielle}
+\input{parallelism/executions/sequential/definition}
+\input{parallelism/executions/sequential/example}
+ 
+\subsection{Machine à états d'un programme}
+\input{parallelism/executions/statemachine/definition}
+\input{parallelism/executions/statemachine/example}
+\input{parallelism/executions/statemachine/warning}
+ 
+ 
+\part{Synchronisation bloquante}
+ 
+ 
+\section{Synchronisation par verrous}
+ 
+\subsection{Section critique}
+\input{blocking/locks/critical/montecarlo}
+\input{blocking/locks/critical/random}
+\input{blocking/locks/critical/experiment}
+\input{blocking/locks/critical/threadlocalrandom}
+\input{blocking/locks/critical/explanation}
+\input{blocking/locks/critical/statemachine}
+\input{blocking/locks/critical/goal}
+ 
+\subsection{Utilisation des verrous}
+\input{blocking/locks/usage/lock}
+\input{blocking/locks/usage/incrementations}
+\input{blocking/locks/usage/vocabulary}
+\input{blocking/locks/usage/synchronized}
+\input{blocking/locks/usage/example}
+\input{blocking/locks/usage/grain}
+\input{blocking/locks/usage/readwrite}
+\input{blocking/locks/usage/counter}
+\input{blocking/locks/usage/leaving}
+ 
+ 
+\section{Spécification d'un problème concurrent}
+ 
 \subsection{Problèmes de vivacité}
-\input{blocking/liveness/32vivacite}
-
-\subsection{Spécification d'un problème concurrent}
-\input{blocking/specification/33specification}
+\input{blocking/specification/liveness/friends}
+\input{blocking/specification/liveness/example}
+\input{blocking/specification/liveness/deadlock}
+\input{blocking/specification/liveness/solution}
+\input{blocking/specification/liveness/starvation}
  
-
+\subsection{Sûreté et vivacité d'un programme}
+\input{blocking/specification/safelive/safelive}
+\input{blocking/specification/safelive/exercise}
+\input{blocking/specification/safelive/localglobal}
+\input{blocking/specification/safelive/characterization}
+ 
+ 
 \section{Moniteurs}
-
-\input{monitors/4moniteurs}
  
-
+\subsection{Attente et signalement}
+\input{blocking/monitors/signals/example}
+\input{blocking/monitors/signals/semaphore}
+\input{blocking/monitors/signals/signaling}
+ 
+\subsection{Notion de moniteur}
+\input{blocking/monitors/examples/intro}
+\input{blocking/monitors/examples/queue}
+\input{blocking/monitors/examples/consumers}
+\input{blocking/monitors/examples/synchronization}
+ 
+\subsection{Utilisation du moniteur \lstinline{Object}}
+\input{blocking/monitors/implementation/object}
+\input{blocking/monitors/implementation/semaphore}
+\input{blocking/monitors/implementation/conditions}
+ 
+ 
+\part{Implémentation des mécanismes}
+ 
+ 
 \section{Implémentation des verrous}
-
-\input{locks/5verrous}
  
-
+\subsection{Réflexions préliminaires}
+\input{system/locks/try/specification}
+\input{system/locks/try/1}
+\input{system/locks/try/2}
+\input{system/locks/try/3}
+ 
+\subsection{Algorithme de Peterson}
+\input{system/locks/peterson/peterson}
+ 
+\subsection{Algorithme de la Boulangerie de Lamport}
+\input{system/locks/bakery/simplified}
+\input{system/locks/bakery/complete}
+ 
+\subsection{Algorithme spin-lock}
+\input{system/locks/spinlock/spinlock}
+ 
+ 
 \section{Cohérence des données partagées}
-
-\subsection{Registres atomiques et instructions spéciales}
-\input{consistency/instructions/61instructions}
-
-\subsection{La linéarisabilité}
-\input{consistency/linearizability/62linearisabilite}
-
-\subsection{Modèles de mémoire}
-\input{consistency/memory/63memoire}
  
-
+\subsection{Registres atomiques et instructions spéciales}
+\input{system/consistency/instructions/atomics}
+\input{system/consistency/instructions/nonblocking}
+\input{system/consistency/instructions/counter}
+ 
+\subsection{La linéarisabilité}
+\input{system/consistency/linearizability/sequential}
+\input{system/consistency/linearizability/composability}
+\input{system/consistency/linearizability/herlihywing}
+\input{system/consistency/linearizability/linearizability}
+\input{system/consistency/linearizability/characterization}
+\input{system/consistency/linearizability/example}
+\input{system/consistency/linearizability/incrementation}
+ 
+\subsection{Modèles de mémoire}
+\input{system/consistency/memory/exercise}
+\input{system/consistency/memory/example}
+\input{system/consistency/memory/cache}
+\input{system/consistency/memory/timescale}
+\input{system/consistency/memory/volatile}
+\input{system/consistency/memory/happenedbefore}
+\input{system/consistency/memory/future}
+\input{system/consistency/memory/pi}
+\input{system/consistency/memory/cpp}
+\input{system/consistency/memory/arrays}
+\input{system/consistency/memory/syncvsvolatile}
+ 
+ 
 \section{Conclusion}
-
+ 
 \subsection{Bilan}
-\input{conclusion/7conclusion}
-
+\input{system/conclusion/summary/summary}
+ 
+\subsection{Perspectives}
+\input{system/conclusion/future/future}
+\input{system/conclusion/future/transactions}
 
 \end{document}
 
 \endinput
+

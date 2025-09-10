@@ -1,0 +1,64 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+% Part: 
+% Section: 
+% Sub-section: 
+% Frame: 
+
+\begingroup
+
+\begin{frame}[fragile]{Verrou}
+  \vspace{-5mm}
+  \begin{tikzpicture}
+
+    \draw[structure] (7,8.5) node{Exclusion mutuelle};
+    \draw[structure] (4.5,4.2) node{Section critique};
+    \draw[structure,->] (3.3,4.2) -- (2.2,4.2);
+    \draw[structure,->] (5.7,4.2) -- (6.7,4.2);
+
+    \draw (0,8.5) node[right]{\begin{minipage}{\textwidth} 
+        \begin{block}{java.util.concurrent.locks.Lock}
+          Objet informatique \alert{qui ne peut être possédé que par un thread à la fois.}
+          \begin{lstlisting}[gobble=10]
+            interface Lock {
+              void lock()
+              void unlock()
+              ...
+            }
+          \end{lstlisting}
+    \end{block}\end{minipage}};
+
+    \draw (0,5) node[right]{\begin{minipage}{.55\textwidth}
+        \begin{exampleblock}{Java}
+          \begin{lstlisting}[gobble=10]
+            int value = 0;
+            Lock lock = new ReentrantLock();
+
+            void increment() {
+              lock.lock();
+              (*\Structure{++value;}*)  
+              lock.unlock();
+            }
+          \end{lstlisting}
+        \end{exampleblock}
+    \end{minipage}};
+
+    \draw (6.5,5) node[right]{\begin{minipage}{.4\textwidth}
+        \begin{exampleblock}{C++}
+          \begin{lstlisting}[gobble=10]
+            int value = 0;
+            mutex lock;
+            
+            void increment() {
+              lock.lock();
+              (*\Structure{++value;}*)
+              lock.unlock();
+            }
+          \end{lstlisting}
+        \end{exampleblock}
+    \end{minipage}};
+  \end{tikzpicture}
+\end{frame}
+
+\endgroup
+\endinput

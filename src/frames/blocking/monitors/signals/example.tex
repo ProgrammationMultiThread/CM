@@ -1,0 +1,47 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+% Part: 
+% Section: 
+% Sub-section: 
+% Frame: 
+
+\begingroup
+
+\begin{frame}[fragile]{Attente et signalement}
+
+  \begin{lstlisting}[gobble=4]
+    class Counter {
+      
+      private int value=0;
+      
+      public synchronized void increment() {
+        ++value;
+      }
+      
+      public synchronized int get() {
+        return value;
+      }
+
+      public static void main(String[] args) {
+        var counter = new Counter();
+        
+        var tReader = new Thread(() -> {
+          (*\alt<2>{\Alert{\alert{\sout{\color{black}while(counter.get()==0);}}}}{\Structure{while(counter.get()==0);}}*)
+          (*\Structure{System.out.println("done");}*)
+        });
+
+        var tWriter = new Thread( (*\Example{counter::increment}*));
+
+        tReader.start();
+        Thread.sleep(250);
+        tWriter.start();
+      }
+    }
+  \end{lstlisting}
+
+  \on<2>[x=20mm, y=-13mm]{\alert{Comment supprimer l'attente active ?}}
+
+\end{frame}
+
+\endgroup
+\endinput

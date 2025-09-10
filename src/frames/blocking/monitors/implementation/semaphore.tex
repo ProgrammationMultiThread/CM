@@ -1,0 +1,35 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+% Part: 
+% Section: 
+% Sub-section: 
+% Frame: 
+
+\begingroup
+
+\begin{frame}[fragile]{Implémentation d'un sémaphore}
+ 
+  \begin{lstlisting}
+class Semaphore {
+  private int counter;
+  
+  public Semaphore( int counter ) {
+    this.counter = counter;
+  }
+ 
+  synchronized public void acquire()
+  throws InterruptedException {
+    while(counter <= 0) wait();
+    --counter;
+  }
+  
+  synchronized public void release() {
+    ++counter;
+    notify();
+  }
+}
+\end{lstlisting}
+\end{frame}
+
+\endgroup
+\endinput

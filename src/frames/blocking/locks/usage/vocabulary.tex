@@ -1,0 +1,41 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+% Part: 
+% Section: 
+% Sub-section: 
+% Frame: 
+
+\begingroup
+
+\begin{frame}[fragile]{Point vocabulaire}
+
+  \vspace{-1mm}
+  \begin{block}{Section critique}
+    Séquence d'instructions qui manipule des données partagées.
+  \end{block}
+
+  \begin{block}{Exclusion mutuelle}
+    Prédicat logique \\ \og à tout instant, il y a au plus un thread en section critique\fg.
+  \end{block}
+
+  \begin{block}{Verrou}
+    Objet informatique qui ne peut être possédé que par un thread à la fois.
+  \end{block}
+
+  \begin{alertblock}{Attention}
+    \begin{itemize}
+    \item Un \alert{verrou} (\emph{objet informatique}) protège une
+      \alert{section critique} (\emph{portion de code})
+      pour en assurer l'\alert{exclusion mutuelle} (\emph{propriété logique}).
+    \item Attention au mot ``Mutex''
+      \begin{description}
+      \item[Origine :] contraction de ``mutual exclusion''
+      \item[En C++ :] synonyme de ``verrou''
+      \end{description}
+    \end{itemize}
+  \end{alertblock}
+  \vfill
+\end{frame}
+
+\endgroup
+\endinput

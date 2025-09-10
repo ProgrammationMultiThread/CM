@@ -1,0 +1,55 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+% Part: 
+% Section: 
+% Sub-section: 
+% Frame: 
+
+\begingroup
+
+\begin{frame}{Caractérisation}
+
+  \begin{block}{Point de linéarisation}
+    Un objet partagé est linéarisable si, et seulement si : \\
+    le résultat observable des opérations sur l'objet partagé d'une exécution est le même que si
+    \alert{chaque opération avait lieu en un point atomique
+      situé entre son début et sa fin.}
+  \end{block}
+
+  \vfill
+  \begin{exampleblock}{Exemple}
+
+    \begin{center}
+      \scalebox{.7}{
+        \begin{tikzpicture}
+          \draw[exampleColor, -latex] (0,4) node[left]{$counter$} -- (10,4);
+          \draw[-latex] (0,3) node[left]{$T_1$} -- (10,3);
+          \draw[-latex] (0,2) node[left]{$T_2$} -- (10,2);
+
+          \draw[exampleColor, thick, densely dotted] (3  , 2) -- (3  , 4) node{$\bullet$};
+          \draw[exampleColor, thick, densely dotted] (7.5, 3) -- (7.5, 4) node{$\bullet$};
+
+          \draw[exampleColor, fill=exampleColor!20, rounded corners] (1 , 1.6) rectangle (5 , 2.4);
+          \draw[exampleColor, fill=exampleColor!20, rounded corners] (6, 2.6) rectangle (9, 3.4);
+
+          \draw[exampleColor] (3,2) node{$increment()$ };
+          \draw[exampleColor] (7.5,3) node{$get()$};
+        \end{tikzpicture}
+      }
+    \end{center}
+  \end{exampleblock}
+
+  \vfill
+  \small
+  \begin{alertblock}{Propriétés}
+    \vspace{-2mm}
+    \begin{itemize}
+    \item La linéarisabilité est composable
+    \item La linéarisabilité implique la cohérence séquentielle
+    \item Si chaque objet est linéarisable, l'exécution est séquentiellement cohérente
+    \end{itemize}
+  \end{alertblock}
+\end{frame}
+
+\endgroup
+\endinput

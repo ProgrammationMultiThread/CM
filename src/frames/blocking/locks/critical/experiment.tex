@@ -1,0 +1,55 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+% Part: 
+% Section: 
+% Sub-section: 
+% Frame: 
+
+\begingroup
+
+\begin{frame}[fragile]{Expérience : 8 threads tirent 10 000 000 pièces}
+
+  \vspace{-3mm}
+  \begin{block}{Expérience 1 : \uncover<2->{$7736ms$}}\vspace{-3mm}
+    \begin{lstlisting}[gobble=4]
+      (*\Structure{var random = new Random();}*)
+      for(int i = 0; i < 8; i++) {
+        new Thread(() -> {
+          for(int j = 0; j < 10000000; j++) random.nextBoolean();
+        }).start();
+      }
+    \end{lstlisting}
+  \end{block}
+
+  \vspace{-3mm}
+  \begin{block}{Expérience 2 : \uncover<2->{$126ms$}}\vspace{-3mm}
+    \begin{lstlisting}[gobble=4]
+      for(int i = 0; i < 8; i++) {
+        new Thread(() -> {
+          (*\Structure{var random = new Random();}*)
+          for(int j = 0; j < 10000000; j++) random.nextBoolean();
+        }).start();
+      }
+    \end{lstlisting}
+  \end{block}
+
+  \vspace{-3mm}
+  \begin{block}{Expérience 3 : \uncover<2->{$17ms$}}\vspace{-3mm}
+    \begin{lstlisting}[gobble=4]
+      for(int i = 0; i < 8; i++) {
+        new Thread(() -> {
+          (*\Structure{var random = ThreadLocalRandom.current();}*)
+          for(int j = 0; j < 10000000; j++) random.nextBoolean();
+        }).start();
+      }
+    \end{lstlisting}
+  \end{block}
+
+  \vspace{-3mm}
+  \begin{citing}
+    \jitem \lstinline{cm3/RandomExperiment.java}
+  \end{citing}
+\end{frame}
+
+\endgroup
+\endinput

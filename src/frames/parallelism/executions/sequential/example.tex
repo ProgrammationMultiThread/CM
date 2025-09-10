@@ -1,0 +1,49 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+% Part: 
+% Section: 
+% Sub-section: 
+% Frame: 
+
+\begingroup
+
+\begin{frame}[fragile]{Exemple}
+
+  \begin{block}{Relation happened before}
+    \begin{center}
+      \begin{tikzpicture}
+
+        \draw[alertColor]   (3,1.5) node{\footnotesize$print(Hello)$};
+        \draw[alertColor]   (5,1.5) node{\footnotesize$print(World)$};
+        \draw[structure]    (7,1)   node{\footnotesize$println(!)$};
+        \draw[exampleColor] (4,0.5)   node{\footnotesize$print(Multithreaded)$};
+
+        \draw[|->] (3.8,1.5) -- (4.2,1.5);
+
+        \draw[|->, rounded corners] (5.8,1.5) -- (7,1.5) -- (7,1.25);
+        \draw[|->, rounded corners] (5.3,.5) -- (7,.5) -- (7,.75);
+
+      \end{tikzpicture}
+    \end{center}
+  \end{block}
+
+  \begin{block}{Entrelacements possibles}
+    \begin{itemize}
+    \item $\alert{print(Hello);~ } \alert{print(World);~ } {\color{exampleColor}print(Multithreaded);~ } \structure{println(!); }$
+      \begin{description}
+      \item[Résultat :] Hello World Multithreaded !
+      \end{description}
+    \item\vspace{2mm} $\alert{print(Hello);~ } {\color{exampleColor}print(Multithreaded);~ } \alert{print(World);~ } \structure{println(!); }$
+      \begin{description}
+      \item[Résultat :] Hello Multithreaded World !
+      \end{description}
+    \item\vspace{2mm} ${\color{exampleColor}print(Multithreaded);~ } \alert{print(Hello);~ } \alert{print(World);~ } \structure{println(!); }$
+      \begin{description}
+      \item[Résultat :] Multithreaded Hello World !
+      \end{description}
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\endgroup
+\endinput

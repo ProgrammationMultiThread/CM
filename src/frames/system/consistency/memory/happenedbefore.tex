@@ -1,0 +1,41 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+% Part: 
+% Section: 
+% Sub-section: 
+% Frame: 
+
+\begingroup
+
+\begin{frame}{La relation ``happened before'' (ordre causal)}
+  $e\mapsto e'$ si l'une des conditions s'applique :    
+  \begin{itemize}
+  \item \structure{Ordre de programme :} le même thread produit $e$ puis $e'$
+  \item \structure{Ordre de synchronisation :} ordre total sur un sous-ensemble d'actions
+  \begin{itemize}
+    \item Entrée et sortie d'un block \lstinline{synchronized} ;
+    \item Lecture et écriture d'une variable \lstinline{volatile} ;
+    \item Lancement d'un thread $\mapsto$ première action du thread
+    \item $t.interrupt() \mapsto$ détection de l'interruption 
+      \begin{itemize}
+      \item \lstinline{throw InterruptedException}, \lstinline{interrupted()} ou \lstinline{isInterrupted()}
+      \end{itemize}
+    \item Dernière action d'un thread $\mapsto$ détection de terminaison
+      \begin{itemize}
+      \item $t.join()$ ou $t.isAlive()$
+      \end{itemize}
+    \item Écriture d'une valeur par défaut $\mapsto$ première action d'un thread
+  \end{itemize}
+  \item \structure{Vie d'un objet :} $e$ est la fin du constructeur et $e'$ l'appel de \lstinline{finalizer}.
+  \item \structure{Transitivité :} $\exists e'', e\mapsto e'' \mapsto e'$
+  \end{itemize}
+  \begin{alertblock}{Happened before consistency pour une variable}
+  \begin{itemize}
+  \item \alert{Si les seules opérations concurrentes sont des lectures,}
+  \item alors chaque lecture retourne la dernière valeur écrite
+  \end{itemize}
+  \end{alertblock}
+\end{frame}
+
+\endgroup
+\endinput

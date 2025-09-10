@@ -1,0 +1,35 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+% Part: 
+% Section: 
+% Sub-section: 
+% Frame: 
+
+\begingroup
+
+\begin{frame}{Intégration aux langages de programmation}
+  
+\vfill
+  \begin{block}{Java}
+        La JVM est une machine multi-thread. Le \texttt{GC} est un thread.
+
+    \begin{description}
+    \item[API historique] Définition de tâches, de threads et outils basiques pour la synchronisation
+    \item[Depuis Java 5] La bibliothèque \href{https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/package-summary.html}{\lstinline{java.util.concurrent}}
+    repose en grande partie sur les travaux de Doug Lea (\url{http://gee.cs.oswego.edu/dl/index.html})
+    \end{description}
+    \end{block}
+\vfill
+\begin{block}{C++}
+    Donne accès aux threads du système.
+    \begin{description}
+    \item[Avant C++11] accès direct aux threads système (\structure{POSIX pthread} et \structure{WINAPI thread} depuis les années 1990).
+    \item[Depuis C++11] intégration d'une API à la bibliothèque standard.
+    \end{description}
+    \end{block}
+\vfill
+
+\end{frame}
+
+\endgroup
+\endinput

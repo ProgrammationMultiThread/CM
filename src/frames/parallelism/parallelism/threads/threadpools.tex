@@ -1,0 +1,24 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+% Part: 
+% Section: 
+% Sub-section: 
+% Frame: 
+
+\begingroup
+
+\begin{frame}[fragile]{Implémentations de \texttt{ExecutorService}}
+  \begin{block}{Classe \lstinline{java.util.concurrent.Executors}}
+    \textit{Factory} qui permet d'instancier simplement
+    des \lstinline{ExecutorService}, dont :
+    \begin{itemize}
+    \item \structure{\lstinline{ThreadPoolExecutor} :} implante différentes variantes basées sur le concept de \textit{pool} de \lstinline{Thread} : \textit{single}, \textit{fixed}, \textit{cached}
+    \item \structure{\lstinline{ScheduledThreadPoolExecutor} :} stratégie permettant de préciser un délai lors de la soumission, à écouler entre la soumission et le début de l'exécution de la tâche
+    \item \structure{\lstinline{ForkJoinPool} :} stratégie particulière pour exécuter des \lstinline{ForkJoinTask}, qui créent elles-mêmes des tâches
+    \item \structure{\lstinline{VirtualThreadPerTaskExecutor} :} ``green threads'' gérés par le langage et non par le système
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\endgroup
+\endinput

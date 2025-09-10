@@ -1,0 +1,67 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+% Part: 
+% Section: 
+% Sub-section: 
+% Frame: 
+
+\begingroup
+
+\begin{frame}[fragile]{Quels affichages sont possibles ?}
+
+  \begin{lstlisting}
+    class Optimizations {
+      static int (*\Structure{sum = 0;}*)
+      static int (*\Structure{i = 0;}*)
+      public static void main(String args[]) {
+        new Thread(() -> {
+          (*\Structure{for(i=1; i<2; i++) sum+=i; }*)
+        }).start();
+        new Thread(() -> {
+          (*\Structure{if(sum != 0) System.out.println(i); }*)
+        }).start();
+      }
+    }
+  \end{lstlisting}
+  
+  \pause
+  \vspace{-2mm}
+  \begin{block}{Compilateur et JVM : respect de la sémantique séquentielle}
+    \begin{minipage}{.35\textwidth}
+      \begin{lstlisting}[gobble=6]
+        for(i=1; i<2; i++)
+        sum+=i;
+
+      \end{lstlisting}
+    \end{minipage}
+    \pause
+    \hspace{\fill}
+    \begin{minipage}{.2\textwidth}
+      \begin{lstlisting}[gobble=6]
+        i=1;
+        sum=1;
+        i=2;
+      \end{lstlisting}
+    \end{minipage}
+    \hspace{\fill}
+    \pause
+    \begin{minipage}{.2\textwidth}
+      \begin{lstlisting}[gobble=6]
+        
+        sum=1;
+        i=2;
+      \end{lstlisting}
+    \end{minipage}
+  \end{block}
+
+  \pause
+  \begin{exampleblock}{Mot-clé \lstinline{volatile int x;}}
+    \begin{itemize}
+    \item Pas d'optimisation qui change la position d'une opération sur $x$
+    \end{itemize}
+  \end{exampleblock}
+
+\end{frame}
+
+\endgroup
+\endinput

@@ -1,0 +1,51 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+% Part: 
+% Section: 
+% Sub-section: 
+% Frame: 
+
+\begingroup
+
+\begin{frame}[fragile]{Non déterminisme des sorties du programme}
+
+  \begin{block}{Une exécution possible}
+    \scalebox{.7}{
+      \begin{tikzpicture}
+        \draw[alertColor,   -latex] (0,2) node[left]{$t1$}   +(3.4,0) -- (8.5,2);
+        \draw[structure,    -latex] (0,1) node[left]{$main$}          -- (13.4,1);
+        \draw[exampleColor, -latex] (0,0) node[left]{$t2$}   +(3,0) -- (8,0);
+        \draw[->] (0,-.5) node[left]{temps réel}   -- (13.4,-.5);
+
+        \draw[structure   , fill=structure!20, rounded corners]    (1.5 ,1)  +(-.8,-0.3) rectangle +(.8,0.3) +(0,0) node{$t1.start()$};
+        \draw[structure   , fill=structure!20, rounded corners]    (3.2 ,1)  +(-.8,-0.3) rectangle +(.8,0.3) +(0,0) node{$t2.start()$};
+        \draw[structure   , fill=structure!20, rounded corners]    (6.6 ,1)  +(-2.5,-0.3) rectangle +(2.5,0.3) +(0,0) node{$t1.join()$};
+        \draw[structure   , fill=structure!20, rounded corners]    (10  ,1)  +(-.8,-0.3) rectangle +(.8,0.3) +(0,0) node{$t2.join()$};
+        \draw[structure   , fill=structure!20, rounded corners]    (11.9,1)  +(-1,-0.3) rectangle +(1,0.3) +(0,0) node{$println(!)$};
+
+        \draw[alertColor  , fill=alertColor!20, rounded corners]   (4.9 ,2)  +(-1,-0.3) rectangle +(1,0.3) +(0,0) node{$print(hello)$};
+        \draw[alertColor  , fill=alertColor!20, rounded corners]   (7.0 ,2)  +(-1,-0.3) rectangle +(1,0.3) +(0,0) node{$print(world)$};
+        \draw[exampleColor, fill=exampleColor!20, rounded corners] (5.5 ,0)  +(-2,-0.3) rectangle +(2,0.3) +(0,0) node{$print(multithreaded)$};
+
+      \end{tikzpicture}
+    }
+  \end{block}
+
+  \begin{block}{Asynchronisme}
+    Il est impossible de prévoir la vitesse d'exécution :
+    \begin{itemize}
+    \item  d'un thread par rapport à un autre,
+    \item  d'une portion de code exécutée par un thread par rapport à une autre,
+    \item  d'une exécution d'un thread par rapport à une autre.
+    \end{itemize}
+  \end{block}
+  \begin{alertblock}{Question}
+    \begin{itemize}
+    \item Un programme n'est correct que si toutes ses exécutions le sont.
+    \item Comment raisonner sur les exécutions concurrentes ?
+    \end{itemize}
+  \end{alertblock}
+\end{frame}
+
+\endgroup
+\endinput

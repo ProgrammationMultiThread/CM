@@ -1,0 +1,32 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+% Part: 
+% Section: 
+% Sub-section: 
+% Frame: 
+
+\begingroup
+
+\begin{frame}{Quelle stratégie est la plus efficace ?}
+  \begin{block}{Ça dépend de l'application !} 
+    \begin{itemize}
+    \item Trop peu de threads et on n'exploite pas les capacités de calcul. 
+    \item Trop de threads et on perd du temps à leur manipulation.
+    \end{itemize}
+  \end{block}
+  
+  \begin{block}{Ça dépend de la plate-forme !}
+    \begin{itemize}
+    \item Machine : nombre de c{\oe}urs, hiérarchie mémoire, etc.
+    \item OS : politique d'ordonnancement des threads côté noyau.
+    \item JVM : implémentation des stratégies, politique d'ordonnancement des threads côté utilisateur.
+    \end{itemize}
+  \end{block}
+  
+  \begin{center}
+  \alert{Mesurer les performances !}
+  \end{center}
+\end{frame}
+
+\endgroup
+\endinput

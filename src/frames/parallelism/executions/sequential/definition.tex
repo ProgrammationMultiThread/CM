@@ -1,0 +1,33 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+% Part: 
+% Section: 
+% Sub-section: 
+% Frame: 
+
+\begingroup
+
+\begin{frame}[fragile]{Cohérence séquentielle}
+
+  \begin{block}{Il faudrait que...}
+    \begin{shadequote}{Leslie Lamport}
+      The result of any execution is the same as if the operations of all the processors were executed in some sequential order,
+      and the operations of each individual processor appear in this sequence in the order specified by its program.
+    \end{shadequote}
+  \end{block}
+  \vfill
+  \begin{block}{Entrelacement}
+    Un \structure{entrelacement} d'un ordre partiel $\le$ est un ordre total qui contient $\le$. 
+  \end{block}
+  \begin{block}{Cohérence séquentielle}
+    Une exécution est \structure{séquentiellement cohérente} si son \structure{résultat observable} est \alert{le même que} celui d'un \structure{entrelacement} de son ordre ``happened before''.
+  \end{block}
+
+  \vfill
+  \begin{citing}
+  \item[L79] Leslie Lamport. \textit{How to make a multiprocessor computer that correctly executes multiprocess programs.} IEEE ToC (1979)
+  \end{citing}
+\end{frame}
+
+\endgroup
+\endinput

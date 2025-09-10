@@ -1,0 +1,36 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+% Part: 
+% Section: 
+% Sub-section: 
+% Frame: 
+
+\begingroup
+
+\begin{frame}{Mise en garde}
+  \begin{shadequote}{John Carmack}
+    A large fraction of the flaws in software development are due to programmers not fully understanding all the possible states their code may execute in.
+
+    \structure{In a multithreaded environment}, the lack of understanding and the resulting problems are greatly amplified, \structure{almost to the point of panic if you are paying attention}.
+  \end{shadequote}
+
+  \begin{alertblock}{Limitation des états mutables partagés}
+    \begin{itemize}
+    \item Identifier les objets partagés
+      \begin{itemize}
+      \item En minimiser l'utilisation
+      \item S'assurer qu'ils sont \textit{thread-safe}
+      \end{itemize}
+    \item Utiliser des structures de données immuables
+      \begin{itemize}
+      \item Éliminer les accesseurs
+      \item Déclarer les champs \lstinline{final}
+      \end{itemize}
+    \item Favoriser les fonctions pures
+    \end{itemize}
+  \end{alertblock}        
+
+\end{frame}
+
+\endgroup
+\endinput

@@ -1,0 +1,42 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+% Part: 
+% Section: 
+% Sub-section: 
+% Frame: 
+
+\begingroup
+
+\begin{frame} 
+  \frametitle{Barrières de synchronisation}
+
+  \begin{exampleblock}{Classe \lstinline+java.util.concurrent.CountDownLatch+}
+    \begin{itemize}
+    \item \lstinline+public void await() throws InterruptedException+\\
+      \begin{itemize}
+      \item Se met en attente jusqu'à ce que le compteur atteigne 0
+      \end{itemize}
+      \medskip
+    \item \lstinline+public void countDown()+\\
+      \begin{itemize}
+      \item Décrémente le compteur
+      \end{itemize}
+    \end{itemize}
+  \end{exampleblock}
+
+  \bigskip
+  
+  \begin{exampleblock}{Classe \lstinline{java.util.concurrent.CyclicBarrier}}
+    \begin{itemize}
+    \item\lstinline{public int await() throws InterruptedException, BrokenBarrierExc.}\\
+      \begin{itemize}
+      \item Se met en attente jusqu'à ce que tous les threads aient rejoint la barrière
+      \item Quand tous les threads ont rejoint la barrière, les threads sont réveillés et la barrière est réinitialisée.
+      \end{itemize}
+    \end{itemize}
+  \end{exampleblock}
+  
+\end{frame}
+
+\endgroup
+\endinput

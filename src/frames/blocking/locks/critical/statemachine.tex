@@ -1,0 +1,168 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+% Part: 
+% Section: 
+% Sub-section: 
+% Frame: 
+
+\begingroup
+
+\begin{frame}{Ce que l'on a}
+  \begin{center}
+    \begin{tikzpicture}
+
+      \draw[fill=black!10, ultra thin, rounded corners]
+      (0,6)    +(-.6,-.35) rectangle +(.7,.35);
+      \draw[exampleColor]
+      (0,6)  +(0,.2)   node[left]{\tiny$t1$}    node {\tiny:} node[right]{\tiny$\mathit{get()}$};
+      \draw[alertColor]
+      (0,6)  +(0,0)    node[left]{\tiny$t2$}    node {\tiny:} node[right]{\tiny$\mathit{get()}$};
+      \draw
+      (0,6)  +(0,-.2)  node[left]{\tiny$result$} node {\tiny=} node[right]{\tiny 0};
+
+      \draw[fill=black!10, ultra thin, rounded corners]
+      (2,6)    +(-.6,-.35) rectangle +(.7,.35);
+      \draw[exampleColor]
+      (2,6)  +(0,.2)   node[left]{\tiny$t1$}    node {\tiny:} node[right]{\tiny$\mathit{put(1)}$};
+      \draw[alertColor]
+      (2,6)  +(0,0)    node[left]{\tiny$t2$}    node {\tiny:} node[right]{\tiny$\mathit{get()}$};
+      \draw
+      (2,6)  +(0,-.2)  node[left]{\tiny$result$} node {\tiny=} node[right]{\tiny 0};
+
+      \draw[fill=black!10, ultra thin, rounded corners]
+      (6,6)    +(-.6,-.35) rectangle +(.7,.35);
+      \draw
+      (6,6)  +(0,.2)   node[left]{\tiny$t1$}    node {\tiny:} node[right]{\tiny$\textsc{term.}$};
+      \draw[alertColor]
+      (6,6)  +(0,0)    node[left]{\tiny$t2$}    node {\tiny:} node[right]{\tiny$\mathit{get()}$};
+      \draw
+      (6,6)  +(0,-.2)  node[left]{\tiny$result$} node {\tiny=} node[right]{\tiny 1};
+
+      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+      \draw[fill=black!10, ultra thin, rounded corners]
+      (0,5)    +(-.6,-.35) rectangle +(.7,.35);
+      \draw[exampleColor]
+      (0,5)  +(0,.2)   node[left]{\tiny$t1$}    node {\tiny:} node[right]{\tiny$\mathit{get()}$};
+      \draw[alertColor]
+      (0,5)  +(0,0)    node[left]{\tiny$t2$}    node {\tiny:} node[right]{\tiny$\mathit{put(1)}$};
+      \draw
+      (0,5)  +(0,-.2)  node[left]{\tiny$result$} node {\tiny=} node[right]{\tiny 0};
+
+      \draw[fill=black!10, ultra thin, rounded corners]
+      (2,5)    +(-.6,-.35) rectangle +(.7,.35);
+      \draw[exampleColor]
+      (2,5)  +(0,.2)   node[left]{\tiny$t1$}    node {\tiny:} node[right]{\tiny$\mathit{put(1)}$};
+      \draw[alertColor]
+      (2,5)  +(0,0)    node[left]{\tiny$t2$}    node {\tiny:} node[right]{\tiny$\mathit{put(1)}$};
+      \draw
+      (2,5)  +(0,-.2)  node[left]{\tiny$result$} node {\tiny=} node[right]{\tiny 0};
+
+      \draw[fill=black!10, ultra thin, rounded corners]
+      (4,5)    +(-.6,-.35) rectangle +(.7,.35);
+      \draw
+      (4,5)  +(0,.2)   node[left]{\tiny$t1$}    node {\tiny:} node[right]{\tiny$\textsc{term.}$};
+      \draw[alertColor]
+      (4,5)  +(0,0)    node[left]{\tiny$t2$}    node {\tiny:} node[right]{\tiny$\mathit{put(1)}$};
+      \draw
+      (4,5)  +(0,-.2)  node[left]{\tiny$result$} node {\tiny=} node[right]{\tiny 1};
+
+      \draw[fill=black!10, ultra thin, rounded corners]
+      (6,5)    +(-.6,-.35) rectangle +(.7,.35);
+      \draw
+      (6,5)  +(0,.2)   node[left]{\tiny$t1$}    node {\tiny:} node[right]{\tiny$\textsc{term.}$};
+      \draw[alertColor]
+      (6,5)  +(0,0)    node[left]{\tiny$t2$}    node {\tiny:} node[right]{\tiny$\mathit{put(2)}$};
+      \draw
+      (6,5)  +(0,-.2)  node[left]{\tiny$result$} node {\tiny=} node[right]{\tiny 1};
+
+      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+      \draw[fill=black!10, ultra thin, rounded corners]
+      (2,4)    +(-.6,-.35) rectangle +(.7,.35);
+      \draw[exampleColor]
+      (2,4)  +(0,.2)   node[left]{\tiny$t1$}    node {\tiny:} node[right]{\tiny$\mathit{put(1)}$};
+      \draw
+      (2,4)  +(0,0)    node[left]{\tiny$t2$}    node {\tiny:} node[right]{\tiny$\textsc{term.}$};
+      \draw
+      (2,4)  +(0,-.2)  node[left]{\tiny$result$} node {\tiny=} node[right]{\tiny 1};
+
+      \draw[alertColor, fill=alertColor!20, ultra thin, rounded corners]
+      (4,4)    +(-.65,-.4) rectangle +(.75,.4);
+      \draw[alertColor, fill=alertColor!20, ultra thin, rounded corners]
+      (4,4)    +(-.6,-.35) rectangle +(.7,.35);
+      \draw
+      (4,4)  +(0,.2)   node[left]{\tiny$t1$}    node {\tiny:} node[right]{\tiny$\textsc{term.}$};
+      \draw
+      (4,4)  +(0,0)    node[left]{\tiny$t2$}    node {\tiny:} node[right]{\tiny$\textsc{term.}$};
+      \draw
+      (4,4)  +(0,-.2)  node[left]{\tiny$result$} node {\tiny=} node[right]{\tiny 1};
+
+      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+      \draw[fill=black!10, ultra thin, rounded corners]
+      (0,3)    +(-.6,-.35) rectangle +(.7,.35);
+      \draw[exampleColor]
+      (0,3)  +(0,.2)   node[left]{\tiny$t1$}    node {\tiny:} node[right]{\tiny$\mathit{get()}$};
+      \draw
+      (0,3)  +(0,0)    node[left]{\tiny$t2$}    node {\tiny:} node[right]{\tiny$\textsc{term.}$};
+      \draw
+      (0,3)  +(0,-.2)  node[left]{\tiny$result$} node {\tiny=} node[right]{\tiny 1};
+
+      \draw[fill=black!10, ultra thin, rounded corners]
+      (2,3)    +(-.6,-.35) rectangle +(.7,.35);
+      \draw[exampleColor]
+      (2,3)  +(0,.2)   node[left]{\tiny$t1$}    node {\tiny:} node[right]{\tiny$\mathit{put(2)}$};
+      \draw
+      (2,3)  +(0,0)    node[left]{\tiny$t2$}    node {\tiny:} node[right]{\tiny$\textsc{term.}$};
+      \draw
+      (2,3)  +(0,-.2)  node[left]{\tiny$result$} node {\tiny=} node[right]{\tiny 1};
+
+      \draw[structure, fill=structure!10, ultra thin, rounded corners]
+      (6,3)    +(-.65,-.4) rectangle +(.75,.4);
+      \draw[structure, fill=structure!10, ultra thin, rounded corners]
+      (6,3)    +(-.6,-.35) rectangle +(.7,.35);
+      \draw
+      (6,3)  +(0,.2)   node[left]{\tiny$t1$}    node {\tiny:} node[right]{\tiny$\textsc{term.}$};
+      \draw
+      (6,3)  +(0,0)    node[left]{\tiny$t2$}    node {\tiny:} node[right]{\tiny$\textsc{term.}$};
+      \draw
+      (6,3)  +(0,-.2)  node[left]{\tiny$result$} node {\tiny=} node[right]{\tiny 2};
+
+      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+      \draw[-latex] (-.8,6)  -- (-.6,6) ;
+      \draw[exampleColor,-latex] (0.7,6)  -- (1.4,6) ;
+      \draw[exampleColor,-latex] (2.7,6)  -- (5.4,6) ;
+
+      \draw[exampleColor,-latex] (0.7,5)  -- (1.4,5) ;
+      \draw[exampleColor,-latex] (2.7,5)  -- (3.4,5) ;
+      \draw[exampleColor,-latex] (4.7,5)  -- (5.4,5) ;
+
+      \draw[exampleColor,-latex] (2.7,4)  -- (3.35,4) ;
+
+      \draw[exampleColor,-latex] (0.7,3)  -- (1.4,3) ;
+      \draw[exampleColor,-latex] (2.7,3)  -- (5.35,3) ;
+
+      \draw[alertColor,-latex] (0,5.65)  -- (0,5.35) ;
+      \draw[alertColor,-latex] (0,4.65)  -- (0,3.35) ;
+
+      \draw[alertColor,-latex] (2,5.65)  -- (2,5.35) ;
+      \draw[alertColor,-latex] (2,4.65)  -- (2,4.35) ;
+      \draw[alertColor,-latex] (2,3.65)  -- (2,3.35) ;
+
+      \draw[alertColor,-latex] (4,4.65)  -- (4,4.4) ;
+
+      \draw[alertColor,-latex] (6,5.65)  -- (6,5.35) ;
+      \draw[alertColor,-latex] (6,4.65)  -- (6,3.4) ;
+
+    \end{tikzpicture}
+  \end{center}
+  \begin{block}{Quelques entrelacements possibles}
+    \begin{itemize}
+    \item ${\color{exampleColor}t_1:get();~} {\color{exampleColor}t_1:put(1);~} {\color{alertColor}t_2:get();~} {\color{alertColor}t_2:put(2);}$ \hspace{5mm} $result=2$
+    \item ${\color{exampleColor}t_1:get();~} {\color{alertColor}t_2:get();~} {\color{exampleColor}t_1:put(1);~} {\color{alertColor}t_2:put(1);}$ \hspace{5mm} $result=1$
+    \end{itemize}
+  \end{block}
+\end{frame}
+

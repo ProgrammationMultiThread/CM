@@ -1,0 +1,38 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+% Part: 
+% Section: 
+% Sub-section: 
+% Frame: 
+
+\begingroup
+
+\begin{frame}[fragile]{Un troisième essai}
+
+  On suppose deux processus, d'identifiants 0 et 1. 
+
+  \begin{lstlisting}
+    class NaiveLock3 implements Lock {
+      private (*\Example{int priority = 0;}*)
+      public void lock() {
+        int i = ThreadID.get();
+        while( (*\Example{priority != i}*) );
+      }
+      public void unlock() {
+        int i = ThreadID.get();
+        (*\Example{priority = 1-i;}*)
+      }
+    }
+  \end{lstlisting}
+
+  \begin{exampleblock}{Exercice}
+    \begin{itemize}
+    \item Cet algorithme respecte-t-il l'\example{exclusion mutuelle} ?
+    \item Cet algorithme est-il \example{starvation-free} ?
+    \end{itemize}
+  \end{exampleblock}
+
+\end{frame}
+
+\endgroup
+\endinput

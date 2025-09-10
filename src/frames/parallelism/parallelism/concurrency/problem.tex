@@ -1,0 +1,27 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+% Part: 
+% Section: 
+% Sub-section: 
+% Frame: 
+
+\begingroup
+
+\begin{frame}{Problématique du cours}
+    \begin{shadequote}{Maurice Herlihy \& Nir Shavit}
+    For many of the applications you may wish to parallelize, you will find that there are significant parts that can easily be determined
+    as executable in parallel because they do not require any form of coordination or communication. However, (...)
+    \alert{there is no cookbook recipe for identifying these parts}. This is where the application designer needs to use
+    his or her accumulated understanding of the algorithm being parallelized. Luckily, in many cases it is obvious how to find such parts.
+    
+    \vspace{4mm}
+    \alert{The more substantial problem} (...)
+    \alert{is how to deal with the remaining parts of the program.} As noted earlier, these are the parts that cannot be easily parallelized
+    because the program must access shared data and requires interprocess coordination and communication in an essential way.
+    \end{shadequote}
+\end{frame}
+
+
+
+\endgroup
+\endinput

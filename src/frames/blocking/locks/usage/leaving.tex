@@ -1,0 +1,34 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+% Part: 
+% Section: 
+% Sub-section: 
+% Frame: 
+
+\begingroup
+
+\begin{frame}{Thread quittant du code en exclusion mutuelle}
+  
+  \begin{block}{Quand un thread quitte une exclusion mutuelle}
+    Deux cas de figure pour le verrou de l'objet :
+    \begin{itemize}
+    \item  Il  passé  automatiquement à  l'un  des threads  bloqués
+      (ordre indéterminé).
+    \item Il est libéré si aucun thread n'est bloqué.
+    \end{itemize}
+  \end{block}
+  
+  \bigskip
+  
+  \begin{alertblock}{Avant la terminaison d'un Thread}
+    Il faut :
+    \begin{itemize}
+    \item \alert{libérer tous les verrous en sa possession.}
+    \item être certain qu'il laisse les données partagées dans un état cohérent.
+    \item être certain qu'aucune autre tâche n'attend une action de sa part.
+    \end{itemize}
+  \end{alertblock}
+\end{frame}
+
+\endgroup
+\endinput

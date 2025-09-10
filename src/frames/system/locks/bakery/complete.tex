@@ -1,0 +1,46 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+% Part: 
+% Section: 
+% Sub-section: 
+% Frame: 
+
+\begingroup
+
+\begin{frame}[fragile]{Algorithme de Lamport}
+
+  \begin{lstlisting}
+    class BakeryLock implements Lock {
+      private (*\Structure{boolean[] entering = new boolean[n];}*) // {false...}
+      private (*\Example{int[] priority = new int[n];}*) // {0...}
+      public void lock() {
+        int i = ThreadID.get();
+        (*\Structure{entering[i] = true;}*)
+        (*\Example{priority[i] = 1 + max(priority);}*)
+        (*\Structure{entering[i] = false;}*)
+        for(int j = 0; j < n; j++) {
+          while( (*\Structure{entering[j]}*) || (*\Example{hasPriorityOverI(j)}*) );
+        }
+      }
+      public void unlock() {
+        int i = ThreadID.get();
+        (*\Example{priority[i] = 0;}*)
+      }
+      private boolean hasPriorityOverI(int j) {
+        if(priority[j] == 0          ) return false;
+        if(priority[j] <  priority[i]) return true;
+        if(priority[j] == priority[i]) return j<i;
+        return false;
+      }
+    }
+  \end{lstlisting}
+
+  \begin{citing}
+  \item[L74] Leslie Lamport. \textit{A new solution of Dijkstra's concurrent programming problem.} CACM (1974)
+    \jitem \lstinline{cm5/BakeryLock.java}
+  \end{citing}
+
+\end{frame}
+
+\endgroup
+\endinput

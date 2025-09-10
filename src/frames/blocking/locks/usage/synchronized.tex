@@ -1,0 +1,51 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+% Part: 
+% Section: 
+% Sub-section: 
+% Frame: 
+
+\begingroup
+
+\begin{frame}{Mot-clé \alert{synchronized} en Java}
+
+  \begin{alertblock}{Moniteur d'exécution en Java}
+    Un \alert{verrou} est associé à chaque :
+    \begin{itemize}
+    \item objet instancié dans la JVM,
+    \item classe.
+    \end{itemize}
+  \end{alertblock}
+  
+  \begin{block}{Mot-clé \alert{synchronized}}
+    \begin{itemize}
+    \item Méthode  déclarée \alert{synchronized} :\\le  verrou est pris
+      pour la durée de l'exécution de la méthode. 
+    \item Bloc \alert{synchronized\{\}} :\\le  verrou est pris
+      pour la durée de l'exécution du bloc.
+    \end{itemize}
+  \end{block}
+
+  \pause
+
+  \begin{minipage}{.47\textwidth}
+    \begin{exampleblock}{Avantages}
+      \begin{itemize}
+      \item Simple d'utilisation.
+      \item Mise en \oe uvre efficace.
+      \end{itemize}
+    \end{exampleblock}
+  \end{minipage}
+  \hfill
+  \begin{minipage}{.47\textwidth}
+    \begin{alertblock}{Inconvénients}
+      \begin{itemize}
+      \item Peu flexible dans l'utilisation.
+      \item Une seule sorte de verrou 
+      \end{itemize}
+    \end{alertblock}
+  \end{minipage}
+\end{frame}
+
+\endgroup
+\endinput

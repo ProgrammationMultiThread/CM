@@ -1,0 +1,40 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+% Part: 
+% Section: 
+% Sub-section: 
+% Frame: 
+
+\begingroup
+
+\begin{frame}[fragile]{Tâche}
+
+  \begin{itemize}
+  \item Code exécuté par un thread.
+  \end{itemize}
+
+  \begin{exampleblock}{C++}
+    N'importe quelle fonction (pointeur de fonction)
+    \begin{lstlisting}[numbers=none]
+  void printer (string message) {
+    cout << message << endl;
+  }
+    \end{lstlisting}
+  \end{exampleblock}
+
+  \begin{exampleblock}{Java}
+  Implémentation de l'interface fonctionnelle \lstinline{Runnable}
+     \begin{lstlisting}[numbers=none]
+  public record Printer (String message) implements Runnable {
+
+    public void run () {
+      System.out.println(message);
+    }
+
+  }
+    \end{lstlisting}
+\end{exampleblock}
+\end{frame}
+
+\endgroup
+\endinput

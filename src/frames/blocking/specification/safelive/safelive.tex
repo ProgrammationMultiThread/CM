@@ -1,0 +1,35 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+% Part: 
+% Section: 
+% Sub-section: 
+% Frame: 
+
+\begingroup
+
+\begin{frame}{Spécification d'un problème réparti}
+  \begin{block}{Sûreté (Safety)}
+    \begin{itemize}
+    \item Rien de mal ne se produit
+      $$\forall t. P(t)$$
+    \item Thread-safe : fonctionne correctement en multi-thread (très imprécis)
+    \end{itemize}
+  \end{block}
+  \begin{block}{Vivacité (Liveness)}
+    \begin{itemize}
+    \item Quelque chose de bien finira par se produire
+      $$\exists t. P(t)$$
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{Exemple : programme qui calcule $\pi$}
+    \begin{itemize}
+    \item[Sûreté :] \alert{À tout instant}, un préfixe
+      de l'écriture décimale de $\pi$ est affiché.
+    \item[Vivacité :] Pour tout $n$,
+      au moins $n$ chiffres \alert{finiront par} être affichés.
+    \end{itemize}
+  \end{exampleblock}
+\end{frame}
+
+\endgroup
+\endinput

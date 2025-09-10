@@ -43,6 +43,8 @@
 
 
 \RequirePackage{algos}
+\AlgoEnglish
+\RequirePackage{cprotect}
 \RequirePackage{citations}
 
 \RequirePackage{tabularx}
@@ -119,7 +121,9 @@
   numbers=none,
   numberstyle=\scriptsize,
   morekeywords={specification, var},
-%  moredelim=**[is][\color{structure.fg}]{@}{@}
+  escapeinside={(*}{*)},
+  numbers=none,
+  gobble=2,
 }
 
 \newcommand{\inout}{\hspace{-.5mm}\triangleright\hspace{-.5mm}}
@@ -134,8 +138,12 @@
 \newcommand{\vFill}{\vskip0pt plus 1filll}
 \newcommand{\hFill}{\hspace{\fill}}
 
-
-
+\RequirePackage{frameconfig} 
+\RequirePackage{statemachines}
+\colorlet{sm@head@color}{alert}
+\colorlet{sm@fill@alert}{alert}
+\colorlet{sm@fill@example}{example}
+\colorlet{sm@fill@structure}{structure}
 
 \SetKwBlock{SubAlgoBlock}{}{end}
 \newcommand{\SubAlgo}[2]{#1 \SubAlgoBlock{#2}}
@@ -145,6 +153,13 @@
 
 
 
+\tikzset{
+  operation/.style={
+    rectangle,
+    rounded corners,
+    draw
+  },
+}
 
 
 

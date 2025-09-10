@@ -1,0 +1,31 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+% Part: 
+% Section: 
+% Sub-section: 
+% Frame: 
+
+\begingroup
+
+\begin{frame} {Approches pour la programmation parallèle}
+    \begin{shadequote}{C.A.R Hoare}
+    A primary aim of an operating system is to share a computer installation among many programs making unpredictable demands upon its resources.
+    \end{shadequote}
+
+    \vfill
+
+    \begin{block}{Processus versus thread}
+        \begin{itemize}
+        \item \alert{Informatique} = traitement auto\alert{matique} de l'\alert{informat}ion
+        \item Le système d'exploitation abstrait le \alert{processeur} et la \alert{mémoire}
+            \begin{description}\footnotesize
+            \item[Processus :] contexte d'exécution d'un programme (partage de mémoire)
+            \item[Thread :] description d'une exécution séquentielle (partage du processeur)
+            \end{description}
+        \item Chaque processus contient un ou plusieurs threads
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\endgroup
+\endinput

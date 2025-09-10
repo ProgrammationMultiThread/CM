@@ -1,0 +1,42 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+% Part: 
+% Section: 
+% Sub-section: 
+% Frame: 
+
+\begingroup
+
+\begin{frame}[fragile]{Registres atomiques}
+  \vspace{-2mm}
+  \begin{exampleblock}{Java}
+  \begin{itemize}
+    \item Dans le package \lstinline{java.util.concurrent.atomic}
+  \begin{itemize}
+    \item \lstinline{AtomicInteger}, \lstinline{AtomicLong}, \lstinline{AtomicReference<T>}, ...
+  \end{itemize}
+  \end{itemize}
+  \end{exampleblock}
+  \vspace{-2mm}
+  \begin{exampleblock}{C++}
+  \begin{itemize}
+    \item Structure \lstinline{template <class T> struct std::atomic} 
+    \item Fonctions de \lstinline{<atomic>}
+  \end{itemize}
+ \end{exampleblock}
+  \begin{alertblock}{Méthodes \lstinline{get()} et \lstinline{set()} (Java) ou \lstinline{load()} et \lstinline{store()} (C++)}
+  \begin{itemize}
+    \item Lectures et écritures \structure{atomiques}
+  \end{itemize}
+  \end{alertblock}
+  \begin{block}{Méthodes RMW (read-modify-write)}
+    \begin{itemize}
+    \item test-and-set, fetch-and-add, compare\_and\_swap...
+    \item Opérations atomiques matérielles (instructions spéciales)
+    \item Permettent la synchronisation non-bloquante
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\endgroup
+\endinput

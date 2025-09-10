@@ -1,0 +1,38 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+% Part: 
+% Section: 
+% Sub-section: 
+% Frame: 
+
+\begingroup
+
+\begin{frame} {Approches pour la programmation parallèle}
+  \begin{exampleblock}{Programmation multi-processus}
+    \begin{itemize}
+    \item Plusieurs processus, un thread par processus
+    \item Communication par passage de messages
+    \item Avantages : 
+      \begin{description}
+      \item [Robustesse :] les processus sont isolés les uns des autres par l'OS
+      \item [Répartition :] on peut répartir les processus sur un réseau de machines (passage à l'échelle)
+      \end{description}
+    \end{itemize}
+  \end{exampleblock}
+  
+  \vfill
+  \begin{exampleblock}{Programmation multi-threads}
+    \begin{itemize}
+    \item Un seul processus, plusieurs threads au sein du même processus
+    \item Communication par mémoire partagée
+    \item Avantages : 
+      \begin{description}
+      \item [Efficacité :] données et références partagées (pas de copie) %communication et commutation de contexte en espace utilisateur.
+      \item [Simplicité :] intégration presque transparente au sein des langages de programmation %(communication par référence et par valeur)
+      \end{description}
+    \end{itemize}
+  \end{exampleblock}
+\end{frame}
+
+\endgroup
+\endinput

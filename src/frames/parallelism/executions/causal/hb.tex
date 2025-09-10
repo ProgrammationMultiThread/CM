@@ -1,0 +1,49 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+% Part: 
+% Section: 
+% Sub-section: 
+% Frame: 
+
+\begingroup
+
+\begin{frame}{La relation ``happened before'' (ordre causal)}
+  \begin{shadequote}{Leslie Lamport}
+    \small
+    The \alert{concept of time} is fundamental to our way of
+    thinking. \alert{It is derived} from the more basic concept of
+    the \alert{order in which events occur}. (...)
+
+    However, we will see that this concept must be carefully reexamined when considering events in a distributed system. (...)
+
+    In a distributed system, it is sometimes impossible to
+    say that one of two events occurred first. \alert{The relation
+      "happened before" is therefore only a partial ordering
+      of the events in the system.}
+  \end{shadequote}
+
+  \begin{block}{Définitions}
+    \begin{itemize}
+    \item $e\mapsto e'$ si l'une des trois conditions s'applique :    
+      \begin{itemize}
+      \item \structure{Ordre de programme :} le même thread produit $e$ puis $e'$
+      \item \structure{Précédence sémantique :} (précisé plus tard)
+        \begin{itemize}
+        \item Par exemple, $e = t.start()$ et $e'$ produit par $t$
+        \item Par exemple, $e$ produit par $t$ et $e' = t.join()$
+        \end{itemize}
+      \item \structure{Transitivité :} $\exists e'', e\mapsto e'' \mapsto e'$
+      \end{itemize}
+    \item $e$ et $e'$ sont \structure{concurrents} $(e || e')$ si $e\not\mapsto e'$ et $e'\not\mapsto e$.
+    \end{itemize}
+  \end{block}
+  \alert{Attention :} $\mapsto$ est seulement un ordre \alert{partiel} !
+
+  \vfill
+  \begin{citing}
+  \item[L78] Leslie Lamport. \textit{Time, clocks, and the ordering of events in a distributed system.} CACM (1978)
+  \end{citing}
+\end{frame}
+
+\endgroup
+\endinput

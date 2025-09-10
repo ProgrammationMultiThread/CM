@@ -1,0 +1,36 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+% Part: 
+% Section: 
+% Sub-section: 
+% Frame: 
+
+\begingroup
+
+\begin{frame}[fragile]{Interrompre proprement un thread}
+
+  \begin{alertblock}{Forcer un thread à s'arrêter}
+  Impossible : \lstinline|public void stop()| est dépréciée !
+  \end{alertblock}
+  \vfill
+  \begin{block}{Méthode \lstinline|public void interrupt()|}
+    Demande la terminaison.
+    \begin{itemize}
+    \item Lève un drapeau booléen pour avertir le thread.
+    \item La tâche peut (doit) vérifier régulièrement les demandes d'interruption
+    \begin{itemize}
+    \item \lstinline|public static boolean interrupted()| ou
+    \item \lstinline|public boolean isInterrupted()|.
+    \end{itemize}
+  \item \lstinline|interrupted()| et \lstinline|isInterrupted()| rebaissent le drapeau.
+  \item Si le thread est bloqué ou en attente,  \lstinline|InterruptedException| est lancée.
+    \end{itemize}
+  \end{block}
+  \vfill
+  \begin{exampleblock}{Pas d'équivalent en C++}
+    Utiliser une variable booléenne comme drapeau.
+  \end{exampleblock}
+\end{frame}
+
+\endgroup
+\endinput

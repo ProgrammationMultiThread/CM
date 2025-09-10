@@ -1,0 +1,71 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+% Part: 
+% Section: 
+% Sub-section: 
+% Frame: 
+
+\begingroup
+
+\begin{frame}[fragile]{Exemple}
+\vspace{-5mm}
+\begin{tikzpicture}
+  \draw (0,5) node[right]{\begin{minipage}{.55\textwidth}
+\begin{exampleblock}{Synchronisation sur membre privé}
+    \begin{lstlisting}
+class Counter {
+
+  private int value = 0;
+  private Object lock
+    = new Object();
+  
+  void increment() {
+    synchronized(lock) {
+      ++value;  
+    }
+  }
+
+  int get() {
+    synchronized(lock) {
+      return value;  
+    }
+  }
+
+}
+    \end{lstlisting}
+  \end{exampleblock}
+\end{minipage}};
+
+  \draw (6.5,5) node[right]{\begin{minipage}{.4\textwidth}
+  \begin{exampleblock}{Synchronisation sur \lstinline{this}}
+\begin{lstlisting}
+class Counter {
+
+  private int value = 0;
+
+
+
+  void increment() {
+    synchronized(this) {
+      ++value;  
+    }
+  }
+
+  int synchronized get() {
+    return value;  
+  }
+
+
+
+}
+\end{lstlisting}
+  \end{exampleblock}
+\end{minipage}};
+\end{tikzpicture}
+\begin{citing}
+\jitem \lstinline{cm3/Pi4_Synchronized.java}
+\end{citing}
+\end{frame}
+
+\endgroup
+\endinput

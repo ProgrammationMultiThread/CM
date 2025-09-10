@@ -1,0 +1,40 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+% Part: 
+% Section: 
+% Sub-section: 
+% Frame: 
+
+\begingroup
+
+\begin{frame}[fragile]{L'interface \texttt{ExecutorService}}
+
+\begin{block}{Association tâche / contexte d'exécution}
+  \texttt{java.util.concurrent} offre les outils pour construire \structure{simplement} des associations $n \leftrightarrow m$ avec différentes stratégies
+
+  \begin{lstlisting}
+public interface ExecutorService {
+  void execute (Runnable task);
+  Future<?> submit (Runnable task);
+  Future<T> submit (Callable<T> task);
+  List<Future<T>> invokeAll (Collection<Callable<T>> tasks)
+    throws InterruptedException;
+  T invokeAny (Collection<Callable<T>> tasks)
+    throws InterruptedException, ExecutionException;
+}
+  \end{lstlisting}
+\end{block}
+
+  \begin{exampleblock}{Exemple}
+  \begin{lstlisting}
+var threadPool = Executors.newFixedThreadPool(5);
+for(int i = 0; i < 50; ++i){
+  threadPool.execute(() -> System.out.println(i));
+}
+  \end{lstlisting}
+  \end{exampleblock}
+  
+\end{frame}
+
+\endgroup
+\endinput

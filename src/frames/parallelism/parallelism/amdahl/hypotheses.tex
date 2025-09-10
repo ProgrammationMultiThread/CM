@@ -1,0 +1,37 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+% Part: 
+% Section: 
+% Sub-section: 
+% Frame: 
+
+\begingroup
+
+\begin{frame}{Limites de la loi d'Amdahl}
+  \begin{block}{Hypothèses cachées :}
+    \begin{itemize}
+    \item Parallélisation imparfaite
+    \begin{itemize}
+    \item $p$ dépend des données (loi de Gustafson)
+    \item $p$ dépend de l'algorithme
+    \end{itemize}
+    $$S_p(n) \le n$$
+  \item Synchronisation non-parallélisable
+    \begin{itemize}
+    \item Gestion de la concurrence
+    \end{itemize}
+    $$S_c(n) \le 1$$
+    \end{itemize}
+  \end{block}
+  \begin{block}{Formule plus réaliste}
+    $$
+    S(n) = \frac{1}{\frac{1-p}{S_c(n)} + \frac{p}{S_p(n)}} \le \frac{1}{1-p + \frac{p}{n}}
+    $$
+    \begin{center}
+      \alert{Mesurez vos performances !}
+    \end{center}
+  \end{block}
+\end{frame}
+
+\endgroup
+\endinput

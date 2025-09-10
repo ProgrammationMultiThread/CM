@@ -1,0 +1,36 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+% Part: 
+% Section: 
+% Sub-section: 
+% Frame: 
+
+\begingroup
+
+\begin{frame}{Caractérisation du progrès global}
+
+  \begin{block}{Deux définitions équivalentes si le nombre de threads est fini}
+    Un objet $O$ vérifie le progrès global si, pour toute exécution :
+    \begin{enumerate}
+    \item Pour tout suffixe de l'exécution, il existe un thread dont toutes les opérations sur $O$ se terminent.
+    \item Si l'exécution contient un nombre fini d'opérations sur $O$, elles se terminent toutes.
+    \end{enumerate}
+  \end{block}
+
+  \begin{exampleblock}{Idée de démonstration : $1 \implies 2$}
+    Par récurrence sur le nombre de threads dans l'exécution :
+    \begin{enumerate}
+    \item S'il n'y a qu'un seul thread, toutes ses opérations se terminent
+    \item S'il y a $n+1$ threads, l'un d'entre eux termine toutes ses opérations,
+      et on se retrouve avec un suffixe avec $n$ threads. 
+    \end{enumerate}
+  \end{exampleblock}
+
+  \begin{exampleblock}{Idée de démonstration : $2 \implies 1$}
+    Par l'absurde : si aucun thread ne terminait l'une de ses opérations, il y aurait un nombre fini d'opérations dans l'exécution, donc elles termineraient toutes. 
+  \end{exampleblock}
+
+\end{frame}
+
+\endgroup
+\endinput

@@ -1,0 +1,39 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+% Part: 
+% Section: 
+% Sub-section: 
+% Frame: 
+
+\begingroup
+
+\begin{frame}[fragile]{Bilan}
+
+  \vfill
+  \begin{block}{Calcul réparti en mémoire partagée}
+    \begin{itemize}
+    \item La concurrence crée de nouveaux problèmes de sûreté
+    \item La synchronisation pour les résoudre limite la vivacité
+    \end{itemize}
+  \end{block}
+  \vfill
+  \begin{block}{Attention aux contre-intuitions !}
+    \begin{itemize}
+    \item \lstinline{x++} \alert{ne signifie pas} \og incrémenter \lstinline{x} \fg
+    \item \lstinline{A ; B} \alert{ne signifie pas} \og exécuter \lstinline{A} puis \lstinline{B} \fg
+    \item \og Écrire dans une variable \fg{} est une notion très floue
+    \item ...
+    \end{itemize}
+  \end{block}
+  \vfill
+  \begin{alertblock}{Limiter le partage des données}
+    \begin{itemize}
+    \item Utiliser des objets immutables
+    \item Ne pas partager si possible
+    \end{itemize}
+  \end{alertblock}
+  \vfill
+\end{frame}
+
+\endgroup
+\endinput

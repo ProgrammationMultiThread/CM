@@ -1,0 +1,44 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+% Part: 
+% Section: 
+% Sub-section: 
+% Frame: 
+
+\begingroup
+
+\begin{frame}[fragile]{Le problème des producteurs et des consommateurs}
+
+  \begin{lstlisting}[gobble=4]
+    (*\Alert{BlockingQueue<Integer> queue}*) = new LinkedBlockingQueue<Integer>();
+
+    (*\Structure{Producer}*) = new Thread(() -> {
+      int value = 17;
+      while(value != 1) {
+        (*\Alert{queue.put(value);}*)
+        if(value%2 == 0) value = value/2;
+        else value = value*3+1;
+        Thread.sleep(500);
+      }
+      (*\Alert{queue.put(value);}*)
+    });
+
+    (*\Example{Consumer}*) = new Thread(() -> {
+      int value = 1;
+      do {
+        (*\Alert{value = queue.take();}*)
+        System.out.println(value);
+      } while(value != 1);
+    });
+
+    Producer.start();
+    Consumer.start();
+  \end{lstlisting}
+
+  \begin{citing}
+    \jitem \lstinline{ProducerConsumer.java}
+  \end{citing}
+\end{frame}
+
+\endgroup
+\endinput

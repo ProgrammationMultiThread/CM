@@ -1,0 +1,32 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+% Part: 
+% Section: 
+% Sub-section: 
+% Frame: 
+
+\begingroup
+
+\begin{frame}[fragile]{Tirer des nombres aléatoires en Java}
+  \begin{shadequote}{Javadoc de \lstinline{java.util.Random}}
+    Instances of \lstinline{java.util.Random} are threadsafe.
+    However, the concurrent use of the same \lstinline{java.util.Random}
+    instance across threads may encounter contention and consequent poor performance.
+    Consider instead using \lstinline{ThreadLocalRandom} in multithreaded designs.
+  \end{shadequote}
+
+  \begin{block}{Définition -- thread safety}
+    Un objet est \structure{thread safe} s'il a été conçu pour s'exécuter dans un environnement concurrent
+
+    \begin{itemize}
+    \item Pas de spécification formelle
+    \item Tout objet partagé entre plusieurs threads doit être thread-safe
+    \item Tout objet immutable est thread-safe
+    \item Tout objet mutable thread-safe a des coûts liés à la synchronisation
+    \end{itemize}
+  \end{block}
+
+\end{frame}
+
+\endgroup
+\endinput

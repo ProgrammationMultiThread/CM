@@ -1,0 +1,30 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+% Part: 
+% Section: 
+% Sub-section: 
+% Frame: 
+
+\begingroup
+
+\begin{frame}[fragile]{Signalement par sémaphore}
+  \begin{tikzpicture}
+    \draw (5,4.85) node{\begin{minipage}{5cm}\begin{lstlisting}[numbers=none]
+public static void main(String[] args) {
+  var semaphore = new Semaphore(0);
+  
+  new Thread(() -> {
+    semaphore.acquire();
+    System.out.println("done");
+  }).start();
+  
+  Thread.sleep(250);
+ 
+  new Thread(semaphore::release).start();
+}
+\end{lstlisting}\end{minipage}};
+  \end{tikzpicture}
+\end{frame}
+
+\endgroup
+\endinput

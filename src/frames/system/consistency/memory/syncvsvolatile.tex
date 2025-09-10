@@ -1,0 +1,43 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+% Part: 
+% Section: 
+% Sub-section: 
+% Frame: 
+
+\begingroup
+
+\begin{frame}[fragile]{Le compteur bloquant}
+
+  \begin{block}{Si beaucoup de lectures}
+    \begin{lstlisting}[gobble=6]
+      class Counter {
+        private (*\Alert{volatile}*) int value=0;
+        public synchronized void increment() {
+          ++value;
+        }
+        public int get() {
+          return value;
+        }
+      }
+    \end{lstlisting}
+  \end{block}
+
+  \begin{block}{Si plus d'incrémentations que de lectures}
+    \begin{lstlisting}[gobble=6]
+      class Counter {
+        private int value=0;
+        public synchronized void increment() {
+          ++value;
+        }
+        public (*\Alert{synchronized}*) int get() {
+          return value;
+        }
+      }
+    \end{lstlisting}
+  \end{block}
+
+\end{frame}
+
+\endgroup
+\endinput

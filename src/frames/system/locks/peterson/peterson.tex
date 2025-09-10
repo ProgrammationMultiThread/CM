@@ -1,0 +1,45 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+% Part: 
+% Section: 
+% Sub-section: 
+% Frame: 
+
+\begingroup
+
+\begin{frame}[fragile]{Algorithme de Peterson}
+
+  On suppose deux processus, d'identifiants 0 et 1. 
+
+  \begin{lstlisting}
+    class PetersonLock implements Lock {
+      private (*\Structure{boolean[] entering = new boolean[]\{false, false};\}*)
+      private (*\Example{int priority = 0;}*)
+      public void lock() {
+        int i = ThreadID.get();
+        (*\Structure{entering[i] = true;}*)
+        (*\Example{priority = 1-i;}*)
+        while( (*\Structure{entering[1-i]}*) && (*\Example{priority != i}*) );
+      }
+      public void unlock() {
+        int i = ThreadID.get();
+        (*\Structure{entering[i] = false;}*)
+      }
+    }
+  \end{lstlisting}
+
+  \begin{exampleblock}{Exercice}
+    \begin{itemize}
+    \item Cet algorithme respecte-t-il l'\example{exclusion mutuelle} ?
+    \item Cet algorithme est-il \example{starvation-free} ?
+    \end{itemize}
+  \end{exampleblock}
+
+  \begin{citing}
+  \item Gary L. Peterson. \textit{Myths About the Mutual Exclusion Problem.} IPL (1981)
+    \jitem \lstinline{cm5/PetersonLock.java}
+  \end{citing}
+\end{frame}
+
+\endgroup
+\endinput

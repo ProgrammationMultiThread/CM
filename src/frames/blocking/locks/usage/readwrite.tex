@@ -1,0 +1,45 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+% Part: 
+% Section: 
+% Sub-section: 
+% Frame: 
+
+\begingroup
+
+\begin{frame}[fragile]
+  \frametitle{Verrous à lectures et écritures}
+  \vfill
+  \begin{block}{En java (\lstinline{java.util.concurrent})}
+    \lstinline{ReadWriteLock lock = new ReentrantReadWriteLock();}
+    \begin{itemize}
+    \item \lstinline{Lock writeLock = lock.writeLock();}
+      \begin{enumerate}
+      \item Récupère le verrou \alert{exclusif} pour protéger les écritures
+      \end{enumerate}
+    \item \lstinline{Lock readLock = lock.readLock();}
+      \begin{enumerate}
+      \item Récupère le verrou \alert{non exclusif} pour protéger les lectures
+      \end{enumerate}
+    \end{itemize}
+  \end{block}
+
+  \vfill
+  \begin{block}{En C++ (\lstinline{boost::thread} avant C++ 17, \lstinline{std} depuis C++ 17)}
+    \lstinline{shared_mutex lock;} 
+    \begin{itemize}
+    \item \lstinline{unique_lock<shared_mutex> writeLock(lock);}
+      \begin{enumerate}
+      \item Crée un verrou \alert{exclusif} pour protéger les écritures
+      \end{enumerate}
+    \item \lstinline{shared_lock<shared_mutex> readLock(lock);}
+      \begin{enumerate}
+      \item Crée un verrou \alert{non exclusif} pour protéger les lectures
+      \end{enumerate}
+    \end{itemize}
+  \end{block}
+  \vfill
+\end{frame}
+
+\endgroup
+\endinput

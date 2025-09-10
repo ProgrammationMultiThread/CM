@@ -1,0 +1,53 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+% Part: 
+% Section: 
+% Sub-section: 
+% Frame: 
+
+\begingroup
+
+\begin{frame}[fragile]{Retour sur le calcul de $\pi$}
+
+  \vspace{-10mm}
+  \begin{lstlisting}
+    public class PiMonteCarlo implements Runnable {
+      private int result = 0;
+      public void run() {
+        for(int i = 0; i<nbIterations; i++) {
+          double x = random.nextDouble();
+          double y = random.nextDouble();
+          if(x*x + y*y < 1) (*\Structure{result++;}*)
+        }
+      }
+      static int experiment() {
+        for(int i = 0; i<nbThreads; i++) {
+          tasks[i] = new PiMonteCarlo();
+          threads[i] = new Thread(tasks[i]);
+        }
+        for(var t : threads) t.start();
+        for(var t : threads) (*\Alert{t.join();}*)
+        int result = 0;
+        for(var t : tasks) (*\Structure{result+=t.result;}*)
+        return result;
+      }
+    }
+  \end{lstlisting}
+
+  \onBlock[bottom]{Happens Before}{
+    \centering
+    \begin{tikzpicture}[x=40mm, y=15mm, anchor=mid]
+      \footnotesize
+      \node[operation, fill=black!10] (o1) at (1,0) {\lstinline{result++}};
+      \node[operation, fill=black!10] (o2) at (2,0) {\lstinline{t.join()}};
+      \node[operation, fill=black!10] (o3) at (3,0) {\lstinline{t.result}};
+
+      \path[-latex, structure] (o1) edge node[above]{ordre de} node[below]{programme}       (o2);
+      \path[-latex, alert]     (o2) edge node[above]{ordre de} node[below]{synchronisation} (o3);
+    \end{tikzpicture}
+  }
+
+\end{frame}
+
+\endgroup
+\endinput

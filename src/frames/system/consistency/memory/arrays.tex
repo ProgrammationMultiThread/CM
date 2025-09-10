@@ -1,0 +1,37 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+% Part: 
+% Section: 
+% Sub-section: 
+% Frame: 
+
+\begingroup
+
+\begin{frame}[fragile]{Limite de \lstinline{volatile} : les tableaux}
+  \begin{exampleblock}{Tableaux volatiles}
+    \begin{lstlisting}[numbers=none]
+      volatile int array[];
+      array = new int[10];          // volatile
+      array[5] = 3;                 // pas volatile
+    \end{lstlisting}    
+  \end{exampleblock}
+  \pause
+  \begin{alertblock}{Première solution}
+    \begin{lstlisting}[numbers=none]
+      class VolatileInt{public volatile int x=0;}
+      VolatileInt array[] = new VolatileInt[10];
+      array[5] = new VolatileInt(); // pas volatile
+      array[5].x = 3;               // volatile
+    \end{lstlisting}
+  \end{alertblock}
+  \pause
+  \begin{block}{Meilleure solution: \lstinline{java.util.concurrent.atomic.AtomicIntegerArray}}
+    \begin{lstlisting}[numbers=none]
+      AtomicIntegerArray array = new AtomicIntegerArray(10);
+      array.set(5, 3);              // volatile
+    \end{lstlisting}
+  \end{block}    
+\end{frame}
+
+\endgroup
+\endinput

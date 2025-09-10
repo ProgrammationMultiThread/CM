@@ -1,0 +1,70 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+% Part: 
+% Section: 
+% Sub-section: 
+% Frame: 
+
+\begingroup
+
+\begin{frame}{Exemple}
+  \begin{center}
+    \begin{tikzpicture}
+
+      \draw[alertColor]   (0,1.5)   node[left]{$t1 :$};
+      \draw[structure]    (0,1)   node[left]{$main :$};
+      \draw[exampleColor] (0,0.5)   node[left]{$t2 :$};
+
+      \draw[alertColor]   (3,1.5) node{\footnotesize$print(Hello)$};
+      \draw[alertColor]   (5,1.5) node{\footnotesize$print(World)$};
+      \draw[structure]    (.5,1) node{\footnotesize$main()$};
+      \draw[structure]    (2,1)   node{\footnotesize$t1.start()$};
+      \draw[structure]    (4,1) node{\footnotesize$t2.start()$};
+      \draw[structure]    (6,1)   node{\footnotesize$t1.join()$};
+      \draw[structure]    (7.5,1) node{\footnotesize$t2.join()$};
+      \draw[structure]    (9.1,1)   node{\footnotesize$println(!)$};
+      \draw[exampleColor] (5.75,0.5)   node{\footnotesize$print(Multithreaded)$};
+
+      \draw[|->] (3.8,1.5) -- (4.2,1.5);
+      \draw[|->, densely dotted] (1,1) -- (1.4,1);
+      \draw[|->] (2.6,1) -- (3.4,1);
+      \draw[|->] (4.6,1) -- (5.5,1);
+      \draw[|->] (6.5,1) -- (6.9,1);
+      \draw[|->] (8.1,1) -- (8.5,1);
+
+      \draw[|->, rounded corners] (1.9,1.25) -- (1.9,1.5) -- (2.2,1.5);
+      \draw[|->, rounded corners] (5.8,1.5) -- (6.1,1.5) -- (6.1,1.25);
+
+      \draw[|->, rounded corners] (4,.75) -- (4,.5) -- (4.5,.5);
+      \draw[|->, rounded corners] (7,.5) -- (7.5,.5) -- (7.5,.75);
+
+    \end{tikzpicture}
+  \end{center}
+  \begin{block}{Observations}
+    \begin{itemize}
+    \item L'écriture ``Hello'' se produit avant l'écriture ``World'' 
+    \item Les deux écritures de $t1$ sont concurrentes à l'écriture de $t2$ 
+    \item Les trois se produisent avant l'écriture ``!''
+    \end{itemize}
+  \end{block}
+  \begin{block}{Projection sur l'objet \lstinline{System.out}}
+    \begin{center}
+      \begin{tikzpicture}
+
+        \draw[alertColor]   (3,1.5) node{\footnotesize$print(Hello)$};
+        \draw[alertColor]   (5,1.5) node{\footnotesize$print(World)$};
+        \draw[structure]    (7,1)   node{\footnotesize$println(!)$};
+        \draw[exampleColor] (4,0.5)   node{\footnotesize$print(Multithreaded)$};
+
+        \draw[|->] (3.8,1.5) -- (4.2,1.5);
+
+        \draw[|->, rounded corners] (5.8,1.5) -- (7,1.5) -- (7,1.25);
+        \draw[|->, rounded corners] (5.3,.5) -- (7,.5) -- (7,.75);
+
+      \end{tikzpicture}
+    \end{center}
+  \end{block}
+\end{frame}
+
+\endgroup
+\endinput
