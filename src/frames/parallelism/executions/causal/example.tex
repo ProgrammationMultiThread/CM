@@ -8,6 +8,7 @@
 \begingroup
 
 \begin{frame}{Exemple}
+
   \begin{center}
     \begin{tikzpicture}
 
@@ -22,7 +23,7 @@
       \draw[structure]    (4,1) node{\footnotesize$t2.start()$};
       \draw[structure]    (6,1)   node{\footnotesize$t1.join()$};
       \draw[structure]    (7.5,1) node{\footnotesize$t2.join()$};
-      \draw[structure]    (9.1,1)   node{\footnotesize$println(!)$};
+      \draw[structure]    (9.1,1)   node{\footnotesize$print(!)$};
       \draw[exampleColor] (5.75,0.5)   node{\footnotesize$print(Multithreaded)$};
 
       \draw[|->] (3.8,1.5) -- (4.2,1.5);
@@ -40,6 +41,7 @@
 
     \end{tikzpicture}
   \end{center}
+  
   \begin{block}{Observations}
     \begin{itemize}
     \item L'écriture ``Hello'' se produit avant l'écriture ``World'' 
@@ -47,13 +49,14 @@
     \item Les trois se produisent avant l'écriture ``!''
     \end{itemize}
   \end{block}
+  
   \begin{block}{Projection sur l'objet \lstinline{System.out}}
     \begin{center}
       \begin{tikzpicture}
 
         \draw[alertColor]   (3,1.5) node{\footnotesize$print(Hello)$};
         \draw[alertColor]   (5,1.5) node{\footnotesize$print(World)$};
-        \draw[structure]    (7,1)   node{\footnotesize$println(!)$};
+        \draw[structure]    (7,1)   node{\footnotesize$print(!)$};
         \draw[exampleColor] (4,0.5)   node{\footnotesize$print(Multithreaded)$};
 
         \draw[|->] (3.8,1.5) -- (4.2,1.5);
@@ -64,6 +67,7 @@
       \end{tikzpicture}
     \end{center}
   \end{block}
+
 \end{frame}
 
 \endgroup

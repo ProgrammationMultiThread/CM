@@ -10,33 +10,34 @@
 \begin{frame}[fragile]{Thread et contexte d'exécution}
 
   \begin{block}{Java : classe \lstinline{java.lang.Thread}}
-     \begin{lstlisting}[numbers=none]
-var task = new Printer("hello world");
-//Runnable task = () -> System.out.println("hello world");
-var thread = new Thread(task);
-thread.start();
+    \begin{lstlisting}[gobble=6]
+      var task = new Printer("hello world");
+      //Runnable task = () -> System.out.println("hello world");
+      var thread = new Thread(task);
+      thread.start();
     \end{lstlisting}
-    \end{block}
-
-  \begin{block}{C++ : classe \lstinline{std::thread}}
-    \begin{lstlisting}[numbers=none]
-thread t(printer, "hello world");
-// Started by constructor
-   \end{lstlisting}
   \end{block}
 
+  \begin{block}{C++ : classe \lstinline{std::thread}}
+    \begin{lstlisting}[gobble=6]
+      thread t(printer, "hello world");
+      // Started by constructor
+    \end{lstlisting}
+  \end{block}
 
   \begin{exampleblock}{Exemple}
-    \begin{lstlisting}[numbers=none]
-var messages = new String[]{"Hello", "Multithreaded", "World"};
-for(var message : messages) {
-  new Thread(()->System.out.print(message)).start();
-}
-   \end{lstlisting}
+    \begin{lstlisting}[gobble=6]
+      var messages = new String[]{"Hello", "Multithreaded", "World"};
+      for(var message : messages) {
+        new Thread(()->System.out.print(message)).start();
+      }
+    \end{lstlisting}
   \end{exampleblock}
-\begin{citing}
-\jitem \lstinline{cm1/HelloWorld.java}
-\end{citing}
+
+  \begin{citing}
+    \jitem \lstinline{cm1/HelloWorld.java}
+  \end{citing}
+
 \end{frame}
 
 \endgroup

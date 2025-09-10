@@ -8,32 +8,34 @@
 \begingroup
 
 \begin{frame}[fragile]{Explications}
+
   \begin{block}{Code simplifié}
-    \vspace{-3mm}
-    \begin{lstlisting}[numbers=none]
+    \begin{lstlisting}[gobble=4]
       class Task implements Runnable {
         static int result = 0;
         public void run() {
-          result++;
+          (*\Structure{result++;}*)
         }
       }
     \end{lstlisting}
     \color{exampleColor}{On lance deux fois la tâche en parallèle, que devrait valoir \lstinline{result} à la fin ?}
   \end{block}
+
   \pause
-  \vfill
+
   \begin{block}{Code décompilé : \lstinline[language=bash]{javap -c Task.class}}
-    \vspace{-3mm}
-\begin{verbatim}
-public void run();
-   Code:
-      0: getstatic   #2    // Field result:I
-      3: iconst_1
-      4: iadd
-      5: putstatic   #2    // Field result:I
-      8: return
-\end{verbatim}
+    \begin{lstlisting}[gobble=4]
+      public void run();
+        Code:
+           0: (*\Structure{getstatic}*)   #2    // Field result:I
+           3: iconst_1
+           4: iadd
+           5: (*\Structure{putstatic}*)   #2    // Field result:I
+           8: return
+    \end{lstlisting}
+
   \end{block}
+
 \end{frame}
 
 \endgroup

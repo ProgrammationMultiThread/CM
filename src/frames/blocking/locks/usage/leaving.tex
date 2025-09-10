@@ -12,8 +12,7 @@
   \begin{block}{Quand un thread quitte une exclusion mutuelle}
     Deux cas de figure pour le verrou de l'objet :
     \begin{itemize}
-    \item  Il  passé  automatiquement à  l'un  des threads  bloqués
-      (ordre indéterminé).
+    \item L'un  des threads  bloqués peut l'acquérir (ordre indéterminé).
     \item Il est libéré si aucun thread n'est bloqué.
     \end{itemize}
   \end{block}
@@ -28,6 +27,7 @@
     \item être certain qu'aucune autre tâche n'attend une action de sa part.
     \end{itemize}
   \end{alertblock}
+
 \end{frame}
 
 \endgroup

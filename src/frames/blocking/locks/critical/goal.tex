@@ -15,7 +15,7 @@
 
   \begin{center}
     \begin{tikzpicture}
-      \draw (8.5, 4.25) node{\begin{minipage}{4cm}\begin{lstlisting}[numbers=none]
+      \draw (8.5, 4.25) node{\begin{minipage}{4cm}\begin{lstlisting}[gobble=12]
             interface Counter {
               void increment() ;
               int get() ;
@@ -75,13 +75,13 @@
     \vspace{-2mm}
     \begin{itemize}
     \item ${\color{exampleColor}t_1:increment();~} {\color{alertColor}t_2:increment();~}$ \hspace{5mm} $result=2$
-    \item ${\color{exampleColor}t_1:get();~} {\color{alertColor}t_2:get();~} {\color{exampleColor}t_1:put(1);~} {\color{alertColor}t_2:put(1);}$ \hspace{5mm} $result=1$
+    \item ${\color{alertColor}t_2:increment();~} {\color{exampleColor}t_1:increment();~}$ \hspace{5mm} $result=2$
     \end{itemize}
   \end{block}
 
   \pause
-
   \vspace{-1mm}
+
   \begin{block}{Notion d'atomicité}
     \vspace{-2mm}
     \begin{itemize}
@@ -89,6 +89,7 @@
     \item \alert{Section critique} : portion de code qui doit être exécutée \structure{atomiquement}
     \end{itemize}
   \end{block}
+
 \end{frame}
 
 \endgroup

@@ -12,10 +12,10 @@
   \begin{block}{L'interface \lstinline{Callable}}
     Version générique d'une tâche qui retourne un résultat.
 
-    \begin{lstlisting}[numbers=none]
-public interface Callable<V> {
-  V call() throws Exception;
-}
+    \begin{lstlisting}[gobble=6]
+      public interface Callable<V> {
+        V call() throws Exception;
+      }
     \end{lstlisting}
   \end{block}
   
@@ -24,14 +24,14 @@ public interface Callable<V> {
   \begin{block}{L'interface \lstinline{Future}}
     Version générique du résultat d'un calcul \textit{asynchrone}. 
 
-    \begin{lstlisting}[numbers=none]
-public interface Future<V> {
-  boolean cancel( boolean evenIfRunning );
-  V get() throws InterruptedException, ExecutionException;
-  V get( long timeout, TimeUnit unit ) throws...;
-  boolean isCancelled();
-  boolean isDone();
-}
+    \begin{lstlisting}[gobble=6]
+      public interface Future<V> {
+        boolean cancel( boolean mayInterruptIfRunning );
+        V get() throws InterruptedException, ExecutionException;
+        V get( long timeout, TimeUnit unit ) throws...;
+        boolean isCancelled();
+        boolean isDone();
+      }
     \end{lstlisting}
   \end{block}
 \end{frame}

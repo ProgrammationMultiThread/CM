@@ -8,8 +8,8 @@
 \begingroup
 
 \begin{frame}[fragile]{Retour sur le calcul de $\pi$}
-  \vfill
 
+  \vfill
   \begin{lstlisting}[gobble=4]
     private static (*\Alert{int result = 0}*);
 
@@ -17,12 +17,12 @@
       threads = new Thread[n];
       for(int i = 0; i<nbThreads; i++) {
         (*\Structure{threads[i] = new Thread(() -> \{ }*)
-          var random = ThreadLocalRandom.current();
-          for(int i = 0; i<nbIterations; i++) {
-            double x = random.nextDouble();
-	    double y = random.nextDouble();
-	    if(x*x + y*y < 1) (*\Alert{result++;}*)
-          }
+        var random = ThreadLocalRandom.current();
+        for(int j = 0; j<nbIterations; j++) {
+          double x = random.nextDouble();
+	  double y = random.nextDouble();
+	  if(x*x + y*y < 1) (*\Alert{result++;}*)
+        }
         (*\Structure{\});}*)
       }
       
@@ -37,6 +37,7 @@
   \begin{citing}
     \jitem \lstinline{cm3/Pi3_ThreadLocalRandom.java}
   \end{citing}
+
 \end{frame}
 
 \endgroup

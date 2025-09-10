@@ -14,26 +14,26 @@
   \end{itemize}
 
   \begin{exampleblock}{C++}
-    N'importe quelle fonction (pointeur de fonction)
-    \begin{lstlisting}[numbers=none]
-  void printer (string message) {
-    cout << message << endl;
-  }
+    N'importe quelle entité appelable (fonction, foncteur, ...)
+    \begin{lstlisting}[gobble=6]
+      void printer (string message) {
+        cout << message << endl;
+      }
     \end{lstlisting}
   \end{exampleblock}
 
   \begin{exampleblock}{Java}
-  Implémentation de l'interface fonctionnelle \lstinline{Runnable}
-     \begin{lstlisting}[numbers=none]
-  public record Printer (String message) implements Runnable {
+    Implémentation de l'interface fonctionnelle \lstinline{Runnable}
+    \begin{lstlisting}[gobble=6]
+      public record Printer (String message) implements Runnable {
 
-    public void run () {
-      System.out.println(message);
-    }
+        public void run () {
+          System.out.println(message);
+        }
 
-  }
+      }
     \end{lstlisting}
-\end{exampleblock}
+  \end{exampleblock}
 \end{frame}
 
 \endgroup

@@ -9,29 +9,32 @@
 
 \begin{frame}[fragile]{L'interface \texttt{ExecutorService}}
 
-\begin{block}{Association tâche / contexte d'exécution}
-  \texttt{java.util.concurrent} offre les outils pour construire \structure{simplement} des associations $n \leftrightarrow m$ avec différentes stratégies
+  \begin{block}{Association tâche / contexte d'exécution}
+    \texttt{java.util.concurrent} offre les outils pour construire \structure{simplement} des associations $n \leftrightarrow m$ avec différentes stratégies
 
-  \begin{lstlisting}
-public interface ExecutorService {
-  void execute (Runnable task);
-  Future<?> submit (Runnable task);
-  Future<T> submit (Callable<T> task);
-  List<Future<T>> invokeAll (Collection<Callable<T>> tasks)
-    throws InterruptedException;
-  T invokeAny (Collection<Callable<T>> tasks)
-    throws InterruptedException, ExecutionException;
-}
-  \end{lstlisting}
-\end{block}
+    \begin{lstlisting}[gobble=6]
+      public interface ExecutorService {
+        void execute (Runnable task);
+        Future<?> submit (Runnable task);
+        Future<T> submit (Callable<T> task);
+        List<Future<T>> invokeAll (Collection<Callable<T>> tasks)
+        throws InterruptedException;
+        T invokeAny (Collection<Callable<T>> tasks)
+        throws InterruptedException, ExecutionException;
+      }
+    \end{lstlisting}
+  \end{block}
 
   \begin{exampleblock}{Exemple}
-  \begin{lstlisting}
-var threadPool = Executors.newFixedThreadPool(5);
-for(int i = 0; i < 50; ++i){
-  threadPool.execute(() -> System.out.println(i));
-}
-  \end{lstlisting}
+    \begin{lstlisting}[gobble=6]
+      var threadPool = Executors.newFixedThreadPool(5);
+      for(int i = 0; i < 50; ++i){
+        int k = i;
+        threadPool.execute(() -> System.out.println(k));
+      }
+      threadPool.shutdown();
+      threadPool.awaitTermination(1, TimeUnit.MINUTES);
+    \end{lstlisting}
   \end{exampleblock}
   
 \end{frame}

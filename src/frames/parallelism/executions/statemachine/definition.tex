@@ -9,18 +9,19 @@
 
 \begin{frame}[fragile]{Machine à états d'un programme}
 
-  Si l'exécution est séquentiellement cohérente, l'ensemble des exécutions est défini par une machine à états non-déterministe.
+  Si l'exécution est \structure{séquentiellement cohérente}, on peut utiliser une \alert{sémantique d'entrelacement} :
+  l'ensemble des exécutions est décrit par une \alert{machine à états non-déterministe}.
 
   \begin{block}{États du système}
     À chaque instant, la \alert{configuration globale} est définie par :
     \begin{itemize}
-    \item Un ensemble de threads
+    \item Un ensemble de threads en cours d'exécution
     \item L'état local de chaque thread
-      \begin{itemize}
-      \item valeur de ses variables locales
-      \item prochaine instruction à exécuter
-      \item peut-il exécuter sa prochaine instruction ? 
-      \end{itemize}
+      \begin{description}
+      \item[Pile d'appels :] valeur de ses variables locales
+      \item[Avancement :] prochaine instruction à exécuter
+      \item[Éligibilité :] peut-il exécuter sa prochaine instruction ? 
+      \end{description}
     \item L'état de la mémoire
       \begin{itemize}
       \item ensemble de variables partagées
@@ -32,6 +33,7 @@
   \begin{block}{Transitions}
     Un \alert{ordonnanceur} décide quel thread exécutera sa prochaine instruction.
   \end{block}
+
 \end{frame}
 
 \endgroup

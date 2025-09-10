@@ -8,10 +8,7 @@
 \begingroup
 
 \begin{frame}[fragile]{Exemple}
-  %  \begin{tikzpicture}
-  %    \fill<2>[exampleColor!20, rounded corners] (3.2,3) rectangle (7.2,3.3);
-  %    \fill<2>[exampleColor!20, rounded corners] (3.2,2.35) rectangle (7.55,2.65);
-  %\draw (5,4.3) node{\begin{minipage}{5cm}
+
   \begin{lstlisting}
     class Compteur {
       
@@ -20,32 +17,18 @@
       
       public void increment() {
         lock.writeLock().lock();
-        try {
-          ++v;
-        } finally {
-          lock.writeLock().unlock();
-        }
+        try { ++v; }
+        finally { lock.writeLock().unlock(); }
       }
       
       public int get() {
         lock.readLock().lock();
-        try {
-          return v;
-        } finally {
-          lock.readLock().unlock();
-        }
+        try { return v; }
+        finally { lock.readLock().unlock(); }
       }
     }
   \end{lstlisting}
-  %\end{minipage}};
-%  \end{tikzpicture}
-%  \pause
-%  \vspace{-3mm}
-%  \begin{exampleblock}{Question}
-%  \begin{itemize}
-%    \item À quoi sert le verrou sur la lecture ?
-%  \end{itemize}
-%  \end{exampleblock}
+
 \end{frame}
 
 \endgroup

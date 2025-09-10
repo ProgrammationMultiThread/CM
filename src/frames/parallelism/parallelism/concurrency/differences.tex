@@ -8,43 +8,52 @@
 \begingroup
 
 \begin{frame}{Parallélisme versus concurrence}
+
   \vFill
+
   \begin{block}{Principale difficulté}
     \begin{description}
     \item[Parallélisme :] Identifier les tâches indépendantes
     \item[Concurrence :] Gérer l'incertitude
     \end{description}
     \begin{shadequote}{Leslie Lamport}
-    A distributed system is one in which the failure of a computer you didn't even know existed can render your own computer unusable.
+      A distributed system is one in which the failure of a computer you didn't even know existed can render your own computer unusable.
     \end{shadequote}
   \end{block}
+
   \vFill
+
   \uncover<2->{
-  \begin{block}{Contexte d'exécution}
-    \begin{description}
-    \item[Parallélisme :] Choisi en fonction du problème à résoudre
-    \item[Concurrence :] Imposé \textit{a priori} par le problème
-    \end{description}
-  \end{block}
+    \begin{block}{Contexte d'exécution}
+      \begin{description}
+      \item[Parallélisme :] Choisi en fonction du problème à résoudre
+      \item[Concurrence :] Imposé \textit{a priori} par le problème et l'environnement
+      \end{description}
+    \end{block}
   }
+
   \vFill
+
   \uncover<3->{
-  \begin{block}{Passage à l'échelle}
-    \begin{minipage}{.5\textwidth}
-      \begin{description}
-      \item[Parallélisme :] $S_p(n) = \Omega(n)$
-      \end{description}
-    \end{minipage}\begin{minipage}{.45\textwidth}
-      \begin{description}
-      \item[Concurrence :] $S_c(n) = \Omega(1)$
-      \end{description}
-    \end{minipage}
-  \end{block}
+    \begin{block}{Passage à l'échelle}
+      \begin{minipage}{.5\textwidth}
+        \begin{description}
+        \item[Parallélisme :] $S_p(n) = \Omega(n)$
+        \end{description}
+      \end{minipage}\begin{minipage}{.45\textwidth}
+        \begin{description}
+        \item[Concurrence :] $S_c(n) = \Omega(1)$
+        \end{description}
+      \end{minipage}
+    \end{block}
   }
+  
   \vFill
+  
   \begin{citing}
   \item[R15] Michel Raynal. \textit{Parallel Computing vs. Distributed Computing: A Great Confusion? (Position Paper).} Euro-Par Workshops (2015).
   \end{citing}
+
 \end{frame}
 
 \endgroup

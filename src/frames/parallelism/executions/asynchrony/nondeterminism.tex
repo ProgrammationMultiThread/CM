@@ -21,7 +21,7 @@
         \draw[structure   , fill=structure!20, rounded corners]    (3.2 ,1)  +(-.8,-0.3) rectangle +(.8,0.3) +(0,0) node{$t2.start()$};
         \draw[structure   , fill=structure!20, rounded corners]    (6.6 ,1)  +(-2.5,-0.3) rectangle +(2.5,0.3) +(0,0) node{$t1.join()$};
         \draw[structure   , fill=structure!20, rounded corners]    (10  ,1)  +(-.8,-0.3) rectangle +(.8,0.3) +(0,0) node{$t2.join()$};
-        \draw[structure   , fill=structure!20, rounded corners]    (11.9,1)  +(-1,-0.3) rectangle +(1,0.3) +(0,0) node{$println(!)$};
+        \draw[structure   , fill=structure!20, rounded corners]    (11.9,1)  +(-1,-0.3) rectangle +(1,0.3) +(0,0) node{$print(!)$};
 
         \draw[alertColor  , fill=alertColor!20, rounded corners]   (4.9 ,2)  +(-1,-0.3) rectangle +(1,0.3) +(0,0) node{$print(hello)$};
         \draw[alertColor  , fill=alertColor!20, rounded corners]   (7.0 ,2)  +(-1,-0.3) rectangle +(1,0.3) +(0,0) node{$print(world)$};
@@ -39,12 +39,14 @@
     \item  d'une exécution d'un thread par rapport à une autre.
     \end{itemize}
   \end{block}
+
   \begin{alertblock}{Question}
     \begin{itemize}
     \item Un programme n'est correct que si toutes ses exécutions le sont.
     \item Comment raisonner sur les exécutions concurrentes ?
     \end{itemize}
   \end{alertblock}
+
 \end{frame}
 
 \endgroup

@@ -15,7 +15,7 @@
 
         \draw[alertColor]   (3,1.5) node{\footnotesize$print(Hello)$};
         \draw[alertColor]   (5,1.5) node{\footnotesize$print(World)$};
-        \draw[structure]    (7,1)   node{\footnotesize$println(!)$};
+        \draw[structure]    (7,1)   node{\footnotesize$print(!)$};
         \draw[exampleColor] (4,0.5)   node{\footnotesize$print(Multithreaded)$};
 
         \draw[|->] (3.8,1.5) -- (4.2,1.5);
@@ -29,20 +29,21 @@
 
   \begin{block}{Entrelacements possibles}
     \begin{itemize}
-    \item $\alert{print(Hello);~ } \alert{print(World);~ } {\color{exampleColor}print(Multithreaded);~ } \structure{println(!); }$
+    \item $\alert{print(Hello);~ } \alert{print(World);~ } {\color{exampleColor}print(Multithreaded);~ } \structure{print(!); }$
       \begin{description}
       \item[Résultat :] Hello World Multithreaded !
       \end{description}
-    \item\vspace{2mm} $\alert{print(Hello);~ } {\color{exampleColor}print(Multithreaded);~ } \alert{print(World);~ } \structure{println(!); }$
+    \item\vspace{2mm} $\alert{print(Hello);~ } {\color{exampleColor}print(Multithreaded);~ } \alert{print(World);~ } \structure{print(!); }$
       \begin{description}
       \item[Résultat :] Hello Multithreaded World !
       \end{description}
-    \item\vspace{2mm} ${\color{exampleColor}print(Multithreaded);~ } \alert{print(Hello);~ } \alert{print(World);~ } \structure{println(!); }$
+    \item\vspace{2mm} ${\color{exampleColor}print(Multithreaded);~ } \alert{print(Hello);~ } \alert{print(World);~ } \structure{print(!); }$
       \begin{description}
       \item[Résultat :] Multithreaded Hello World !
       \end{description}
     \end{itemize}
   \end{block}
+
 \end{frame}
 
 \endgroup

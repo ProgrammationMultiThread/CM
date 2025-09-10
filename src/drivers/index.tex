@@ -1,7 +1,7 @@
 % SPDX-License-Identifier: CC-BY-SA-4.0
 % Author: Matthieu Perrin
 
-\title[Programmation concurrente en multi-threads]{Programmation concurrente en multi-threads}
+\title{Programmation Concurrente en Multi-Threads}
 
 \author[Matthieu Perrin]{
   \structure{Matthieu \textsc{Perrin}}\\[2mm]
@@ -37,6 +37,7 @@
 \section{Généralités}
  
 \subsection{Vue générale}
+\input{parallelism/generalities/overview/master}
 \input{parallelism/generalities/overview/overview}
  
 \subsection{Bibliographie}
@@ -65,7 +66,7 @@
 \subsection{Limites de la parallélisation}
 \input{parallelism/parallelism/amdahl/amdahl}
 \input{parallelism/parallelism/amdahl/limits}
-\input{parallelism/parallelism/amdahl/exercise}
+\input{parallelism/parallelism/amdahl/law}
 \input{parallelism/parallelism/amdahl/hypotheses}
  
 \subsection{Introduction à la concurrence}
@@ -104,13 +105,13 @@
  
 \subsection{Section critique}
 \input{blocking/locks/critical/montecarlo}
-\input{blocking/locks/critical/random}
 \input{blocking/locks/critical/experiment}
+\input{blocking/locks/critical/random}
 \input{blocking/locks/critical/threadlocalrandom}
 \input{blocking/locks/critical/explanation}
 \input{blocking/locks/critical/statemachine}
 \input{blocking/locks/critical/goal}
- 
+
 \subsection{Utilisation des verrous}
 \input{blocking/locks/usage/lock}
 \input{blocking/locks/usage/incrementations}
@@ -121,8 +122,8 @@
 \input{blocking/locks/usage/readwrite}
 \input{blocking/locks/usage/counter}
 \input{blocking/locks/usage/leaving}
- 
- 
+
+
 \section{Spécification d'un problème concurrent}
  
 \subsection{Problèmes de vivacité}
@@ -137,7 +138,7 @@
 \input{blocking/specification/safelive/exercise}
 \input{blocking/specification/safelive/localglobal}
 \input{blocking/specification/safelive/characterization}
- 
+
  
 \section{Moniteurs}
  

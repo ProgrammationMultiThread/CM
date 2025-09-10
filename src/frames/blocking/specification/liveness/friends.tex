@@ -24,10 +24,10 @@
       public static void main(String[] args) {
         var alphonse = new Friend("Alphonse");
         var gaston = new Friend("Gaston");
-        var Ta = new Thread(() -> (*\Alert{alphonse.salute(gaston)}*));
-        var Tg = new Thread(() -> (*\Example{gaston.salute(alphonse)}*));
-        Ta.start();
-        Tg.start();
+        var tA = new Thread(() -> (*\Alert{alphonse.salute(gaston)}*));
+        var tG = new Thread(() -> (*\Example{gaston.salute(alphonse)}*));
+        tA.start();
+        tG.start();
       }
       
     }
@@ -36,6 +36,7 @@
   \begin{citing}
     \jitem \lstinline{tp1/Friends.java}
   \end{citing}
+
 \end{frame}
 
 \endgroup

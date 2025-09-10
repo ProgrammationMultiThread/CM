@@ -10,26 +10,33 @@
 \begin{frame}[fragile]{Interrompre proprement un thread}
 
   \begin{alertblock}{Forcer un thread à s'arrêter}
-  Impossible : \lstinline|public void stop()| est dépréciée !
+    Impossible : \lstinline|public void stop()| est dépréciée !
   \end{alertblock}
+
   \vfill
+
   \begin{block}{Méthode \lstinline|public void interrupt()|}
     Demande la terminaison.
     \begin{itemize}
     \item Lève un drapeau booléen pour avertir le thread.
     \item La tâche peut (doit) vérifier régulièrement les demandes d'interruption
-    \begin{itemize}
-    \item \lstinline|public static boolean interrupted()| ou
-    \item \lstinline|public boolean isInterrupted()|.
-    \end{itemize}
-  \item \lstinline|interrupted()| et \lstinline|isInterrupted()| rebaissent le drapeau.
-  \item Si le thread est bloqué ou en attente,  \lstinline|InterruptedException| est lancée.
+      \begin{itemize}
+      \item \lstinline|public static boolean interrupted()| \hfill rebaisse le drapeau
+      \item \lstinline|public boolean isInterrupted()|      \hfill ne rebaisse pas le drapeau
+      \end{itemize}
+    \item Si le thread est bloqué ou en attente,  \lstinline|InterruptedException| est lancée.
     \end{itemize}
   \end{block}
+
   \vfill
-  \begin{exampleblock}{Pas d'équivalent en C++}
-    Utiliser une variable booléenne comme drapeau.
+
+  \begin{exampleblock}{Équivalent en C++}
+    \begin{description}
+    \item[Avant C++20 :] Utiliser une variable booléenne comme drapeau.
+    \item[Depuis C++20 :] \lstinline{std::jthread::request_stop()} + \lstinline{std::jthread::get_stop_token()}
+    \end{description}
   \end{exampleblock}
+
 \end{frame}
 
 \endgroup

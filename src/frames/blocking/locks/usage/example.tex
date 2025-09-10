@@ -8,63 +8,64 @@
 \begingroup
 
 \begin{frame}[fragile]{Exemple}
-\vspace{-5mm}
-\begin{tikzpicture}
-  \draw (0,5) node[right]{\begin{minipage}{.55\textwidth}
-\begin{exampleblock}{Synchronisation sur membre privé}
-    \begin{lstlisting}
-class Counter {
 
-  private int value = 0;
-  private Object lock
-    = new Object();
-  
-  void increment() {
-    synchronized(lock) {
-      ++value;  
-    }
-  }
+  \vspace{-5mm}
+  \begin{tikzpicture}
+    \draw (0,5) node[right]{\begin{minipage}{.55\textwidth}
+        \begin{exampleblock}{Synchronisation sur membre privé}
+          \begin{lstlisting}[gobble=10]
+            class Counter {
 
-  int get() {
-    synchronized(lock) {
-      return value;  
-    }
-  }
+              private int value = 0;
+              private Object lock = new Object();
+              
+              void increment() {
+                synchronized(lock) {
+                  ++value;  
+                }
+              }
 
-}
-    \end{lstlisting}
-  \end{exampleblock}
-\end{minipage}};
+              int get() {
+                synchronized(lock) {
+                  return value;  
+                }
+              }
 
-  \draw (6.5,5) node[right]{\begin{minipage}{.4\textwidth}
-  \begin{exampleblock}{Synchronisation sur \lstinline{this}}
-\begin{lstlisting}
-class Counter {
+            }
+          \end{lstlisting}
+        \end{exampleblock}
+    \end{minipage}};
 
-  private int value = 0;
+    \draw (6.5,5) node[right]{\begin{minipage}{.4\textwidth}
+        \begin{exampleblock}{Synchronisation sur \lstinline{this}}
+          \begin{lstlisting}[gobble=10]
+            class Counter {
 
-
-
-  void increment() {
-    synchronized(this) {
-      ++value;  
-    }
-  }
-
-  int synchronized get() {
-    return value;  
-  }
+              private int value = 0;
 
 
+              void increment() {
+                synchronized(this) {
+                  ++value;  
+                }
+              }
 
-}
-\end{lstlisting}
-  \end{exampleblock}
-\end{minipage}};
-\end{tikzpicture}
-\begin{citing}
-\jitem \lstinline{cm3/Pi4_Synchronized.java}
-\end{citing}
+              int synchronized get() {
+                return value;  
+              }
+
+
+
+            }
+          \end{lstlisting}
+        \end{exampleblock}
+    \end{minipage}};
+  \end{tikzpicture}
+
+  \begin{citing}
+    \jitem \lstinline{cm3/Pi4_Synchronized.java}
+  \end{citing}
+
 \end{frame}
 
 \endgroup

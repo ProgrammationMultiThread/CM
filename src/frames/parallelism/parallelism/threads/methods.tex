@@ -7,31 +7,35 @@
 
 \begingroup
 
-\begin{frame}[fragile]
-  \frametitle{Principales méthodes de la classe gérant les threads}
+\begin{frame}[fragile]{Principales méthodes de la classe gérant les threads}
 
+  \begin{block}{Obtenir le thread qui contrôle la tâche en cours}
+    \begin{description}
+    \item[Java :] \lstinline|Thread.currentThread()| \hfill
+    \item[C++ :] \lstinline|std::this_thread::get_id()|
+    \end{description}
+  \end{block}
+
+  \pause
   \vfill
-\begin{block}{Obtenir la référence sur le thread qui contrôle la tâche en cours}
-   \structure{Java :} \lstinline|Thread.currentThread()| \hfill
-   \structure{C++ :} \lstinline|std::this_thread|
-\end{block}
-\pause
+
+  \begin{block}{Endormir le thread courant pour \lstinline{ms} millisecondes}
+    \begin{description}
+    \item[Java :] \lstinline|Thread.sleep(ms)| \hfill
+    \item[C++ :] \lstinline|std::this_thread::sleep_for(std::chrono::milliseconds(ms));|
+    \end{description}
+  \end{block}
+
+  \pause
   \vfill
-  \vfill
-\begin{block}{Endormir le thread \lstinline{t} pour \lstinline{ms} millisecondes}
-   \structure{Java :} \lstinline|t.sleep(ms)| \hfill
-   \structure{C++ :} \lstinline|t.sleep_for(std::chrono::milliseconds(ms))|
- \end{block}
-  \vfill
-  \vfill
-\pause
-\begin{block}{Attente de la terminaison d'un thread \lstinline{t}}
- \begin{description}
- \item[Java ou C++ :] \lstinline|t.join()|
-  \item [\alert{ attention :}] en C++, un thread doit être détaché avant la terminaison du thread qui l'a lancé (\lstinline|t.detach()|). 
- \end{description}
-\end{block}
-  \vfill
+
+  \begin{block}{Attente de la terminaison d'un thread \lstinline{t}}
+    \begin{description}
+    \item[Java ou C++ :] \lstinline|t.join()|
+    \item [\alert{ attention :}] en C++, un thread doit être détaché avant la destruction de l'objet $t$ (\lstinline|t.join()| ou \lstinline|t.detach()|). 
+    \end{description}
+  \end{block}
+
 \end{frame}
 
 \endgroup

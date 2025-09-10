@@ -8,14 +8,12 @@
 \begingroup
 
 \begin{frame}[fragile]{Verrou}
-  \vspace{-5mm}
+
   \begin{tikzpicture}
 
     \draw[structure] (7,8.5) node{Exclusion mutuelle};
-    \draw[structure] (4.5,4.2) node{Section critique};
-    \draw[structure,->] (3.3,4.2) -- (2.2,4.2);
-    \draw[structure,->] (5.7,4.2) -- (6.7,4.2);
-
+    \draw[structure] (5,4.2) node{Section critique};
+  
     \draw (0,8.5) node[right]{\begin{minipage}{\textwidth} 
         \begin{block}{java.util.concurrent.locks.Lock}
           Objet informatique \alert{qui ne peut être possédé que par un thread à la fois.}
@@ -23,6 +21,8 @@
             interface Lock {
               void lock()
               void unlock()
+              void lockInterruptibly() throws InterruptedException
+              boolean tryLock() 
               ...
             }
           \end{lstlisting}
@@ -36,8 +36,8 @@
 
             void increment() {
               lock.lock();
-              (*\Structure{++value;}*)  
-              lock.unlock();
+              try{ (*\Structure{++value;}*) }
+              finally{lock.unlock();}
             }
           \end{lstlisting}
         \end{exampleblock}
@@ -50,14 +50,14 @@
             mutex lock;
             
             void increment() {
-              lock.lock();
+              lock_guard<mutex> g(lock);
               (*\Structure{++value;}*)
-              lock.unlock();
             }
           \end{lstlisting}
         \end{exampleblock}
     \end{minipage}};
   \end{tikzpicture}
+  
 \end{frame}
 
 \endgroup
