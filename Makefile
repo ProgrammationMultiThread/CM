@@ -16,8 +16,9 @@ PDFLATEX ?= pdflatex
 PDFLATEX_FLAGS := -halt-on-error -interaction=nonstopmode -output-directory=$(BUILDDIR)
 
 # Latex-libs library (local clone + TEXINPUTS)
-LATEX_LIBS_REPO := git@github.com:MatthieuPerrin/Latex-libs.git
-LATEX_LIBS_DIR  := latex-libs
+LATEX_LIBS_DIR	 := latex-libs
+LATEX_LIBS_SSH_URL   := git@github.com:MatthieuPerrin/Latex-libs.git
+LATEX_LIBS_HTTPS_URL := https://github.com/MatthieuPerrin/Latex-libs.git
 
 # Path separator (Windows vs Unix)
 ifeq ($(OS),Windows_NT)
@@ -58,7 +59,8 @@ FORCE:
 deps:
 	@if [ ! -d "$(LATEX_LIBS_DIR)/.git" ]; then \
 	  echo ">>> Cloning latex-libs into $(LATEX_LIBS_DIR)"; \
-	  git clone --depth 1 $(LATEX_LIBS_REPO) $(LATEX_LIBS_DIR); \
+	  ( git clone --depth 1 "$(LATEX_LIBS_SSH_URL)"   "$(LATEX_LIBS_DIR)" 2>/dev/null \
+	    || git clone --depth 1 "$(LATEX_LIBS_HTTPS_URL)" "$(LATEX_LIBS_DIR)" ); \
 	fi
 
 # Update both the main repo and the local dependency clone

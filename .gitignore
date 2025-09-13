@@ -1,6 +1,6 @@
 # LaTeX compilation files and folders
 build/
-docs/
+docs/*.pdf
 
 # External dependency
 latex-libs/
