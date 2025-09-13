@@ -12,9 +12,10 @@
   \begin{block}{Java : classe \lstinline{java.lang.Thread}}
     \begin{lstlisting}[gobble=6]
       var task = new Printer("hello world");
-      //Runnable task = () -> System.out.println("hello world");
+      // Runnable task = () -> System.out.println("hello world");
       var thread = new Thread(task);
       thread.start();
+      // Thread t = Thread.startVirtualThread(task); 
     \end{lstlisting}
   \end{block}
 
