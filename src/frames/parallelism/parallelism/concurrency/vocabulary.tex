@@ -10,6 +10,7 @@
 \tikzset{
   inout/.style={
     draw,
+    structure,
     fill=structure!30,
     circle,
     text width=3.5mm,
@@ -19,7 +20,9 @@
   },
   procs/.style={
     draw,
+    alert,
     fill=alert!30,
+    rounded corners,
     minimum width=10mm,
     text height=2mm,
     inner sep=3pt,
@@ -36,6 +39,7 @@
   back/.style={
     draw,
     fill=black!40,
+    rounded corners,
     fit=(p1)(p2)(p3),
     inner sep=5pt,
   },
@@ -49,7 +53,7 @@
   \begin{tikzpicture}[x=48mm, y=35mm]
 
     \node[align=center] at (2,2.6) {Une seule \\ unité d'exécution}; 
-    \node[align=center] at (3,2.6) {Plusieurs \\ unité d'exécution}; 
+    \node[align=center] at (3,2.6) {Plusieurs \\ unités d'exécution}; 
     \node[align=center] at (1.3,2) {Problème  \\ séquentiel}; 
     \node[align=center] at (1.3,1) {Problème  \\ de \\ concurrence}; 
 
