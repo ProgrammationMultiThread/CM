@@ -29,7 +29,25 @@
   \uncover<2>{
     \onBlock[right=.42\textwidth, y=10mm]{Architectures UMA\\ (Uniform Memory Access)}{
       \centering
-      \includegraphics[height=1.8cm]{uma}
+      \begin{tikzpicture}[x=11mm, y=4mm]
+        \footnotesize
+        \node[minimum width=43mm, rectangle, draw, ultra thin, inner sep= 2pt, outer sep=0pt, fill=alert!30                  ] (m1) at (1.5, 0)   {Mémoire};
+        \node[minimum width=43mm, rectangle, draw, ultra thin, inner sep=.5pt, outer sep=0pt, fill=black!30                  ] (b1) at (1.5, 1)   {};
+        \node[minimum width=10mm, rectangle, draw, ultra thin, inner sep= 2pt, outer sep=0pt, fill=example!30                ] (c1) at (0,2)      {Cache};
+        \node[minimum width=10mm, rectangle, draw, ultra thin, inner sep= 2pt, outer sep=0pt, fill=example!30                ] (c2) at (1,2)      {Cache};
+        \node[minimum width=10mm, rectangle, draw, ultra thin, inner sep= 2pt, outer sep=0pt, fill=example!30                ] (c3) at (2,2)      {Cache};
+        \node[minimum width=10mm, rectangle, draw, ultra thin, inner sep= 2pt, outer sep=0pt, fill=example!30                ] (c4) at (3,2)      {Cache};
+        \node[minimum width=10mm, rectangle, draw, ultra thin, inner sep= 2pt, outer sep=1pt, fill=structure!30, anchor=south] (p1) at (c1.north) {C\oe ur};
+        \node[minimum width=10mm, rectangle, draw, ultra thin, inner sep= 2pt, outer sep=1pt, fill=structure!30, anchor=south] (p2) at (c2.north) {C\oe ur};
+        \node[minimum width=10mm, rectangle, draw, ultra thin, inner sep= 2pt, outer sep=1pt, fill=structure!30, anchor=south] (p3) at (c3.north) {C\oe ur};
+        \node[minimum width=10mm, rectangle, draw, ultra thin, inner sep= 2pt, outer sep=1pt, fill=structure!30, anchor=south] (p4) at (c4.north) {C\oe ur};
+        \node[anchor=west] at (b1.east)   {Bus};
+        \draw (m1.north) -- (b1.south);
+        \draw (c1.south) -- (c1.south |- b1.north);
+        \draw (c2.south) -- (c2.south |- b1.north);
+        \draw (c3.south) -- (c3.south |- b1.north);
+        \draw (c4.south) -- (c4.south |- b1.north);
+      \end{tikzpicture}
     }
     \onExampleBlock[y=-15mm]{Mot-clé \lstinline{volatile int x;} (depuis Java 5)}{
       \begin{itemize}

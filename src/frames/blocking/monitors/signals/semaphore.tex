@@ -8,12 +8,8 @@
 \begingroup
 
 \begin{frame}{Sémaphore}
-  \begin{center}
-    \includegraphics[height=2cm]{Dijkstra}\\
-    Edsger W. Dijkstra
-  \end{center}
-  \vFill
-  \begin{block}{Classe \lstinline{java.util.concurrent.Semaphore}}
+
+  \onBlock[]{Classe \lstinline{java.util.concurrent.Semaphore}}{
       \begin{itemize}
       \item \lstinline{new Semaphore(n)}
 	\begin{enumerate}
@@ -29,11 +25,21 @@
 	\item Libérer un jeton.
 	\end{enumerate}
       \end{itemize}
-  \end{block}
-  \vFill
-  \begin{citing}
-  \item[D62] Edsger W. Dijkstra. \textit{Over de sequentialiteit van procesbeschrijvingen (About the sequentiality of process descriptions)} (1962-1963)
-  \end{citing}
+  }
+
+  \onImage[x=35mm]{%
+    height=4cm,
+    title={Edsger W. Dijkstra},
+    license={\ccbysa{} {CC-BY-SA-3.0 unported} -- Hamilton Richards 2002 (\href{https://commons.wikimedia.org/wiki/File:Edsger_Wybe_Dijkstra.jpg}{Wikimedia})},
+    img={Dijkstra.jpg}
+  }
+  
+  \on[bottom=3mm]{
+    \begin{citing}
+    \item[D62] Edsger W. Dijkstra. \textit{Over de sequentialiteit van procesbeschrijvingen (About the sequentiality of process descriptions)} (1962-1963)
+    \end{citing}
+  }
+
 \end{frame}
 
 \endgroup

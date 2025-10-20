@@ -7,126 +7,158 @@
 
 \begingroup
 
+\tikzset{
+  inout/.style={
+    draw,
+    fill=structure!30,
+    circle,
+    text width=3.5mm,
+    inner sep=0pt,
+    align=center,
+    font=\tiny,
+  },
+  procs/.style={
+    draw,
+    fill=alert!30,
+    minimum width=10mm,
+    text height=2mm,
+    inner sep=3pt,
+    align=center,
+    font=\small,
+  },
+  nopro/.style={
+    draw=none,
+    fill=none,
+    minimum width=10mm,
+    text height=2mm,
+    inner sep=3pt,
+  },
+  back/.style={
+    draw,
+    fill=black!40,
+    fit=(p1)(p2)(p3),
+    inner sep=5pt,
+  },
+  arrow/.style={
+    -latex,
+  },
+}
+
 \begin{frame}{Point vocabulaire}
 
-  \begin{tabular}{ccc}
-    &Une seule unité d'exécution & Plusieurs unités d'exécution
-    \\
-    \begin{tikzpicture}
-      \draw[white] (0, 0) rectangle (2,3);
-      \draw (1, 1.75) node{Problème};
-      \draw (1, 1.25) node{Séquentiel};
-    \end{tikzpicture}
-    &
-    \begin{tikzpicture}
+  \begin{tikzpicture}[x=48mm, y=35mm]
 
-      \draw[white] (-0.5, -0.3) rectangle (3.5,3);
-      \draw (1.5, 0) node{Séquentiel};
+    \node[align=center] at (2,2.6) {Une seule \\ unité d'exécution}; 
+    \node[align=center] at (3,2.6) {Plusieurs \\ unité d'exécution}; 
+    \node[align=center] at (1.3,2) {Problème  \\ séquentiel}; 
+    \node[align=center] at (1.3,1) {Problème  \\ de \\ concurrence}; 
 
-      \draw[fill=black!40] (0.8, 0.5) rectangle (2.2,2.5);
-      \draw[fill=blue!10] (1.5, 1.5) +(-0.5, -.2) rectangle +(0.5, .2) +(0,0) node{\tiny $p$};
+    \node[anchor=base] at (2,2) {
+      \begin{tikzpicture}[x=15mm, y=7mm, baseline=(p2)]
+        \node        (tl) at (2, 0) {Séquentiel};
+        \node[inout] (i2) at (1, 2) {$I$};
+        \node[nopro] (p1) at (2, 3) {};
+        \node[procs] (p2) at (2, 2) {$p$};
+        \node[nopro] (p3) at (2, 1) {};
+        \node[inout] (o2) at (3, 2) {$O$};
+        
+        \path[arrow] (i2) edge (p2.west);
+        \path[arrow] (p2.east) edge (o2);
+        \begin{scope}[background]
+          \node[back] {};
+        \end{scope}
+      \end{tikzpicture}
+    };
 
-      \draw[-latex] (0.2, 1.5) -- (1,1.5);
-      \draw[-latex] (2, 1.5) -- (2.8,1.5);
+    \node[anchor=base] at (3,2) {
+      \begin{tikzpicture}[x=15mm, y=7mm, baseline=(p2)]
+        \node        (tl) at (2, 0) {Parallèle};
+        \node[inout] (i2) at (1, 2) {$I$};
+        \node[procs] (p1) at (2, 3) {$p_1$};
+        \node[procs] (p2) at (2, 2) {$p_2$};
+        \node[procs] (p3) at (2, 1) {$p_3$};
+        \node[inout] (o2) at (3, 2) {$O$};
+        
+        \path[arrow] (i2) edge (p1.west);
+        \path[arrow] (i2) edge (p2.west);
+        \path[arrow] (i2) edge (p3.west);
+        
+        \path[arrow] (p1.east) edge (o2);
+        \path[arrow] (p2.east) edge (o2);
+        \path[arrow] (p3.east) edge (o2);
+        
+        \begin{scope}[background]
+          \node[back] {};
+        \end{scope}
+      \end{tikzpicture}
+    };
+    
+    \node[anchor=base] at (2,1) {
+      \begin{tikzpicture}[x=15mm, y=7mm, baseline=(p2)]
+        \node        (tl) at (2, 0) {Centralisé};
+        \node[inout] (i1) at (1, 3) {$I_1$};
+        \node[inout] (i2) at (1, 2) {$I_2$};
+        \node[inout] (i3) at (1, 1) {$I_3$};
+        \node[nopro] (p1) at (2, 3) {};
+        \node[procs] (p2) at (2, 2) {$p$};
+        \node[nopro] (p3) at (2, 1) {};
+        \node[inout] (o1) at (3, 3) {$O_1$};
+        \node[inout] (o2) at (3, 2) {$O_2$};
+        \node[inout] (o3) at (3, 1) {$O_3$};
+        
+        \path[arrow] (i1) edge (p2.west);
+        \path[arrow] (i2) edge (p2.west);
+        \path[arrow] (i3) edge (p2.west);
+        
+        \path[arrow] (p2.east) edge (o1);
+        \path[arrow] (p2.east) edge (o2);
+        \path[arrow] (p2.east) edge (o3);
+        \begin{scope}[background]
+          \node[back] {};
+        \end{scope}
+      \end{tikzpicture}
+    }; 
 
-      \draw[fill=blue!10] (0, 1.5) circle (2mm) node{\tiny $I$};
-      \draw[fill=blue!10] (3, 1.5) circle (2mm) node{\tiny $O$};
-    \end{tikzpicture}
-    &
-    \begin{tikzpicture}
-      \draw[white] (-0.5, -0.3) rectangle (3.5,3);
-      \draw (1.5, 0) node{Parallèle};
-
-      \draw[fill=black!40] (0.8, 0.5) rectangle (2.2,2.5);
-      \draw[fill=blue!10] (1.5, 2) +(-0.5, -.2) rectangle +(0.5, .2)   +(0,0) node{\tiny $p_1$};
-      \draw[fill=blue!10] (1.5, 1.5) +(-0.5, -.2) rectangle +(0.5, .2) +(0,0) node{\tiny $p_2$};
-      \draw[fill=blue!10] (1.5, 1) +(-0.5, -.2) rectangle +(0.5, .2)   +(0,0) node{\tiny $p_3$};
-
-      \draw[-latex] (0.2, 1.5) -- (1,2);
-      \draw[-latex] (0.2, 1.5) -- (1,1.5);
-      \draw[-latex] (0.2, 1.5) -- (1,1);
-
-      \draw[-latex] (2, 2)   -- (2.8,1.5);
-      \draw[-latex] (2, 1.5) -- (2.8,1.5);
-      \draw[-latex] (2, 1)   -- (2.8,1.5);
-
-      \draw[fill=blue!10] (0, 1.5) circle (2mm) node{\tiny $I$};
-      \draw[fill=blue!10] (3, 1.5) circle (2mm) node{\tiny $O$};
-    \end{tikzpicture}
-    \\
-    \begin{tikzpicture}
-      \draw[white] (0, 0) rectangle (2,3);
-      \draw (1, 1.75) node{Problème};
-      \draw (1, 1.35) node{de};
-      \draw (1, 0.95) node{concurrence};
-    \end{tikzpicture}
-    &
-    \begin{tikzpicture}
-      \draw[white] (-0.5, -0.3) rectangle (3.5,3);
-      \draw (1.5, 0) node{Centralisé};
-
-      \draw[fill=black!40] (0.8, 0.5) rectangle (2.2,2.5);
-      \draw[fill=blue!10] (1.5, 1.5) +(-0.5, -.2) rectangle +(0.5, .2) +(0,0) node{\tiny $p$};
-
-      \draw[-latex] (0.2, 2) -- (1,1.5);
-      \draw[-latex] (0.2, 1.5) -- (1,1.5);
-      \draw[-latex] (0.2, 1) -- (1,1.5);
-
-      \draw[-latex] (2, 1.5) -- (2.8,2);
-      \draw[-latex] (2, 1.5) -- (2.8,1.5);
-      \draw[-latex] (2, 1.5) -- (2.8,1);
-
-      \draw[fill=blue!10] (0, 2) circle (2mm)   node{\tiny $I_1$};
-      \draw[fill=blue!10] (0, 1.5) circle (2mm) node{\tiny $I_2$};
-      \draw[fill=blue!10] (0, 1) circle (2mm)   node{\tiny $I_3$};
-
-      \draw[fill=blue!10] (3, 2) circle (2mm)   node{\tiny $O_1$};
-      \draw[fill=blue!10] (3, 1.5) circle (2mm) node{\tiny $O_2$};
-      \draw[fill=blue!10] (3, 1) circle (2mm)   node{\tiny $O_3$};
-    \end{tikzpicture}
-    &
-    \begin{tikzpicture}
-      \draw[white] (-0.5, -0.3) rectangle (3.5,3);
-      \draw (1.5, 0) node{Réparti (distributed)};
-
-      \draw[fill=black!40] (0.8, 0.5) rectangle (2.2,2.5);
-      \draw[fill=blue!10] (1.5, 2) +(-0.5, -.2) rectangle +(0.5, .2)   +(0,0) node{\tiny $p_1$};
-      \draw[fill=blue!10] (1.5, 1.5) +(-0.5, -.2) rectangle +(0.5, .2) +(0,0) node{\tiny $p_2$};
-      \draw[fill=blue!10] (1.5, 1) +(-0.5, -.2) rectangle +(0.5, .2)   +(0,0) node{\tiny $p_3$};
-
-      \draw[-latex] (0.2, 2) -- (1,2);
-      \draw[-latex] (0.2, 2) -- (1,1.5);
-      \draw[-latex] (0.2, 2) -- (1,1);
-
-      \draw[-latex] (0.2, 1.5) -- (1,2);
-      \draw[-latex] (0.2, 1.5) -- (1,1.5);
-      \draw[-latex] (0.2, 1.5) -- (1,1);
-      
-      \draw[-latex] (0.2, 1) -- (1,2);
-      \draw[-latex] (0.2, 1) -- (1,1.5);
-      \draw[-latex] (0.2, 1) -- (1,1);
-
-      \draw[-latex] (2, 2)   -- (2.8,2);
-      \draw[-latex] (2, 2)   -- (2.8,1.5);
-      \draw[-latex] (2, 2)   -- (2.8,1);
-      
-      \draw[-latex] (2, 1.5) -- (2.8,2);
-      \draw[-latex] (2, 1.5) -- (2.8,1.5);
-      \draw[-latex] (2, 1.5) -- (2.8,1);
-      
-      \draw[-latex] (2, 1)   -- (2.8,2);
-      \draw[-latex] (2, 1)   -- (2.8,1.5);
-      \draw[-latex] (2, 1)   -- (2.8,1);
-
-      \draw[fill=blue!10] (0, 2) circle (2mm)   node{\tiny $I_1$};
-      \draw[fill=blue!10] (0, 1.5) circle (2mm) node{\tiny $I_2$};
-      \draw[fill=blue!10] (0, 1) circle (2mm)   node{\tiny $I_3$};
-
-      \draw[fill=blue!10] (3, 2) circle (2mm)   node{\tiny $O_1$};
-      \draw[fill=blue!10] (3, 1.5) circle (2mm) node{\tiny $O_2$};
-      \draw[fill=blue!10] (3, 1) circle (2mm)   node{\tiny $O_3$};
-    \end{tikzpicture}
-  \end{tabular}
+    \node[anchor=base] at (3,1) {
+      \begin{tikzpicture}[x=15mm, y=7mm, baseline=(p2)]
+        \node        (tl) at (2, 0) {Réparti (distributed)};
+        \node[inout] (i1) at (1, 3) {$I_1$};
+        \node[inout] (i2) at (1, 2) {$I_2$};
+        \node[inout] (i3) at (1, 1) {$I_3$};
+        \node[procs] (p1) at (2, 3) {$p_1$};
+        \node[procs] (p2) at (2, 2) {$p_2$};
+        \node[procs] (p3) at (2, 1) {$p_3$};
+        \node[inout] (o1) at (3, 3) {$O_1$};
+        \node[inout] (o2) at (3, 2) {$O_2$};
+        \node[inout] (o3) at (3, 1) {$O_3$};
+        
+        \path[arrow] (i1) edge (p1.west);
+        \path[arrow] (i1) edge (p2.west);
+        \path[arrow] (i1) edge (p3.west);
+        \path[arrow] (i2) edge (p1.west);
+        \path[arrow] (i2) edge (p2.west);
+        \path[arrow] (i2) edge (p3.west);
+        \path[arrow] (i3) edge (p1.west);
+        \path[arrow] (i3) edge (p2.west);
+        \path[arrow] (i3) edge (p3.west);
+        
+        \path[arrow] (p1.east) edge (o1);
+        \path[arrow] (p1.east) edge (o2);
+        \path[arrow] (p1.east) edge (o3);
+        \path[arrow] (p2.east) edge (o1);
+        \path[arrow] (p2.east) edge (o2);
+        \path[arrow] (p2.east) edge (o3);
+        \path[arrow] (p3.east) edge (o1);
+        \path[arrow] (p3.east) edge (o2);
+        \path[arrow] (p3.east) edge (o3);
+        
+        \begin{scope}[background]
+          \node[back] {};
+        \end{scope}
+      \end{tikzpicture}
+    };
+    
+  \end{tikzpicture}
 
 \end{frame}
 
