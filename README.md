@@ -1,11 +1,7 @@
-# Concurrent Programming in Multi-Threads
+# Concurrent Programming in Multi-Threads - CM
 
-This repository contains modular and reusable teaching materials for a university-level course on concurrent programming in a multi-threaded environment.
-
-
-## Latest PDFs:
-- [Slides](https://ProgrammationMultiThread.github.io/CM/slides.pdf): full animated version
-- [Handout](https://ProgrammationMultiThread.github.io/CM/handout.pdf): printable version
+This repository contains modular and reusable teaching materials used to build the slides for the Concurrent Multithreads Programming course at Nantes University. 
+See the [main organization](https://github.com/ProgrammationMultiThread/) for more information on the course and additional resources.
 
 
 ## Structure
@@ -14,12 +10,13 @@ This repository contains modular and reusable teaching materials for a universit
 ├── Makefile              # Automatic compilation  
 ├── README.md             # This file  
 ├── build/                # Temporary files used during compilation  
-├── latex-libs/           # Dependency from [latex-libs](https://github.com/MatthieuPerrin/latex-libs)
+├── latex-libs/           # Dependency from [latex-libs](https://github.com/MatthieuPerrin/latex-libs)  
 ├── docs/                 # Final PDF files (i.e. compiled course)  
 ├── src/                  # LaTeX source files  
-│   ├── drivers/          # Main document files for the course  
+│   ├── main/             # Main document files for the course  
 │   ├── frame/            # Individual slides organized by topic (one file per slide)  
-│   └── img/              # (shareable) images used in the slides
+│   ├── img/              # Images used in the slides  
+│   └── sty/              # Style files  
 
 
 ## Compilation
@@ -30,18 +27,31 @@ To build the course PDF:
 make
 ```
 
-This creates `docs/slides.pdf` and `docs/handout.pdf`.
+This creates `docs/PCMT.pdf` and `docs/PCMT-handout.pdf`.
 
 Build individually:
 
 ```bash
-make slides     # Builds docs/slides.pdf
-make handout    # Builds docs/handout.pdf
+make slides     # Builds docs/PCMT.pdf
+make handout    # Builds docs/PCMT-handout.pdf
 
 make clean      # Remove temporary files in build/
 make cleanall   # Also remove PDFs in docs/
 ```
 
+## Customization
+
+You can create your own course variant while reusing the provided slides.
+
+- Create a new main file in `src/main/`, for example:
+   ```bash
+   cp src/main/SCSD.tex src/main/mycourse.tex
+   ```
+- Edit `src/main/mycourse.tex` to change the course metadata and the slides you want to include.
+- Then configure the Makefile to compile your own course `docs/mycourse.pdf` and `docs/mycourse-handout.pdf`
+   ```bash
+   make configure COURSE=mycourse
+   ```
 
 ## Dependencies
 
@@ -66,7 +76,6 @@ This means:
 
 See [`LICENSE.md`](LICENSE.md) for full terms.
 
-
 ## Contributions
 
 Contributions are welcome!
@@ -77,11 +86,4 @@ Each slide is in a separate file, making it easy to reuse or improve specific pa
 - Translate to other languages
 
 Use pull requests to suggest changes.
-
-
-## Related projects
-
-You may also be interested in:
-- [latex-libs](https://github.com/MatthieuPerrin/latex-libs): the graphical/style library used here
-- [Main organization](https://github.com/ProgrammationMultiThread/): additional resources for exercises and labs 
-
+For major changes, please open an issue first to discuss your ideas.
