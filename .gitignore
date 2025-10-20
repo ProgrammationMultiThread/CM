@@ -5,6 +5,12 @@ docs/*.pdf
 # External dependency
 latex-libs/
 
+# Non-free images
+src/img/time.png
+
+# Configuration files
+.current_course.mk
+
 # Auxiliary LaTeX Files 
 *.aux
 *.bbl
