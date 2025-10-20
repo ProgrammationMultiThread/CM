@@ -1,0 +1,42 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+% Part: 
+% Section: 
+% Sub-section: 
+% Frame: 
+
+\begingroup
+
+\begin{frame}[fragile]{Un deuxième essai}
+
+  \vspace{-15mm}
+  On suppose deux processus, d'identifiants 0 et 1. 
+
+  \begin{lstlisting}
+    class NaiveLock2 implements Lock {
+      private final (*\Structure{AtomicIntegerArray entering}*) = new AtomicIntegerArray(2)
+
+      public void lock() {
+        int i = ThreadID.get();
+        (*\Structure{entering.set(i, 1);}*) 
+        
+        while( (*\Structure{entering.get(1-i) == 1}*) );
+      }
+      public void unlock() {
+        int i = ThreadID.get();
+        (*\Structure{entering.set(i, 0);}*)
+      }
+    }
+  \end{lstlisting}
+  
+  \onExampleBlock[y=-23mm]{Exercice}{
+      \begin{itemize}
+      \item Cet algorithme respecte-t-il l'\example{exclusion mutuelle} ?
+      \item Cet algorithme est-il \example{starvation-free} ?
+      \end{itemize}
+  }
+
+\end{frame}
+
+\endgroup
+\endinput

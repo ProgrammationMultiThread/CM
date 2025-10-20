@@ -1,6 +1,16 @@
 % SPDX-License-Identifier: CC-BY-SA-4.0
 % Author: Matthieu Perrin
 
+\ifdefined\HANDOUT
+  \documentclass[9pt, handout]{beamer}
+  \usetheme{Nantes}
+\else
+  \documentclass[9pt]{beamer}
+  \usetheme[sectionpage]{Nantes}
+\fi
+
+\usepackage{src/sty/config}
+
 \title{Programmation Concurrente en Multi-Threads}
 
 \author[Matthieu Perrin]{
@@ -19,6 +29,13 @@
   2025-2026
 }
 
+\hypersetup{
+  pdftitle  = {\insertshorttitle},
+  pdfauthor = {\insertshortauthor},
+  pdfsubject  = {Cours de M1 sur la programmation bloquante en multi-threads},
+  pdfkeywords = {concurrence, Java, modèle de mémoire, moniteur, parallélisme, sûreté, thread, verrou, vivacité}
+}
+
 \begin{document}
 
 \begin{frame}[plain,noframenumbering]
@@ -34,6 +51,7 @@
 
 \part{Du parallélisme à la concurrence}
  
+ 
 \section{Généralités}
  
 \subsection{Vue générale}
@@ -42,7 +60,6 @@
  
 \subsection{Bibliographie}
 \input{parallelism/generalities/bibliography/bibliography}
- 
  
 \section{Programmation parallèle}
  
@@ -76,14 +93,13 @@
 \input{parallelism/parallelism/concurrency/vocabulary}
 \input{parallelism/parallelism/concurrency/exercise}
  
- 
 \section{Exécutions concurrentes}
  
 \subsection{Notion d'asynchronisme}
 \input{parallelism/executions/asynchrony/example}
 \input{parallelism/executions/asynchrony/nondeterminism}
  
-\subsection{Relation happened before}
+\subsection{Relation happens-before de Lamport}
 \input{parallelism/executions/causal/lamport}
 \input{parallelism/executions/causal/hb}
 \input{parallelism/executions/causal/example}
@@ -111,7 +127,7 @@
 \input{blocking/locks/critical/explanation}
 \input{blocking/locks/critical/statemachine}
 \input{blocking/locks/critical/goal}
-
+ 
 \subsection{Utilisation des verrous}
 \input{blocking/locks/usage/lock}
 \input{blocking/locks/usage/incrementations}
@@ -122,23 +138,6 @@
 \input{blocking/locks/usage/readwrite}
 \input{blocking/locks/usage/counter}
 \input{blocking/locks/usage/leaving}
-
-
-\section{Spécification d'un problème concurrent}
- 
-\subsection{Problèmes de vivacité}
-\input{blocking/specification/liveness/friends}
-\input{blocking/specification/liveness/example}
-\input{blocking/specification/liveness/deadlock}
-\input{blocking/specification/liveness/solution}
-\input{blocking/specification/liveness/starvation}
- 
-\subsection{Sûreté et vivacité d'un programme}
-\input{blocking/specification/safelive/safelive}
-\input{blocking/specification/safelive/exercise}
-\input{blocking/specification/safelive/localglobal}
-\input{blocking/specification/safelive/characterization}
-
  
 \section{Moniteurs}
  
@@ -159,58 +158,78 @@
 \input{blocking/monitors/implementation/conditions}
  
  
-\part{Implémentation des mécanismes}
+\part{Correction d'un programme multi-threads}
+ 
+\section{Spécification d'un problème concurrent}
+ 
+\subsection{Problèmes de vivacité}
+\input{blocking/specification/liveness/friends}
+\input{blocking/specification/liveness/example}
+\input{blocking/specification/liveness/deadlock}
+\input{blocking/specification/liveness/solution}
+\input{blocking/specification/liveness/starvation}
+ 
+\subsection{Sûreté et vivacité d'un programme}
+\input{blocking/specification/safelive/safelive}
+\input{blocking/specification/safelive/exercise}
+\input{blocking/specification/safelive/localglobal}
+\input{blocking/specification/safelive/characterization}
+ 
+\section{Modèles de mémoire}
+  
+\subsection{Problèmes de cohérence}
+\input{system/memory/consistency/exercise}
+\input{system/memory/consistency/nonatomic}
+\input{system/memory/consistency/cache}
+\input{system/memory/consistency/timescale}
+\input{system/memory/consistency/compiler}
+ 
+\subsection{La relation happens-before}
+\input{system/memory/hb/jmm}
+\input{system/memory/hb/sw}
+\input{system/memory/hb/happenedbefore}
+\input{system/memory/hb/datarace}
+ 
+\subsection{Exemples et contre-exemples}
+\input{system/memory/hb/compiler}
+\input{system/memory/hb/future}
+\input{system/memory/hb/pi}
+\input{system/memory/hb/intro}
+\input{system/memory/hb/syncvsvolatile}
+ 
+\subsection{Le mot-clé volatile}
+\input{system/memory/volatile/volatile}
+\input{system/memory/volatile/cpp}
+ 
+\subsection{Registres atomiques et instructions spéciales}
+\input{system/memory/instructions/arrays}
+\input{system/memory/instructions/atomics}
+\input{system/memory/instructions/nonblocking}
+
+
+ 
+\part{Implémentation des verrous}
  
  
-\section{Implémentation des verrous}
- 
-\subsection{Réflexions préliminaires}
-\input{system/locks/try/specification}
-\input{system/locks/try/1}
-\input{system/locks/try/2}
-\input{system/locks/try/3}
+\section{Exclusion mutuelle à partir de read/write}
  
 \subsection{Algorithme de Peterson}
+\input{system/locks/peterson/specification}
+\input{system/locks/peterson/1}
+\input{system/locks/peterson/2}
+\input{system/locks/peterson/3}
 \input{system/locks/peterson/peterson}
  
 \subsection{Algorithme de la Boulangerie de Lamport}
 \input{system/locks/bakery/simplified}
 \input{system/locks/bakery/complete}
+
+\section{Utilisation d'instructions spéciales}
  
 \subsection{Algorithme spin-lock}
-\input{system/locks/spinlock/spinlock}
- 
- 
-\section{Cohérence des données partagées}
- 
-\subsection{Registres atomiques et instructions spéciales}
-\input{system/consistency/instructions/atomics}
-\input{system/consistency/instructions/nonblocking}
-\input{system/consistency/instructions/counter}
- 
-\subsection{La linéarisabilité}
-\input{system/consistency/linearizability/sequential}
-\input{system/consistency/linearizability/composability}
-\input{system/consistency/linearizability/herlihywing}
-\input{system/consistency/linearizability/linearizability}
-\input{system/consistency/linearizability/characterization}
-\input{system/consistency/linearizability/example}
-\input{system/consistency/linearizability/incrementation}
- 
-\subsection{Modèles de mémoire}
-\input{system/consistency/memory/exercise}
-\input{system/consistency/memory/example}
-\input{system/consistency/memory/cache}
-\input{system/consistency/memory/timescale}
-\input{system/consistency/memory/volatile}
-\input{system/consistency/memory/happenedbefore}
-\input{system/consistency/memory/future}
-\input{system/consistency/memory/pi}
-\input{system/consistency/memory/cpp}
-\input{system/consistency/memory/arrays}
-\input{system/consistency/memory/syncvsvolatile}
- 
- 
+\input{system/locks/spinlock/spinlock}  
+
+
 \section{Conclusion}
  
 \subsection{Bilan}
@@ -223,4 +242,3 @@
 \end{document}
 
 \endinput
-

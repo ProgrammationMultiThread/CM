@@ -7,88 +7,74 @@
 
 \begingroup
 
+\tikzset{
+  sshape/.style={
+    text width=20mm,
+    rectangle,
+    rounded corners,
+    fill=black!10,
+  },
+}
+
+\newcommand\scontent[3]{\begin{tabular}{@{}r@{}c@{~}l@{}}
+    \tiny \texttt{t1}     & \tiny : & \tiny \texttt{#1} \\[-.8mm]
+    \tiny \texttt{t2}     & \tiny : & \tiny \texttt{#2} \\[-.8mm]
+    \tiny \texttt{result} & \tiny = & \tiny \texttt{#3} \\[-.8mm]
+\end{tabular}}
+
 \begin{frame}[fragile]{Ce que l'on voudrait}
 
   \begin{block}{Rappel : exécution séquentiellement cohérente}
-    Le résultat observable d'une exécution est le même que celui d'un entrelacement de l'ordre ``happened before''
+    Le résultat observable \alert<2>{d'une exécution} est le même que celui d'un entrelacement de l'ordre ``happened before''
   \end{block}
 
-  \begin{center}
-    \begin{tikzpicture}
-      \draw (8.5, 4.25) node{\begin{minipage}{4cm}\begin{lstlisting}[gobble=12]
-            interface Counter {
-              void increment() ;
-              int get() ;
-            }
-      \end{lstlisting}\end{minipage}};
-      \draw[fill=black!10, ultra thin, rounded corners]
-      (1.5,5)    +(-.6,-.35) rectangle +(1.1,.35);
-      \draw[exampleColor]
-      (1.5,5)  +(0,.2)   node[left]{\tiny$t1$}    node {\tiny:} node[right]{\tiny$\mathit{increment()}$};
-      \draw[alertColor]
-      (1.5,5)  +(0,0)    node[left]{\tiny$t2$}    node {\tiny:} node[right]{\tiny$\mathit{increment()}$};
-      \draw
-      (1.5,5)  +(0,-.2)  node[left]{\tiny$result$} node {\tiny=} node[right]{\tiny 0};
+  \vspace{3mm}
+  \begin{lstlisting}
+    interface Counter {
+      void increment() ;
+      int get() ;
+    }
+  \end{lstlisting}
+  \vspace{3mm}
 
-      \draw[fill=black!10, ultra thin, rounded corners]
-      (4,5)    +(-.6,-.35) rectangle +(1.1,.35);
-      \draw
-      (4,5)  +(0,.2)   node[left]{\tiny$t1$}    node {\tiny:} node[right]{\tiny$\textsc{terminated}$};
-      \draw[alertColor]
-      (4,5)  +(0,0)    node[left]{\tiny$t2$}    node {\tiny:} node[right]{\tiny$\mathit{increment()}$};
-      \draw
-      (4,5)  +(0,-.2)  node[left]{\tiny$result$} node {\tiny=} node[right]{\tiny 1};
+  \on[y=5mm, x=.2\textwidth]{
+    \begin{tikzpicture}[automaton, x=30mm, y=12mm]
+      \state[sshape,initial]                       (01) at (0,1) {\scontent {\example{increment()}} {\alert{increment()}}  {0} };
+      \state[sshape]                               (00) at (0,0) {\scontent {\example{increment()}} {\textsc{term.}}       {1} };
+      \state[sshape]                               (11) at (1,1) {\scontent {\textsc{term.}}        {\alert{increment()}}  {1} };
+      \state[sshape, accepting, fill=structure!20] (10) at (1,0) {\scontent {\textsc{term.}}        {\textsc{term.}}       {2} };
 
-      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-      \draw[fill=black!10, ultra thin, rounded corners]
-      (1.5,3.5)    +(-.6,-.35) rectangle +(1.1,.35);
-      \draw[exampleColor]
-      (1.5,3.5)  +(0,.2)   node[left]{\tiny$t1$}    node {\tiny:} node[right]{\tiny$\mathit{increment()}$};
-      \draw
-      (1.5,3.5)  +(0,0)    node[left]{\tiny$t2$}    node {\tiny:} node[right]{\tiny$\textsc{terminated}$};
-      \draw
-      (1.5,3.5)  +(0,-.2)  node[left]{\tiny$result$} node {\tiny=} node[right]{\tiny 1};
-
-      \draw[structure, fill=structure!10, ultra thin, rounded corners]
-      (4,3.5)    +(-.65,-.4) rectangle +(1.15,.4);
-      \draw[structure, fill=structure!10, ultra thin, rounded corners]
-      (4,3.5)    +(-.6,-.35) rectangle +(1.1,.35);
-      \draw
-      (4,3.5)  +(0,.2)   node[left]{\tiny$t1$}    node {\tiny:} node[right]{\tiny$\textsc{terminated}$};
-      \draw
-      (4,3.5)  +(0,0)    node[left]{\tiny$t2$}    node {\tiny:} node[right]{\tiny$\textsc{terminated}$};
-      \draw
-      (4,3.5)  +(0,-.2)  node[left]{\tiny$result$} node {\tiny=} node[right]{\tiny 2};
-
-      \draw[-latex] (.6,5)  -- (.9,5) ;
-      \draw[exampleColor,-latex] (2.6,5)  -- (3.4,5) ;
-      \draw[exampleColor,-latex] (2.6,3.5)  -- (3.35,3.5) ;
-
-      \draw[alertColor,-latex] (1.75,4.65)  -- (1.75,3.85) ;
-      \draw[alertColor,-latex] (4.25,4.65)  -- (4.25,3.9) ;
-
+      \path[alert]   (01) edge (00);
+      \path[alert]   (11) edge (10);
+      \path[example] (01) edge (11);
+      \path[example] (00) edge (10);
     \end{tikzpicture}
-  \end{center}
-
+  }
+  
   \begin{block}{Entrelacements possibles}
     \vspace{-2mm}
     \begin{itemize}
-    \item ${\color{exampleColor}t_1:increment();~} {\color{alertColor}t_2:increment();~}$ \hspace{5mm} $result=2$
-    \item ${\color{alertColor}t_2:increment();~} {\color{exampleColor}t_1:increment();~}$ \hspace{5mm} $result=2$
+    \item ${\color{exampleColor}t_1:increment();~} {\color{alertColor}t_2:increment();~}$ \hspace{5mm} \structure{$result=2$}
+    \item ${\color{alertColor}t_2:increment();~} {\color{exampleColor}t_1:increment();~}$ \hspace{5mm} \structure{$result=2$}
     \end{itemize}
   \end{block}
 
   \pause
   \vspace{-1mm}
 
-  \begin{block}{Notion d'atomicité}
-    \vspace{-2mm}
-    \begin{itemize}
-    \item À quelle granularité définit-on les \structure{événements} d'une exécution ?  
-    \item \alert{Section critique} : portion de code qui doit être exécutée \structure{atomiquement}
-    \end{itemize}
+  \begin{block}{Objet partagé séquentiellement cohérent}
+    Le résultat observable \alert{des opérations sur l'objet partagé}
+    d'une exécution est le même que celui d'un entrelacement de l'ordre ``happened before''
   \end{block}
+
+  
+%  \begin{block}{Notion d'atomicité}
+%    \vspace{-2mm}
+%    \begin{itemize}
+%    \item À quelle granularité définit-on les \structure{événements} d'une exécution ?  
+%    \item \alert{Section critique} : portion de code qui doit être exécutée \structure{atomiquement}
+%    \end{itemize}
+%  \end{block}
 
 \end{frame}
 

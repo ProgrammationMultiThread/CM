@@ -11,26 +11,25 @@
 
   \begin{lstlisting}
     class BakeryLock implements Lock {
-      private (*\Structure{boolean[] entering = new boolean[n];}*) // {false...}
-      private (*\Example{int[] priority = new int[n];}*) // {0...}
+      private final (*\Structure{AtomicIntegerArray entering}*) = new AtomicIntegerArray(n);
+      private final (*\Example{AtomicIntegerArray priority}*) = new AtomicIntegerArray(n);
       public void lock() {
         int i = ThreadID.get();
-        (*\Structure{entering[i] = true;}*)
-        (*\Example{priority[i] = 1 + max(priority);}*)
-        (*\Structure{entering[i] = false;}*)
+        (*\Structure{entering.set}*) (i, 1);
+        (*\Example{priority.set}*) (i, 1 + max( (*\Example{priority}*) ));
+        (*\Structure{entering.set}*) (i, 0);
         for(int j = 0; j < n; j++) {
-          while( (*\Structure{entering[j]}*) || (*\Example{hasPriorityOverI(j)}*) );
-        }
+          while(true) {
+            if( (*\Structure{entering.get}*) (j) == 1) continue;
+            int pI = (*\Example{priority.get}*) (i);
+            int pJ = (*\Example{priority.get}*) (j);
+            if(pJ == 0)              break;
+            if(pJ > pI)              break;
+            if(pJ == pI && j >= i)   break;
+          }
       }
       public void unlock() {
-        int i = ThreadID.get();
-        (*\Example{priority[i] = 0;}*)
-      }
-      private boolean hasPriorityOverI(int j) {
-        if(priority[j] == 0          ) return false;
-        if(priority[j] <  priority[i]) return true;
-        if(priority[j] == priority[i]) return j<i;
-        return false;
+        (*\Example{priority.set}*) (ThreadID.get(), 0);
       }
     }
   \end{lstlisting}
@@ -44,3 +43,8 @@
 
 \endgroup
 \endinput
+      private boolean isBockedBy(int i, int j) {
+        if( (*\Structure{entering.get}*) (j) == 1 ) return true;
+        int pI = (*\Example{priority.get}*) (i);  int pJ = (*\Example{priority.get}*) (j);
+        return pJ != 0 && (pJ <  pI || (pJ == pI && j<i));
+      }

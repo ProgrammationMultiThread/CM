@@ -1,0 +1,45 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+% Part: 
+% Section: 
+% Sub-section: 
+% Frame: 
+
+\begingroup
+
+\begin{frame}{Modèle de Mémoire du langage Java (JMM)}
+
+  \vspace{-3mm}
+
+  \structure{Rappel :} Si l'exécution est \structure{séquentiellement cohérente} (SC),
+  l'ensemble des exécutions est décrit par une sémantique d'entrelacement
+
+  \begin{alertblock}{Problème}
+    \begin{itemize}
+    \item Les programmes Java \alert{ne sont pas} SC par défaut
+    \item Comment raisonner sur un programme concurrent ?
+    \item<2-> Un programme est \structure{correctement synchronisé} si aucune de ses exécutions SC ne contient de \alert{data race}
+    \item<2-> Tout programme correctement synchronisé est SC
+    \end{itemize}
+  \end{alertblock}
+
+  \vspace{2mm}
+  \pause
+  
+  \begin{shadequote}{\href{https://docs.oracle.com/javase/specs/jls/se7/html/jls-17.html\#jls-17.4}{Spécification du langage Java (JLS §17.4)}}
+    When a program contains two conflicting accesses that are not ordered by a \alert<3>{happens-before} relationship, it is said to contain a \alert{data race}.
+  \end{shadequote}
+
+  \vspace{2mm}
+  \pause
+  
+  \structure{Rappel :}  la relation \alert{happens-before} est un ordre partiel formé de :
+  \begin{itemize}
+  \item un \structure{ordre de programme} fait le lien avec la sémantique séquentielle
+  \item une \structure{relation synchronises-with} fait le lien entre les threads
+  \end{itemize}
+  
+\end{frame}
+
+\endgroup
+\endinput

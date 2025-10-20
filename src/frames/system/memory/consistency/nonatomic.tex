@@ -1,0 +1,53 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+% Part: 
+% Section: 
+% Sub-section: 
+% Frame: 
+
+\begingroup
+
+\begin{frame}[fragile]{Ce code peut-il lever une erreur ?}
+
+  \vspace{-15mm}
+  \begin{lstlisting}
+    class LongWrites {
+      static long (*\Structure{value = -1L;}*)
+      public static void main(String args[]) {
+        new Thread(() -> {
+          (*\Structure{value++;}*)
+        }).start();
+        new Thread(() -> {
+          if( (*\Structure{value > 0}*) ) {
+            throw new RuntimeException("reachable?");
+          }
+        }).start();
+      }
+    }
+  \end{lstlisting}
+
+  \uncover<2>{
+    \on[y=-7mm, x=25mm]{
+      \small
+      $\begin{array}{@{}r@{~}c@{~}c@{}c@{}c@{}c@{\_}c@{}c@{}c@{}c@{}}
+        -1 & = & 0x\,FF & FF & FF & FF & FF & FF & FF & FF\\[1.5mm]
+        0  & = & 0x\,00 & 00 & 00 & 00 & 00 & 00 & 00 & 00\\[1.5mm]
+        0  & < & 0x\,00 & 00 & 00 & 00 & FF & FF & FF & FF\\
+      \end{array}$
+    }
+  }
+  
+  \uncover<2>{
+    \onBlock[y=-25mm]{
+      \href{https://docs.oracle.com/javase/specs/jls/se7/html/jls-17.html\#jls-17.7}{Spécification du langage Java (JLS §17.7)}}{
+      \begin{shadequote}{}
+        Implementations of the Java Virtual Machine are \alert{encouraged} to avoid splitting 64-bit values where possible.
+        Programmers are \alert{encouraged} to declare shared 64-bit values as \Alert{volatile or synchronize} their programs correctly to avoid possible complications.
+      \end{shadequote}
+    }
+  }
+  
+\end{frame}
+
+\endgroup
+\endinput

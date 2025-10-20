@@ -9,13 +9,17 @@
 
 \begin{frame}[fragile]{Un troisième essai}
 
+  \vspace{-15mm}
   On suppose deux processus, d'identifiants 0 et 1. 
 
   \begin{lstlisting}
     class NaiveLock3 implements Lock {
-      private (*\Example{int priority = 0;}*)
+
+      private volatile (*\Example{int priority = 0;}*)
       public void lock() {
         int i = ThreadID.get();
+
+        
         while( (*\Example{priority != i}*) );
       }
       public void unlock() {
@@ -25,13 +29,13 @@
     }
   \end{lstlisting}
 
-  \begin{exampleblock}{Exercice}
-    \begin{itemize}
-    \item Cet algorithme respecte-t-il l'\example{exclusion mutuelle} ?
-    \item Cet algorithme est-il \example{starvation-free} ?
-    \end{itemize}
-  \end{exampleblock}
-
+  \onExampleBlock[y=-23mm]{Exercice}{
+      \begin{itemize}
+      \item Cet algorithme respecte-t-il l'\example{exclusion mutuelle} ?
+      \item Cet algorithme est-il \example{starvation-free} ?
+      \end{itemize}
+  }
+  
 \end{frame}
 
 \endgroup

@@ -132,8 +132,8 @@
 
 \newcommand{\todo}[1]{TODO: #1}
 
-\newcommand*\quotefont{\fontfamily{LinuxLibertineT-LF}} % selects Libertine as the quote font
-\newcommand*\quotesize{40} % if quote size changes, need a way to make shifts relative
+%\newcommand*\quotefont{\fontfamily{LinuxLibertineT-LF}} % selects Libertine as the quote font
+%\newcommand*\quotesize{40} % if quote size changes, need a way to make shifts relative
 
 \newcommand{\vFill}{\vskip0pt plus 1filll}
 \newcommand{\hFill}{\hspace{\fill}}
@@ -151,17 +151,53 @@
 
 
 
+\newcommand{\hb}{\xrightarrow{\mathsf{hb}}}
+\newcommand{\so}{\xrightarrow{\mathsf{so}}}
+\newcommand{\sw}{\xrightarrow{\mathsf{sw}}}
+\newcommand{\po}{\xrightarrow{\mathsf{po}}}
 
+\usetikzlibrary{arrows.meta}
 
 \tikzset{
   operation/.style={
+    draw,
+    fill=white,
+    draw highlighted,
+    fill highlighted,
     rectangle,
     rounded corners,
-    draw
+    anchor=center,
+    align=center,
+    minimum height=4mm,
+  },
+  event/.style={
+    draw,
+    fill=white,
+    draw highlighted,
+    fill highlighted,
+    circle,
+    inner sep=1.5mm,
+    outer sep=-1mm,
+  },
+  message/.style={
+    {Circle[length=2.4pt,width=2.4pt]}-{Stealth[length=5pt]},
+    shorten <=-1.2pt,
+    auto,
+ },
+  lin point/.style={
+    {Circle[length=2pt,width=2pt]}-{Circle[length=2pt,width=2pt]},
+    shorten <=-1pt,
+    shorten >=-1pt,
+    densely dotted,
+    thick,
+  },
+  process/.style={
+    {Bar-Straight Barb},
+  },
+  crashed/.style={
+    {Bar-Rays},
   },
 }
-
-
 
 
 

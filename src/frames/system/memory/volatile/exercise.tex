@@ -1,0 +1,46 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+% Part: 
+% Section: 
+% Sub-section: 
+% Frame: 
+
+\begingroup
+
+\begin{frame}[fragile]{Que fait ce programme ?}
+
+  \begin{lstlisting}[gobble=4]
+    class Counter {
+      private int value=0;
+      public synchronized void increment() {
+        ++value;
+      }
+      public (*\Alert{\alert{\sout{synchronized}}}*) int get() {
+        return value;
+      }
+
+      public static void main(String[] args) {
+        var counter = new Counter();
+        
+        var tWriter = new Thread( (*\Example{counter::increment}*) );
+
+        var tReader = new Thread(() -> {
+          while( (*\Structure{counter.get()==0}*) );
+          System.out.println("done");
+        });
+        
+        tReader.start();
+        Thread.sleep(250);
+        tWriter.start();
+        
+      }
+    }
+  \end{lstlisting}
+  
+  \begin{citing}
+    \jitem \lstinline{tp1/Volatile.java}
+  \end{citing}
+\end{frame}
+
+\endgroup
+\endinput

@@ -38,9 +38,9 @@
       \node[operation, fill=black!10] (o3) at (2,0) {\lstinline{while(!isDone)}};
       \node[operation, fill=black!10] (o4) at (3,0) {\lstinline{return value}};
 
-      \path[-latex, structure] (o1) edge node[above]{ordre de} node[below]{programme} (o2);
-      \path[-latex, alert]     (o2) edge node[right]{ordre de \\synchronisation}                   (o3);
-      \path[-latex, structure] (o3) edge node[above]{ordre de} node[below]{programme} (o4);
+      \path[-latex, structure] (o1) edge node[above]{po} (o2);
+      \path[-latex, alert]     (o2) edge node[right]{sw} (o3);
+      \path[-latex, structure] (o3) edge node[above]{po} (o4);
     \end{tikzpicture}
   }
 

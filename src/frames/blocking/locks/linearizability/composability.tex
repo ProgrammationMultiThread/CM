@@ -13,15 +13,15 @@
       var x = new SequentiallyConsistentCounter(0);
       var y = new SequentiallyConsistentCounter(0);
       
-      new Thread(() ->
-      x.increment();
-      System.out.print(y.get());
-      ).start();
+      new Thread(() -> {
+        (*\Structure{x.increment();}*)
+        System.out.print( (*\Structure{y.get()}*) );
+      }).start();
       
-      new Thread(() ->
-      y.increment();
-      System.out.print(x.get());
-      ).start();
+      new Thread(() -> {
+        (*\Structure{y.increment();}*)
+        System.out.print( (*\Structure{x.get()}*) );
+      }).start();
     }
   \end{lstlisting}
 
@@ -34,6 +34,7 @@
     \begin{itemize}
     \item Si deux objets sont cohérents, leur composition est cohérente 
     \item \alert{La cohérence séquentielle n'est pas composable !}
+    \item \structure{Linéarisabilité} : version composable de la cohérence séquentielle
     \end{itemize}
   \end{block}
 \end{frame}

@@ -1,0 +1,45 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+% Part: 
+% Section: 
+% Sub-section: 
+% Frame: 
+
+\begingroup
+
+\begin{frame}{Relation synchronizes-with}
+
+  \begin{block}{Définition -- Relation synchronizes-with}
+    Certaines \structure{actions de synchronisation} induisent des \alert{dépendances sémantiques} capturées par la relation \structure{synchronizes-with}, notée $\sw$ :
+    \begin{itemize}
+    \item Cycle de vie d'un thread :
+      \begin{itemize}
+      \item \lstinline{t.start()} $\sw$ première action de \lstinline{t}
+      \item \lstinline{t.interrupt()} $\sw$ détection de l'interruption par \lstinline{t}
+      \item dernière action de \lstinline{t} $\sw$ détection de la fin de \lstinline{t}
+      \item initialisation d'une variable par défaut $\sw$ première action de tout thread
+      \end{itemize}
+    \item Blocs \lstinline{synchronized(o)} sur \structure{le même moniteur} \lstinline{o} :
+      \begin{itemize}
+      \item sortie d'un bloc $\sw$ entrées \Alert<2>{ultérieures} réussies dans un bloc
+      \end{itemize}
+    \item Accès à \structure{la même variable} \lstinline{x} déclarée \lstinline{volatile} :
+      \begin{itemize}
+      \item écriture dans \lstinline{x} $\sw$ lectures dans \lstinline{x} \Alert<2>{après} cette écriture et \Alert<2>{avant} la suivante
+      \end{itemize}
+    \end{itemize}
+  \end{block}
+
+  \pause
+
+  \begin{block}{Remarque : définition de avant et après}
+    \begin{itemize}
+    \item Les \Alert{relations temporelles} sont bien définies si l'exécution est \alert{SC}.
+    \item Sinon, la JLS introduit un \structure{ordre total de synchronisation} sur ces actions.
+    \end{itemize}
+  \end{block}
+
+\end{frame}
+
+\endgroup
+\endinput

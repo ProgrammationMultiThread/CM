@@ -3,13 +3,9 @@
 # -------------------------------
 
 SHELL    := bash
-SRCDIR   := src/drivers
+SRCDIR   := src/main
 BUILDDIR := build
 DOCSDIR  := docs
-
-# LaTeX drivers from $(SRCDIR)
-TEXS    := slides handout
-PDFS    := $(addsuffix .pdf,$(TEXS))
 
 # Choose engine (override with: make PDFLATEX=xelatex)
 PDFLATEX ?= pdflatex
@@ -30,26 +26,58 @@ endif
 # Add latex-libs to TeX search path (recursive with //); keep default path via trailing sep
 export TEXINPUTS := $(CURDIR)/$(LATEX_LIBS_DIR)//$(PATHSEP)
 
+# Select current course
+-include .current_course.mk
+COURSE ?= CPMT
+SRCMAIN := $(SRCDIR)/$(COURSE).tex
+
 # -------------------------------
 # Main targets
 # -------------------------------
 
-.PHONY: all slides handout update clean cleanall help
+.PHONY: both all slides handout update clean cleanall help configure list FORCE deps
 
-# By default: build everything
-all: slides handout
+# By default: build both
+both: slides handout
 
-# Aliases to build each PDF
-slides: $(DOCSDIR)/slides.pdf
-handout: $(DOCSDIR)/handout.pdf
+slides: $(DOCSDIR)/$(COURSE).pdf
+handout: $(DOCSDIR)/$(COURSE)-handout.pdf
 
-# Generic rule: build docs/%.pdf from src/drivers/%.tex
+all:
+	@for f in $(SRCDIR)/*.tex; do \
+	  base=$${f##*/}; name=$${base%.tex}; \
+	  $(MAKE) --no-print-directory $(DOCSDIR)/$$name.pdf $(DOCSDIR)/$$name-handout.pdf || exit $$?; \
+	done
+
+
 $(DOCSDIR)/%.pdf: $(SRCDIR)/%.tex FORCE | $(BUILDDIR) $(DOCSDIR) deps
-	$(PDFLATEX) $(PDFLATEX_FLAGS) $<
-	$(PDFLATEX) $(PDFLATEX_FLAGS) $<   # second pass for cross-refs
-	@mv $(BUILDDIR)/$*.pdf $@
+	$(PDFLATEX) $(PDFLATEX_FLAGS) -jobname=$* $<
+	$(PDFLATEX) $(PDFLATEX_FLAGS) -jobname=$* $<
+	mv "$(BUILDDIR)/$*.pdf" "$@"
+
+$(DOCSDIR)/%-handout.pdf: $(SRCDIR)/%.tex FORCE | $(BUILDDIR) $(DOCSDIR) deps
+	echo "\def\HANDOUT{}\input{$(SRCDIR)/$*.tex}" > $(BUILDDIR)/$*-handout.tex;
+	$(PDFLATEX) $(PDFLATEX_FLAGS) -jobname=$*-handout $(BUILDDIR)/$*-handout.tex
+	$(PDFLATEX) $(PDFLATEX_FLAGS) -jobname=$*-handout $(BUILDDIR)/$*-handout.tex
+	mv "$(BUILDDIR)/$*-handout.pdf" "$@"
 
 FORCE:
+
+# -------------------------------
+# Course selection
+# -------------------------------
+
+configure:
+	@if [ -z "$(COURSE)" ]; then \
+	  echo "Usage: make configure COURSE=<nom>"; exit 1; \
+	fi
+	@echo "COURSE=$(COURSE)" > .current_course.mk
+	@echo ">>> Cours courant: $(COURSE)"
+
+list:
+	@echo "Cours disponibles :"; \
+	for f in $(SRCDIR)/*.tex; do b=$${f##*/}; echo " - $${b%.tex}"; done; \
+	if [ -f .current_course.mk ]; then echo "Cours courant : $(COURSE)"; else echo "(aucun cours configuré, défaut: $(COURSE))"; fi
 
 # -------------------------------
 # Dependencies management (latex-libs)
@@ -69,7 +97,7 @@ update:
 	git pull --ff-only || echo ">>> Skipping main repo update (offline or non-fast-forward)."; \
 	if [ -d "$(LATEX_LIBS_DIR)/.git" ]; then \
 	  echo ">>> Updating $(LATEX_LIBS_DIR)"; \
-	  git -C $(LATEX_LIBS_DIR) pull --ff-only || echo ">>> Skipping latex-libs update (offline or non-fast-forward)."; \
+	  git -C "$(LATEX_LIBS_DIR)" pull --ff-only || echo ">>> Skipping latex-libs update (offline or non-fast-forward)."; \
 	else \
 	  echo ">>> latex-libs not present; run 'make deps' when online."; \
 	fi
@@ -92,7 +120,7 @@ clean:
 	@rm -rf $(BUILDDIR)/*
 
 cleanall: clean
-	@rm -f $(DOCSDIR)/*.pdf
+	@rm -f $(DOCSDIR)/*.pdf .current_course.mk
 
 # -------------------------------
 # Help
@@ -100,9 +128,11 @@ cleanall: clean
 
 help:
 	@echo "Usage:"
-	@echo "  make            – Build both slides and handout"
-	@echo "  make slides     – Build docs/slides.pdf"
-	@echo "  make handout    – Build docs/handout.pdf"
-	@echo "  make update     – Update local project and LaTeX-libs (git pull)"
-	@echo "  make clean      – Remove build artifacts"
-	@echo "  make cleanall   – Also remove generated PDFs"
+	@echo "  make                       – Build docs/\$$COURSE.pdf and docs/\$$COURSE-handout.pdf"
+	@echo "  make slides                – Build docs/\$$COURSE.pdf"
+	@echo "  make handout               – Build docs/\$$COURSE-handout.pdf"
+	@echo "  make configure COURSE=xxx  – Sets current course as src/main/xxx.tex (default: CPMT)"
+	@echo "  make list                  – Lists available courses"
+	@echo "  make update                – Update local project and LaTeX-libs (git pull)"
+	@echo "  make clean                 – Remove build artifacts"
+	@echo "  make cleanall              – Also remove generated PDFs"

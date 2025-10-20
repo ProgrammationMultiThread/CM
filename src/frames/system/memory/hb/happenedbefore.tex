@@ -1,0 +1,37 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+% Part: 
+% Section: 
+% Sub-section: 
+% Frame: 
+
+\begingroup
+
+\begin{frame}{Relation happens-before}
+
+  \begin{block}{Définition -- Ordre de programme}
+    \begin{itemize}
+    \item Pour chaque thread $t_i$, la \structure{sémantique intra-thread} (opérationnelle à petits pas)
+      définit un \alert{ordre total} $\po_i$ entre tous les pas de $t_i$
+    \item L'\structure{ordre de programme} est l'\alert{ordre partiel} union $\po = \bigcup_{t_i} \po_i$
+    \end{itemize}
+  \end{block}
+
+  \pause
+  
+  \begin{block}{Définition -- Relation happens-before}
+    \begin{itemize}
+    \item     L'\alert{ordre partiel strict} $\hb$ est la fermeture transitive de $\sw \cup \po$ :
+      \begin{itemize}
+      \item S'il existe un thread $t_i$ tel que $e \po_i e'$, alors $e \hb e'$
+      \item Si $e$ et $e'$ sont des actions de synchronisation et $e \sw e'$, alors $e \hb e'$
+      \item Si $e \hb e_1 \hb e_2 \hb ... \hb e'$, alors $e \hb e'$
+      \end{itemize}
+    \item  Les actions $e$ et $e'$ sont \structure{concurrentes} $(e || e')$ si $e\not\hb e'$ et $e'\not\hb e$.
+    \end{itemize}
+  \end{block}
+  
+\end{frame}
+
+\endgroup
+\endinput

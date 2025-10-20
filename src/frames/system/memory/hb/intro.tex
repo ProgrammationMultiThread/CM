@@ -1,0 +1,45 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+% Part: 
+% Section: 
+% Sub-section: 
+% Frame: 
+
+\begingroup
+
+\begin{frame}[fragile]{Retour sur l'exemple introductif}
+
+  \begin{lstlisting}[gobble=4]
+    class Counter {
+      private int value=0;
+      public synchronized void increment() {
+        (*\Example{++value;}*)
+      }
+      public int get() {
+        return (*\Structure{value;}*)
+      }
+
+      public static void main(String[] args) {
+        var counter = new Counter();
+        var tWriter = new Thread( (*\Example{counter::increment}*) );
+        var tReader = new Thread(() -> {
+          while( (*\Structure{counter.get()==0}*) );
+          System.out.println("done");
+        });
+        tReader.start();
+        Thread.sleep(250);
+        tWriter.start();
+        
+      }
+    }
+  \end{lstlisting}
+
+  \begin{itemize}
+  \item Data race entre les lectures par \lstinline{tReader} et l'écriture par \lstinline{tWriter}
+  \item Il faut protéger la lecture, soit par \lstinline{volatile}, soit par \lstinline{synchronized}
+  \end{itemize}
+  
+\end{frame}
+
+\endgroup
+\endinput

@@ -7,120 +7,117 @@
 
 \begingroup
 
+\tikzset{
+  sshape/.style={
+    text width=15mm,
+    rectangle,
+    rounded corners,
+    fill=black!10,
+  },
+}
+
+\newcommand\scontent[4]{\begin{tabular}{@{}r@{}c@{~}l@{}}
+    \tiny \texttt{t1}     & \tiny : & \tiny \texttt{#1} \\[-.8mm]
+    \tiny \texttt{t2}     & \tiny : & \tiny \texttt{#2} \\[-.8mm]
+    \tiny \texttt{result} & \tiny = & \tiny \texttt{#3} \\[-.8mm]
+    \tiny \texttt{lock}   & \tiny = & \tiny \texttt{#4}
+\end{tabular}}
+
 \begin{frame}{Incrémentations concurrentes}
-  \begin{center}
-    \begin{tikzpicture}
 
-      \draw[fill=black!10, ultra thin, rounded corners] (0,6.0)  +(-.7,-.4) rectangle +(.7,.4);
-      \draw[exampleColor]                               (0,6.0)  +(-.1,.3)  node[left]{\tiny$t1$}    node {\tiny:} node[right]{\tiny$\mathit{lock()}$};
-      \draw[alertColor]                                 (0,6.0)  +(-.1,.1)  node[left]{\tiny$t2$}    node {\tiny:} node[right]{\tiny$\mathit{lock()}$};
-      \draw                                             (0,6.0)  +(-.1,-.1) node[left]{\tiny$value$} node {\tiny=} node[right]{\tiny 0};
-      \draw                                             (0,6.0)  +(-.1,-.3) node[left]{\tiny$lock$} node {\tiny=} node[right]{\tiny free};
-      \draw[fill=black!10, ultra thin, rounded corners] (2,6.0)  +(-.7,-.4) rectangle +(.7,.4);
-      \draw[exampleColor]                               (2,6.0)  +(-.1,.3)  node[left]{\tiny$t1$}    node {\tiny:} node[right]{\tiny$\mathit{get()}$};
-      \draw                                             (2,6.0)  +(-.1,.1)  node[left]{\tiny$t2$}    node {\tiny:} node[right]{\tiny$\mathit{lock()}$};
-      \draw                                             (2,6.0)  +(-.1,-.1) node[left]{\tiny$value$} node {\tiny=} node[right]{\tiny 0};
-      \draw                                             (2,6.0)  +(-.1,-.3) node[left]{\tiny$lock$} node {\tiny=} node[right]{\tiny ${\color{exampleColor} t1}$};
-      \draw[fill=black!10, ultra thin, rounded corners] (4,6.0)  +(-.7,-.4) rectangle +(.7,.4);
-      \draw[exampleColor]                               (4,6.0)  +(-.1,.3)  node[left]{\tiny$t1$}    node {\tiny:} node[right]{\tiny$\mathit{set(1)}$};
-      \draw                                             (4,6.0)  +(-.1,.1)  node[left]{\tiny$t2$}    node {\tiny:} node[right]{\tiny$\mathit{lock()}$};
-      \draw                                             (4,6.0)  +(-.1,-.1) node[left]{\tiny$value$} node {\tiny=} node[right]{\tiny 0};
-      \draw                                             (4,6.0)  +(-.1,-.3) node[left]{\tiny$lock$} node {\tiny=} node[right]{\tiny ${\color{exampleColor} t1}$};
-      \draw[fill=black!10, ultra thin, rounded corners] (6,6.0)  +(-.7,-.4) rectangle +(.7,.4);
-      \draw[exampleColor]                               (6,6.0)  +(-.1,.3)  node[left]{\tiny$t1$}    node {\tiny:} node[right]{\tiny$\mathit{unlock()}$};
-      \draw                                             (6,6.0)  +(-.1,.1)  node[left]{\tiny$t2$}    node {\tiny:} node[right]{\tiny$\mathit{lock()}$};
-      \draw                                             (6,6.0)  +(-.1,-.1) node[left]{\tiny$value$} node {\tiny=} node[right]{\tiny 1};
-      \draw                                             (6,6.0)  +(-.1,-.3) node[left]{\tiny$lock$} node {\tiny=} node[right]{\tiny ${\color{exampleColor} t1}$};
-      \draw[fill=black!10, ultra thin, rounded corners] (8,6.0)  +(-.7,-.4) rectangle +(.7,.4);
-      \draw                                             (8,6.0)  +(-.1,.3)  node[left]{\tiny$t1$}    node {\tiny:} node[right]{\tiny$\textsc{term.}$};
-      \draw[alertColor]                                 (8,6.0)  +(-.1,.1)  node[left]{\tiny$t2$}    node {\tiny:} node[right]{\tiny$\mathit{lock()}$};
-      \draw                                             (8,6.0)  +(-.1,-.1) node[left]{\tiny$value$} node {\tiny=} node[right]{\tiny 1};
-      \draw                                             (8,6.0)  +(-.1,-.3) node[left]{\tiny$lock$} node {\tiny=} node[right]{\tiny free};
+%  \onBlock<2->[width=.65\textwidth]{Algorithme bloquant}{
+% 
+%    \vspace{-2mm}
+%    \begin{itemize}
+%    \item Point de linéarisation : n'importe où en SC
+%    \end{itemize}
+%    \centering
+% 
+%    \begin{tikzpicture}[y=8mm]\scriptsize
+%      \draw[process, structure]    (0,2    ) node[left] (cpt)  {\texttt{cpt}}   +(.2 ,.15) node{$0$} +(0,0) -- (6.5,2   );
+%      \draw[process, exampleColor] (0,1    ) node[left] (t1)   {\texttt{t1}}                                -- (6.5,1   );
+%      \draw[process, alertColor]   (0,0    ) node[left] (t2)   {\texttt{t2}}                                -- (6.5,0   );
+%      \draw[process, structure]    (0,-1   ) node[left] (val)  {\texttt{value}} +(.15,.12) node{$0$} +(0,0) -- (6.5,-1  );
+%      \draw[process, structure]    (0,-1.5 ) node[left] (lock) {\texttt{lock}}                              -- (6.5,-1.5);
+%      
+%      \node[structure, operation, text width=26mm] (o11) at (2.4,1)    {$lock()$};
+%      \node[structure, operation, right          ] (o21) at (o11.east) {$get()$};
+%      \node[structure, operation, right          ] (o31) at (o21.east) {$set(2)$};
+%      \node[structure, operation, right          ] (o41) at (o31.east) {$unlock()$};
+%      \node[structure, operation                 ] (o10) at (.6,0)     {$lock()$};
+%      \node[structure, operation, right          ] (o20) at (o10.east) {$get()$};
+%      \node[structure, operation, right          ] (o30) at (o20.east) {$set(1)$};
+%      \node[structure, operation, right          ] (o40) at (o30.east) {$unlock()$};
+% 
+%      \coordinate (lp11) at ($(o11.south) + (1.2,0)$);
+% 
+%      \begin{scope}[background]
+%        \node[example, operation, fit=(o11)(o41), inner sep=.5mm] (o1) {};
+%        \node[alert,   operation, fit=(o10)(o40), inner sep=.5mm] (o0) {};
+%        \draw[alertColor,   ultra thick] (o10  |- lock) -- (o40 |- lock) ; 
+%        \draw[exampleColor, ultra thick] (lp11 |- lock) -- (o41 |- lock) ; 
+%      \end{scope}
+%      
+%      \draw[structure,    lin point] (lp11)      -- (lp11 |- lock) ; 
+%      \draw[structure,    lin point] (o41.south) -- (o41 |- lock) ; 
+%      \draw[structure,    lin point] (o10.south) -- (o10 |- lock) ; 
+%      \draw[structure,    lin point] (o40.south) -- (o40 |- lock) ; 
+%      \draw[structure,    lin point] (o20.south) -- (o20 |- val) node[above right]{$0$}; 
+%      \draw[structure,    lin point] (o30.south) -- (o30 |- val) node[above right]{$1$}; 
+%      \draw[structure,    lin point] (o21.south) -- (o21 |- val) node[above right]{$1$}; 
+%      \draw[structure,    lin point] (o31.south) -- (o31 |- val) node[above right]{$2$}; 
+%      \draw[exampleColor, lin point] (o1.north) -- (o1 |- cpt) node[above left]{$increment()$} node[above right]{$2$}; 
+%      \draw[alertColor,   lin point] (o0.north) -- (o0 |- cpt) node[above left]{$increment()$} node[above right]{$1$}; 
+%      
+%    \end{tikzpicture}
+%  }
+  
+  \on[y=-3mm]{
+    \begin{tikzpicture}[automaton, x=24mm, y=16mm]
 
-
-      \draw[fill=black!10, ultra thin, rounded corners] (0,4.5)  +(-.7,-.4) rectangle +(.7,.4);
-      \draw                                             (0,4.5)  +(-.1,.3)  node[left]{\tiny$t1$}    node {\tiny:} node[right]{\tiny$\mathit{lock()}$};
-      \draw[alertColor]                                 (0,4.5)  +(-.1,.1)  node[left]{\tiny$t2$}    node {\tiny:} node[right]{\tiny$\mathit{get()}$};
-      \draw                                             (0,4.5)  +(-.1,-.1) node[left]{\tiny$value$} node {\tiny=} node[right]{\tiny 0};
-      \draw                                             (0,4.5)  +(-.1,-.3) node[left]{\tiny$lock$} node {\tiny=} node[right]{\tiny ${\color{alertColor} t2}$};
-      \draw[fill=black!10, ultra thin, rounded corners] (0,3.0)  +(-.7,-.4) rectangle +(.7,.4);
-      \draw                                             (0,3.0)  +(-.1,.3)  node[left]{\tiny$t1$}    node {\tiny:} node[right]{\tiny$\mathit{lock()}$};
-      \draw[alertColor]                                 (0,3.0)  +(-.1,.1)  node[left]{\tiny$t2$}    node {\tiny:} node[right]{\tiny$\mathit{set(1)}$};
-      \draw                                             (0,3.0)  +(-.1,-.1) node[left]{\tiny$value$} node {\tiny=} node[right]{\tiny 0};
-      \draw                                             (0,3.0)  +(-.1,-.3) node[left]{\tiny$lock$} node {\tiny=} node[right]{\tiny ${\color{alertColor} t2}$};
-      \draw[fill=black!10, ultra thin, rounded corners] (0,1.5)  +(-.7,-.4) rectangle +(.7,.4);
-      \draw                                             (0,1.5)  +(-.1,.3)  node[left]{\tiny$t1$}    node {\tiny:} node[right]{\tiny$\mathit{lock()}$};
-      \draw[alertColor]                                 (0,1.5)  +(-.1,.1)  node[left]{\tiny$t2$}    node {\tiny:} node[right]{\tiny$\mathit{unlock()}$};
-      \draw                                             (0,1.5)  +(-.1,-.1) node[left]{\tiny$value$} node {\tiny=} node[right]{\tiny 1};
-      \draw                                             (0,1.5)  +(-.1,-.3) node[left]{\tiny$lock$} node {\tiny=} node[right]{\tiny ${\color{alertColor} t2}$};
-
-      \draw[fill=black!10, ultra thin, rounded corners] (8,4.5)  +(-.7,-.4) rectangle +(.7,.4);
-      \draw                                             (8,4.5)  +(-.1,.3)  node[left]{\tiny$t1$}    node {\tiny:} node[right]{\tiny$\textsc{term.}$};
-      \draw[alertColor]                                 (8,4.5)  +(-.1,.1)  node[left]{\tiny$t2$}    node {\tiny:} node[right]{\tiny$\mathit{get()}$};
-      \draw                                             (8,4.5)  +(-.1,-.1) node[left]{\tiny$value$} node {\tiny=} node[right]{\tiny 1};
-      \draw                                             (8,4.5)  +(-.1,-.3) node[left]{\tiny$lock$} node {\tiny=} node[right]{\tiny ${\color{alertColor} t2}$};
-      \draw[fill=black!10, ultra thin, rounded corners] (8,3.0)  +(-.7,-.4) rectangle +(.7,.4);
-      \draw                                             (8,3.0)  +(-.1,.3)  node[left]{\tiny$t1$}    node {\tiny:} node[right]{\tiny$\textsc{term.}$};
-      \draw[alertColor]                                 (8,3.0)  +(-.1,.1)  node[left]{\tiny$t2$}    node {\tiny:} node[right]{\tiny$\mathit{set(2)}$};
-      \draw                                             (8,3.0)  +(-.1,-.1) node[left]{\tiny$value$} node {\tiny=} node[right]{\tiny 1};
-      \draw                                             (8,3.0)  +(-.1,-.3) node[left]{\tiny$lock$} node {\tiny=} node[right]{\tiny ${\color{alertColor} t2}$};
-      \draw[fill=black!10, ultra thin, rounded corners] (8,1.5)  +(-.7,-.4) rectangle +(.7,.4);
-      \draw                                             (8,1.5)  +(-.1,.3)  node[left]{\tiny$t1$}    node {\tiny:} node[right]{\tiny$\textsc{term.}$};
-      \draw[alertColor]                                 (8,1.5)  +(-.1,.1)  node[left]{\tiny$t2$}    node {\tiny:} node[right]{\tiny$\mathit{unlock()}$};
-      \draw                                             (8,1.5)  +(-.1,-.1) node[left]{\tiny$value$} node {\tiny=} node[right]{\tiny 2};
-      \draw                                             (8,1.5)  +(-.1,-.3) node[left]{\tiny$lock$} node {\tiny=} node[right]{\tiny ${\color{alertColor} t2}$};
-
-      \draw[fill=black!10, ultra thin, rounded corners] (0,0)  +(-.7,-.4) rectangle +(.7,.4);
-      \draw[exampleColor]                               (0,0)  +(-.1,.3)  node[left]{\tiny$t1$}    node {\tiny:} node[right]{\tiny$\mathit{lock()}$};
-      \draw                                             (0,0)  +(-.1,.1)  node[left]{\tiny$t2$}    node {\tiny:} node[right]{\tiny$\textsc{term.}$};
-      \draw                                             (0,0)  +(-.1,-.1) node[left]{\tiny$value$} node {\tiny=} node[right]{\tiny 1};
-      \draw                                             (0,0)  +(-.1,-.3) node[left]{\tiny$lock$} node {\tiny=} node[right]{\tiny free};
-      \draw[fill=black!10, ultra thin, rounded corners] (2,0)  +(-.7,-.4) rectangle +(.7,.4);
-      \draw[exampleColor]                               (2,0)  +(-.1,.3)  node[left]{\tiny$t1$}    node {\tiny:} node[right]{\tiny$\mathit{get()}$};
-      \draw                                             (2,0)  +(-.1,.1)  node[left]{\tiny$t2$}    node {\tiny:} node[right]{\tiny$\textsc{term.}$};
-      \draw                                             (2,0)  +(-.1,-.1) node[left]{\tiny$value$} node {\tiny=} node[right]{\tiny 1};
-      \draw                                             (2,0)  +(-.1,-.3) node[left]{\tiny$lock$} node {\tiny=} node[right]{\tiny ${\color{exampleColor} t1}$};
-      \draw[fill=black!10, ultra thin, rounded corners] (4,0)  +(-.7,-.4) rectangle +(.7,.4);
-      \draw[exampleColor]                               (4,0)  +(-.1,.3)  node[left]{\tiny$t1$}    node {\tiny:} node[right]{\tiny$\mathit{set(2)}$};
-      \draw                                             (4,0)  +(-.1,.1)  node[left]{\tiny$t2$}    node {\tiny:} node[right]{\tiny$\textsc{term.}$};
-      \draw                                             (4,0)  +(-.1,-.1) node[left]{\tiny$value$} node {\tiny=} node[right]{\tiny 1};
-      \draw                                             (4,0)  +(-.1,-.3) node[left]{\tiny$lock$} node {\tiny=} node[right]{\tiny ${\color{exampleColor} t1}$};
-      \draw[fill=black!10, ultra thin, rounded corners] (6,0)  +(-.7,-.4) rectangle +(.7,.4);
-      \draw[exampleColor]                               (6,0)  +(-.1,.3)  node[left]{\tiny$t1$}    node {\tiny:} node[right]{\tiny$\mathit{unlock()}$};
-      \draw                                             (6,0)  +(-.1,.1)  node[left]{\tiny$t2$}    node {\tiny:} node[right]{\tiny$\textsc{term.}$};
-      \draw                                             (6,0)  +(-.1,-.1) node[left]{\tiny$value$} node {\tiny=} node[right]{\tiny 2};
-      \draw                                             (6,0)  +(-.1,-.3) node[left]{\tiny$lock$} node {\tiny=} node[right]{\tiny ${\color{exampleColor} t1}$};
-      \draw[structure, fill=structure!10, ultra thin, rounded corners] (8,0)  +(-.75,-.45) rectangle +(.75,.45);
-      \draw[structure, fill=structure!10, ultra thin, rounded corners] (8,0)  +(-.7,-.4) rectangle +(.7,.4);
-      \draw                                             (8,0)  +(-.1,.3)  node[left]{\tiny$t1$}    node {\tiny:} node[right]{\tiny$\textsc{term.}$};
-      \draw                                             (8,0)  +(-.1,.1)  node[left]{\tiny$t2$}    node {\tiny:} node[right]{\tiny$\textsc{term.}$};
-      \draw                                             (8,0)  +(-.1,-.1) node[left]{\tiny$value$} node {\tiny=} node[right]{\tiny 2};
-      \draw                                             (8,0)  +(-.1,-.3) node[left]{\tiny$lock$} node {\tiny=} node[right]{\tiny free};
-
-      \draw[-latex] (-1,6)  -- (-.7,6) ;
-      \draw[exampleColor,-latex] (0.7,6)  -- (1.3,6) ;
-      \draw[exampleColor,-latex] (2.7,6)  -- (3.3,6) ;
-      \draw[exampleColor,-latex] (4.7,6)  -- (5.3,6) ;
-      \draw[exampleColor,-latex] (6.7,6)  -- (7.3,6) ;
-
-      \draw[exampleColor,-latex] (0.7,0)  -- (1.3,0) ;
-      \draw[exampleColor,-latex] (2.7,0)  -- (3.3,0) ;
-      \draw[exampleColor,-latex] (4.7,0)  -- (5.3,0) ;
-      \draw[exampleColor,-latex] (6.7,0)  -- (7.25,0) ;
-
-      \draw[alertColor,-latex]   (0,5.6)  -- (0,4.9) ;
-      \draw[alertColor,-latex]   (0,4.1)  -- (0,3.4) ;
-      \draw[alertColor,-latex]   (0,2.6)  -- (0,1.9) ;
-      \draw[alertColor,-latex]   (0,1.1)  -- (0,0.4) ;
-
-      \draw[alertColor,-latex]   (8,5.6)  -- (8,4.9) ;
-      \draw[alertColor,-latex]   (8,4.1)  -- (8,3.4) ;
-      \draw[alertColor,-latex]   (8,2.6)  -- (8,1.9) ;
-      \draw[alertColor,-latex]   (8,1.1)  -- (8,0.45) ;
+      \state[sshape,initial]                       (04) at (0,4) {\scontent {\example{lock()}}   {\alert{lock()}}   {0} {free} };
+      \state[sshape]                               (03) at (0,3) {\scontent {lock()}             {\alert{get()}}    {0} {\alert{t2}} };
+      \state[sshape]                               (02) at (0,2) {\scontent {lock()}             {\alert{set(1)}}   {0} {\alert{t2}} };
+      \state[sshape]                               (01) at (0,1) {\scontent {lock()}             {\alert{unlock()}} {1} {\alert{t2}} };
+      \state[sshape]                               (00) at (0,0) {\scontent {\example{lock()}}   {\textsc{term.}}   {1} {free} };
       
+      \state[sshape]                               (14) at (1,4) {\scontent {\example{get()}}    {lock()}           {0} {\example{t1}} };
+      \state[sshape]                               (24) at (2,4) {\scontent {\example{set(1)}}   {lock()}           {0} {\example{t1}} };
+      \state[sshape]                               (34) at (3,4) {\scontent {\example{unlock()}} {lock()}           {1} {\example{t1}} };
+      
+      \state[sshape]                               (10) at (1,0) {\scontent {\example{get()}}    {\textsc{term.}}   {1} {\example{t1}} };
+      \state[sshape]                               (20) at (2,0) {\scontent {\example{set(2)}}   {\textsc{term.}}   {1} {\example{t1}} };
+      \state[sshape]                               (30) at (3,0) {\scontent {\example{unlock()}} {\textsc{term.}}   {2} {\example{t1}} };
+      
+      \state[sshape]                               (44) at (4,4) {\scontent {\textsc{term.}}     {\alert{lock()}}   {1} {free} };
+      \state[sshape]                               (43) at (4,3) {\scontent {\textsc{term.}}     {\alert{get()}}    {1} {\alert{t2}} };
+      \state[sshape]                               (42) at (4,2) {\scontent {\textsc{term.}}     {\alert{set(2)}}   {1} {\alert{t2}} };
+      \state[sshape]                               (41) at (4,1) {\scontent {\textsc{term.}}     {\alert{unlock()}} {2} {\alert{t2}} };
+      \state[sshape, accepting, fill=structure!20] (40) at (4,0) {\scontent {\textsc{term.}}     {\textsc{term.}}   {2} {free} };
+
+      \path[alert]   (04) edge (03);
+      \path[alert]   (03) edge (02);
+      \path[alert]   (02) edge (01);
+      \path[alert]   (01) edge (00);
+
+      \path[alert]   (44) edge (43);
+      \path[alert]   (43) edge (42);
+      \path[alert]   (42) edge (41);
+      \path[alert]   (41) edge (40);
+
+      \path[example] (04) edge (14);
+      \path[example] (14) edge (24);
+      \path[example] (24) edge (34);
+      \path[example] (34) edge (44);
+
+      \path[example] (00) edge (10);
+      \path[example] (10) edge (20);
+      \path[example] (20) edge (30);
+      \path[example] (30) edge (40);
+
     \end{tikzpicture}
-    
-  \end{center}
+  }
+  
 \end{frame}
 
 \endgroup

@@ -9,27 +9,27 @@
 
 \begin{frame}[fragile]{Syntaxes alternatives}
   \begin{block}{En Java : \href{https://docs.oracle.com/javase/7/docs/api/java/util/concurrent/locks/Condition.html}{\lstinline{java.util.concurrent.locks.Condition}}}
-\begin{lstlisting}
-Lock lock = new ReentrantLock();
-Condition condition = lock.newCondition(); 
+    \begin{lstlisting}[gobble=4]
+      Lock lock = new ReentrantLock();
+      Condition condition = lock.newCondition(); 
 
-lock.lock();
-condition.signal();
-condition.await();
-lock.unlock();
-\end{lstlisting}
-\end{block}
+      lock.lock();
+      condition.signal();
+      condition.await();
+      lock.unlock();
+    \end{lstlisting}
+  \end{block}
   \begin{block}{En C++ : \href{http://www.cplusplus.com/reference/condition_variable/condition_variable/}{\lstinline{std::condition_variable}}}
-\begin{lstlisting}
-mutex mtx;
-condition_variable condition;
+    \begin{lstlisting}[gobble=4]
+      mutex mtx;
+      condition_variable condition;
 
-unique_lock<mutex> lock(mtx);
-condition.notify_one();
-condition.wait(lock);
-// unlock on ~unique_lock
-\end{lstlisting}
-\end{block}
+      unique_lock<mutex> lock(mtx);
+      condition.notify_one();
+      condition.wait(lock);
+      // unlock on ~unique_lock
+    \end{lstlisting}
+  \end{block}
 \end{frame}
 
 \endgroup

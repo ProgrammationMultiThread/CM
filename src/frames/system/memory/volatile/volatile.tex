@@ -1,0 +1,41 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+% Part: 
+% Section: 
+% Sub-section: 
+% Frame: 
+
+\begingroup
+
+\begin{frame}[fragile]{Comment éviter les data races ?}
+
+  \begin{block}{Règle d'or pour le langage Java}
+    Pour chaque variable $x$, il faut s'assurer que $x$ est dans l'un des cas suivants : 
+    \begin{itemize}
+    \item $x$ est déclarée \lstinline{final}
+      \begin{itemize}
+      \item \structure{Adoptez un style de programmation fonctionnelle}
+      \end{itemize}
+    \item $x$ n'est accessible que par un seul thread
+      \begin{itemize}
+      \item \structure{Si $x$ est un membre d'une classe $C$, s'applique à toutes les instances de $C$}
+      \end{itemize}
+    \item $x$ est déclarée \lstinline{volatile}
+      \begin{itemize}
+      \item \structure{Utile pour la communication simple entre threads}
+      \end{itemize}
+    \item $x$ est \alert{toujours} accédée dans un bloc \lstinline{synchronized} sur le même moniteur
+      \begin{itemize}
+      \item \structure{Mais attention à ne pas trop limiter le parallélisme}
+      \end{itemize}
+    \item $x$ n'est pas sujet à une data race
+      \begin{itemize}
+      \item \structure{Prouvez-le en commentaire}
+      \end{itemize}
+    \end{itemize}
+  \end{block}
+
+\end{frame}
+
+\endgroup
+\endinput

@@ -33,7 +33,7 @@
   \vspace{-30mm}
   \begin{lstlisting}[gobble=2]
     class NaiveLock1 implements Lock {
-      private (*\Example{boolean taken = false;}*)
+      private volatile (*\Example{boolean taken = false;}*)
       public void lock() {
         while( (*\Structure{taken}*) );
         (*\Structure{taken = true;}*)

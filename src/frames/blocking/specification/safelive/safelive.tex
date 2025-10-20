@@ -13,6 +13,7 @@
     \item Rien de mal ne se produit
       $$\forall t. P(t)$$
     \item Thread-safe : fonctionne correctement en multi-thread (très imprécis)
+    \item Cohérence : cohérence séquentielle
     \end{itemize}
   \end{block}
   \begin{block}{Vivacité (Liveness)}
@@ -22,12 +23,12 @@
     \end{itemize}
   \end{block}
   \begin{exampleblock}{Exemple : programme qui calcule $\pi$}
-    \begin{itemize}
+    \begin{description}[Vivacité :]
     \item[Sûreté :] \alert{À tout instant}, un préfixe
       de l'écriture décimale de $\pi$ est affiché.
     \item[Vivacité :] Pour tout $n$,
       au moins $n$ chiffres \alert{finiront par} être affichés.
-    \end{itemize}
+    \end{description}
   \end{exampleblock}
 \end{frame}
 

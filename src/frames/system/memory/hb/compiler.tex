@@ -1,0 +1,52 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+% Part: 
+% Section: 
+% Sub-section: 
+% Frame: 
+
+\begingroup
+
+\begin{frame}[fragile]{Retour sur l'exemple du compilateur}
+
+  \vspace{-25mm}
+  \begin{lstlisting}[gobble=4]
+    class Optimizations {
+      static int (*\Structure{sum = 0;}*)
+      static int (*\Alert{i = 0;}*)
+      public static void main(String args[]) {
+        new Thread(() -> {
+          (*\Alert{for(i=1; i<2; i++)} \Structure{sum+=i;}*)
+        }).start();
+        new Thread(() -> {
+          (*if( \Structure{sum != 0} ) System.out.println( \Alert{i} );*)
+        }).start();
+      }
+    }
+  \end{lstlisting}
+  
+  \onBlock[bottom]{Happens Before}{
+    \centering
+    \begin{tikzpicture}[x=20mm, y=10mm, anchor=mid]
+      \footnotesize
+      \node[operation, fill=black!10] (11) at (1,1) {\lstinline{i=1}};
+      \node[operation, fill=black!10] (12) at (2,1) {\lstinline{sum=1}};
+      \node[operation, fill=black!10] (13) at (3,1) {\lstinline{i=2}};
+      \node[operation, fill=black!10] (21) at (4,0) {\lstinline{sum} $\rightarrow 1$};
+      \node[operation, fill=black!10] (22) at (5,0) {\lstinline{i} $\rightarrow 2$};
+
+      \path[-latex, structure] (11) edge node[above]{po} (12);
+      \path[-latex, structure] (12) edge node[above]{po} (13);
+      \path[-latex, structure] (21) edge node[above]{po} (22);
+    \end{tikzpicture}
+
+    \begin{itemize}
+    \item Il y a des data races sur \lstinline{sum} et sur \lstinline{i}
+    \item Les deux variables doivent être volatiles
+    \end{itemize}
+  }
+
+\end{frame}
+
+\endgroup
+\endinput

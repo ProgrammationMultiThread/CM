@@ -1,0 +1,75 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+% Part: 
+% Section: 
+% Sub-section: 
+% Frame: 
+
+\begingroup
+
+\begin{frame}[fragile]{Retour sur le calcul de $\pi$}
+
+  \vspace{-15mm}
+  \begin{lstlisting}[gobble=4]
+    public class PiMonteCarlo implements Runnable {
+      private int result = 0;
+      public void run() {
+        for(int i = 0; i<nbIterations; i++) {
+          double x = random.nextDouble(); double y = random.nextDouble();
+          if(x*x + y*y < 1) (*\Structure{result++;}*)
+        }
+      }
+      static int experiment() {
+        for(int i = 0; i<nbThreads; i++){
+          tasks[i] = new PiMonteCarlo(); threads[i] = new Thread(tasks[i]);
+        }
+        for(var t : threads) t.start(); for(var t : threads) (*\Alert{t.join();}*)
+        int result = 0;
+        for(var t : tasks) (*\Structure{result+=t.result;}*)
+        return result;
+      }
+    }
+  \end{lstlisting}
+
+  \on[bottom]{
+    \begin{tikzpicture}[x=20mm, y=8mm, anchor=mid]
+      \footnotesize
+      \node[operation, fill=black!10] (01) at (0,1) {\lstinline{t1.start()}};
+      \node[operation, fill=black!10] (02) at (1,1) {\lstinline{t2.start()}};
+      \node[operation, fill=black!10] (03) at (2,1) {\lstinline{t1.join()}};
+      \node[operation, fill=black!10] (04) at (3,1) {\lstinline{t2.join()}};
+      \node[operation, fill=black!10] (05) at (4,1) {\lstinline{t1.result}};
+      \node[operation, fill=black!10] (06) at (5,1) {\lstinline{t2.result}};
+      \node[operation, fill=black!10] (11) at (0,2) {\lstinline{t1.result++}};
+      \node[operation, fill=black!10] (12) at (1,2) {\lstinline{t1.result++}};
+      \node[operation, fill=black!10] (13) at (2,2) {\lstinline{t1.result++}};
+      \node[operation, fill=black!10] (21) at (1,0) {\lstinline{t2.result++}};
+      \node[operation, fill=black!10] (22) at (2,0) {\lstinline{t2.result++}};
+      \node[operation, fill=black!10] (23) at (3,0) {\lstinline{t2.result++}};
+
+      \path[-latex, structure] (11) edge node[above]{po} (12);
+      \path[-latex, structure] (12) edge node[above]{po} (13);
+      \path[-latex, structure] (21) edge node[above]{po} (22);
+      \path[-latex, structure] (22) edge node[above]{po} (23);
+
+      \path[-latex, alert]     (01) edge node[right]{sw} (11);
+      \path[-latex, alert]     (02) edge node[right]{sw} (21);
+      \path[-latex, alert]     (13) edge node[right]{sw} (03);
+      \path[-latex, alert]     (23) edge node[right]{sw} (04);
+
+      \path[-latex, structure] (01) edge node[above]{po} (02);
+      \path[-latex, structure] (02) edge node[above]{po} (03);
+      \path[-latex, structure] (03) edge node[above]{po} (04);
+      \path[-latex, structure] (04) edge node[above]{po} (05);
+      \path[-latex, structure] (05) edge node[above]{po} (06);
+
+      \path[-latex, example]   (13.east) edge node[above]{hb} (05.north);
+      \path[-latex, example]   (23.east) edge node[below]{hb} (06.south);
+      
+    \end{tikzpicture}
+  }
+
+\end{frame}
+
+\endgroup
+\endinput

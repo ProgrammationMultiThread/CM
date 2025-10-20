@@ -9,7 +9,7 @@
 
 \begin{frame}[fragile]{Quels affichages sont possibles ?}
 
-  \begin{lstlisting}
+  \begin{lstlisting}[gobble=4]
     class Optimizations {
       static int (*\Structure{sum = 0;}*)
       static int (*\Structure{i = 0;}*)
@@ -18,7 +18,7 @@
           (*\Structure{for(i=1; i<2; i++) sum+=i; }*)
         }).start();
         new Thread(() -> {
-          (*\Structure{if(sum != 0) System.out.println(i); }*)
+          (*\Structure{if(sum != 0) System.out.println(i);}*)
         }).start();
       }
     }
@@ -29,9 +29,9 @@
   \begin{block}{Compilateur et JVM : respect de la sémantique séquentielle}
     \begin{minipage}{.35\textwidth}
       \begin{lstlisting}[gobble=6]
-        for(i=1; i<2; i++)
-        sum+=i;
-
+        for(i=1; i<2; i++) {
+          sum+=i;
+        }
       \end{lstlisting}
     \end{minipage}
     \pause

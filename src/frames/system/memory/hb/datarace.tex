@@ -1,0 +1,43 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+% Part: 
+% Section: 
+% Sub-section: 
+% Frame: 
+
+\begingroup
+
+\begin{frame}{Cohérence happens-before}
+
+  \begin{block}{Définition -- Data race}
+    Une \structure{data race} est un couple d'actions $\langle e, e'\rangle$ telles que :
+    \begin{itemize}
+    \item Les deux actions sont concurrentes selon $\hb$ : $e || e'$
+    \item Les deux actions accèdent à la même variable non-volatile
+    \item Au moins une action est une écriture
+    \end{itemize}
+  \end{block}
+
+  
+  \begin{block}{Définition -- Programme correctement synchronisé}
+    \begin{itemize}
+    \item Une exécution est \structure{correctement synchronisée} si elle n'a pas de data race 
+    \item Un programme est \structure{correctement synchronisé} si toutes ses
+      exécutions \alert{séquentiellement cohérentes} sont correctement synchronisées
+      \begin{itemize}
+      \item \structure{Remarque :} Il suffit donc de chercher les data races sur des exécutions SC
+      \end{itemize}
+    \end{itemize}
+  \end{block}
+  
+  \begin{block}{Garantie de la spécification -- Cohérence happens-before}
+    \begin{itemize}
+    \item Tout programme \structure{correctement synchronisé} est SC
+    \item Sinon, \alert{aucune garantie} : bug !
+    \end{itemize}
+  \end{block}
+  
+\end{frame}
+
+\endgroup
+\endinput
