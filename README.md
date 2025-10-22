@@ -1,11 +1,12 @@
-# Concurrent Programming in Multi-Threads - CM
+# Concurrent Multithreaded Programming - CM
 
-This repository contains modular and reusable teaching materials used to build the slides for the Concurrent Multithreads Programming course at Nantes University. 
+This repository contains modular and reusable teaching materials used to build the slides for the Concurrent Multithreaded Programming course at Nantes University. 
 See the [main organization](https://github.com/ProgrammationMultiThread/) for more information on the course and additional resources.
 
 
 ## Structure
 
+```
 ├── LICENSE.md            # License CC-BY-SA 4.0  
 ├── Makefile              # Automatic compilation  
 ├── README.md             # This file  
@@ -17,7 +18,7 @@ See the [main organization](https://github.com/ProgrammationMultiThread/) for mo
 │   ├── frame/            # Individual slides organized by topic (one file per slide)  
 │   ├── img/              # Images used in the slides  
 │   └── sty/              # Style files  
-
+```
 
 ## Compilation
 
@@ -45,7 +46,7 @@ You can create your own course variant while reusing the provided slides.
 
 - Create a new main file in `src/main/`, for example:
    ```bash
-   cp src/main/SCSD.tex src/main/mycourse.tex
+   cp src/main/PCMT.tex src/main/mycourse.tex
    ```
 - Edit `src/main/mycourse.tex` to change the course metadata and the slides you want to include.
 - Then configure the Makefile to compile your own course `docs/mycourse.pdf` and `docs/mycourse-handout.pdf`

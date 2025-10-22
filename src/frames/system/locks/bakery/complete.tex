@@ -34,17 +34,10 @@
     }
   \end{lstlisting}
 
-  \begin{citing}
-  \item[L74] Leslie Lamport. \textit{A new solution of Dijkstra's concurrent programming problem.} CACM (1974)
-    \jitem \lstinline{cm5/BakeryLock.java}
-  \end{citing}
+  \footnoteref{L74 -- L. Lamport. \textit{A new solution of Dijkstra's concurrent programming problem.} CACM (1974)}
+  \footnoterefjava{\lstinline{cm5/BakeryLock.java}}
 
 \end{frame}
 
 \endgroup
 \endinput
-      private boolean isBockedBy(int i, int j) {
-        if( (*\Structure{entering.get}*) (j) == 1 ) return true;
-        int pI = (*\Example{priority.get}*) (i);  int pJ = (*\Example{priority.get}*) (j);
-        return pJ != 0 && (pJ <  pI || (pJ == pI && j<i));
-      }

@@ -1,11 +1,11 @@
-# Project License
+# License
 
 **Author:** Matthieu Perrin  
 **Copyright:** © 2025 Matthieu Perrin
 
 This project is licensed under the **Creative Commons Attribution–ShareAlike 4.0 International** (CC BY-SA 4.0).
 
-**Scope.** Except where otherwise noted, all **original teaching materials** in this repository (slides, exercises, LaTeX sources/macros, etc.) are licensed under CC BY-SA 4.0.  
+**Scope.** Except where otherwise noted, all **original teaching materials** in this repository (slides, LaTeX sources/macros, etc.) are licensed under CC BY-SA 4.0.  
 **Third-party content** (e.g., some images) remains under its own license as indicated below.
 
 You are free to **share** and **adapt** the material for any purpose, even commercially, under these terms:
@@ -26,7 +26,7 @@ Unless otherwise stated in the file header, these files are licensed under **CC 
 - **ShareAlike required:** Yes.
 
 *Suggested attribution example:*  
-“*Programmation Concurrente en Multi-Threads* — © 2025 Matthieu Perrin, CC BY-SA 4.0, changes: none”  
+"*Programmation Concurrente en Multi-Threads* — © 2025 Matthieu Perrin, CC BY-SA 4.0, no changes"  
 (or describe changes if you made any).
 
 ## Images
@@ -62,19 +62,19 @@ DALL·E output is not subject to any additional copyright or usage restrictions 
 
 The following images are not part of the project and are shared according to their own license.
 
-- `multicore.jpg` — **copyright** — Advanced Micro Devices, Inc. (AMD). Usages allowed with attribution by the copyright holder
+- `multicore.jpg` — **copyright** — Advanced Micro Devices, Inc. (AMD). Usages allowed with attribution by the copyright holder  
   <https://commons.wikimedia.org/wiki/File:Quad-Core_AMD_Opteron_processor.jpg>
-- `Lamport.jpg` — **CC-0** — Usages allowed for any purpose
+- `Lamport.jpg` — **CC-0** — Usages allowed for any purpose  
   <https://commons.wikimedia.org/wiki/File:Leslie_Lamport.jpg>
-- `Amdahl.jpg` — **CC-BY-3.0 unported** — Perry Kivolowitz (2008)
+- `Amdahl.jpg` — **CC-BY-3.0 unported** — Perry Kivolowitz (2008)  
   <https://commons.wikimedia.org/wiki/File:Amdahl_march_13_2008.jpg>
-- `Dijkstra.jpg` — **CC-BY-SA-3.0 unported** — Hamilton Richards (2002)
+- `Dijkstra.jpg` — **CC-BY-SA-3.0 unported** — Hamilton Richards (2002)  
   <https://commons.wikimedia.org/wiki/File:Edsger_Wybe_Dijkstra.jpg>
-- `Hansen.jpg` — **copyright** — Per Brinch Hansen (1999). Usages allowed with attribution by the copyright holder
+- `Hansen.jpg` — **copyright** — Per Brinch Hansen (1999). Usages allowed with attribution by the copyright holder  
   <https://commons.wikimedia.org/wiki/File:Per_Brinch_Hansen_-_1999.jpg>
-- `Hoare.jpg` — **CC-BY-SA-2.0 France** — Rama (2011)
+- `Hoare.jpg` — **CC-BY-SA-2.0 France** — Rama (2011)  
   <https://commons.wikimedia.org/wiki/File:Sir_Tony_Hoare_IMG_5125.jpg>
-- `50-years-processor-trend.png` — **CC-BY-4.0** — Karl Rupp 
+- `50-years-processor-trend.png` — **CC-BY-4.0** — Karl Rupp  
   <https://github.com/karlrupp/microprocessor-trend-data/>
 
 ### Images not included in the repository
@@ -83,5 +83,6 @@ The following images are **not stored in this repository** and are **not redistr
 They are downloaded locally at build time or referenced by URL for educational, non-commercial use
 under the applicable local copyright exceptions (e.g., fair use or fair dealing).
 
-- `time.png` — IT Hare: <http://ithare.com/wp-content/uploads/part101_infographics_v08.png>
+- `time.png` — IT Hare  
+  <http://ithare.com/wp-content/uploads/part101_infographics_v08.png>
 
