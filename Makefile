@@ -12,7 +12,7 @@ PDFLATEX ?= pdflatex
 PDFLATEX_FLAGS := -halt-on-error -interaction=nonstopmode -output-directory=$(BUILDDIR)
 
 # Latex-libs library (local clone + TEXINPUTS)
-LATEX_LIBS_DIR	 := latex-libs
+LATEX_LIBS_DIR	     := latex-libs
 LATEX_LIBS_SSH_URL   := git@github.com:MatthieuPerrin/Latex-libs.git
 LATEX_LIBS_HTTPS_URL := https://github.com/MatthieuPerrin/Latex-libs.git
 
@@ -28,7 +28,7 @@ export TEXINPUTS := $(CURDIR)/$(LATEX_LIBS_DIR)//$(PATHSEP)
 
 # Select current course
 -include .current_course.mk
-COURSE ?= CPMT
+COURSE ?= PCMT
 SRCMAIN := $(SRCDIR)/$(COURSE).tex
 
 # -------------------------------
@@ -131,7 +131,7 @@ help:
 	@echo "  make                       – Build docs/\$$COURSE.pdf and docs/\$$COURSE-handout.pdf"
 	@echo "  make slides                – Build docs/\$$COURSE.pdf"
 	@echo "  make handout               – Build docs/\$$COURSE-handout.pdf"
-	@echo "  make configure COURSE=xxx  – Sets current course as src/main/xxx.tex (default: CPMT)"
+	@echo "  make configure COURSE=xxx  – Sets current course as src/main/xxx.tex (default: PCMT)"
 	@echo "  make list                  – Lists available courses"
 	@echo "  make update                – Update local project and LaTeX-libs (git pull)"
 	@echo "  make clean                 – Remove build artifacts"
