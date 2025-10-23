@@ -2,10 +2,17 @@
 # Configuration
 # -------------------------------
 
-SHELL    := bash
-SRCDIR   := src/main
-BUILDDIR := build
-DOCSDIR  := docs
+SHELL		:= bash
+SRCDIR		:= src/main
+BUILDDIR	:= build
+DOCSDIR		:= docs
+PLOTDIR		:= src/plot
+
+# --- Generate plots ---
+GNUPLOT := gnuplot
+PLOTS := microprocessor-trend
+PLOTGP  := $(addprefix $(PLOTDIR)/,$(addsuffix .gnuplot,$(PLOTS)))
+PLOTTEX := $(addprefix $(BUILDDIR)/,$(addsuffix .tex,$(PLOTS)))
 
 # Choose engine (override with: make PDFLATEX=xelatex)
 PDFLATEX ?= pdflatex
@@ -24,7 +31,7 @@ else
 endif
 
 # Add latex-libs to TeX search path (recursive with //); keep default path via trailing sep
-export TEXINPUTS := $(CURDIR)/$(LATEX_LIBS_DIR)//$(PATHSEP)
+export TEXINPUTS := $(CURDIR)/$(LATEX_LIBS_DIR)//$(PATHSEP)$(CURDIR)/$(BUILDDIR)//$(PATHSEP)$(CURDIR)/src//$(PATHSEP)
 
 # Select current course
 -include .current_course.mk
@@ -35,7 +42,7 @@ SRCMAIN := $(SRCDIR)/$(COURSE).tex
 # Main targets
 # -------------------------------
 
-.PHONY: both all slides handout update clean cleanall help configure list FORCE deps
+.PHONY: both all slides handout update clean cleanall help configure list FORCE deps plot
 
 # By default: build both
 both: slides handout
@@ -49,13 +56,18 @@ all:
 	  $(MAKE) --no-print-directory $(DOCSDIR)/$$name.pdf $(DOCSDIR)/$$name-handout.pdf || exit $$?; \
 	done
 
+$(BUILDDIR)/%.tex: $(PLOTDIR)/%.gnuplot $(wildcard $(PLOTDIR)/*.dat)
+	@mkdir -p $(BUILDDIR)
+	$(GNUPLOT) -e "set loadpath '$(PLOTDIR)'; \
+	               set terminal lua tikz color size 10cm,6cm; \
+	               set output '$@'" $<
 
-$(DOCSDIR)/%.pdf: $(SRCDIR)/%.tex FORCE | $(BUILDDIR) $(DOCSDIR) deps
+$(DOCSDIR)/%.pdf: $(SRCDIR)/%.tex $(PLOTTEX) FORCE | $(BUILDDIR) $(DOCSDIR) deps
 	$(PDFLATEX) $(PDFLATEX_FLAGS) -jobname=$* $<
 	$(PDFLATEX) $(PDFLATEX_FLAGS) -jobname=$* $<
 	mv "$(BUILDDIR)/$*.pdf" "$@"
 
-$(DOCSDIR)/%-handout.pdf: $(SRCDIR)/%.tex FORCE | $(BUILDDIR) $(DOCSDIR) deps
+$(DOCSDIR)/%-handout.pdf: $(SRCDIR)/%.tex $(PLOTTEX) FORCE | $(BUILDDIR) $(DOCSDIR) deps 
 	echo "\def\HANDOUT{}\input{$(SRCDIR)/$*.tex}" > $(BUILDDIR)/$*-handout.tex;
 	$(PDFLATEX) $(PDFLATEX_FLAGS) -jobname=$*-handout $(BUILDDIR)/$*-handout.tex
 	$(PDFLATEX) $(PDFLATEX_FLAGS) -jobname=$*-handout $(BUILDDIR)/$*-handout.tex

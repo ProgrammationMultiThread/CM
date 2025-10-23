@@ -74,8 +74,17 @@ The following images are not part of the project and are shared according to the
   <https://commons.wikimedia.org/wiki/File:Per_Brinch_Hansen_-_1999.jpg>
 - `Hoare.jpg` — **CC-BY-SA-2.0 France** — Rama (2011)  
   <https://commons.wikimedia.org/wiki/File:Sir_Tony_Hoare_IMG_5125.jpg>
-- `50-years-processor-trend.png` — **CC-BY-4.0** — Karl Rupp  
-  <https://github.com/karlrupp/microprocessor-trend-data/>
+
+### External data
+
+The data files in `src/plot/*.dat` originate from the infographic *50 Years of Microprocessor Trend Data*,  
+part of the **Microprocessor Trend Data** project by Karl Rupp, licensed under **CC BY 4.0**.
+The presentation and formatting of the data were modified for integration into the course slides.  
+The original dataset was compiled and collected by M. Horowitz, F. Labonte, O. Shacham, K. Olukotun,  
+L. Hammond, C. Batten, and K. Rupp.
+
+— *Microprocessor Trend Data* — **CC-BY-4.0** — Karl Rupp (2022)
+  <https://github.com/karlrupp/microprocessor-trend-data/>  
 
 ### Images not included in the repository
 
