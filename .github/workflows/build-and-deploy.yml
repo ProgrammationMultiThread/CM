@@ -26,7 +26,7 @@ jobs:
       - name: Install TeX Live and make
         run: |
           sudo apt-get update
-          sudo apt-get install -y texlive-full make
+          sudo apt-get install -y texlive-full make gnuplot
 
       - name: Build PDFs
         run: |
