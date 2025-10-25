@@ -3,6 +3,7 @@
 This repository contains modular and reusable teaching materials used to build the slides for the Concurrent Multithreaded Programming course at Nantes University. 
 See the [main organization](https://github.com/ProgrammationMultiThread/) for more information on the course and additional resources.
 
+---
 
 ## Structure
 
@@ -19,6 +20,8 @@ See the [main organization](https://github.com/ProgrammationMultiThread/) for mo
 │   ├── img/              # Images used in the slides  
 │   └── sty/              # Style files  
 ```
+
+---
 
 ## Compilation
 
@@ -40,6 +43,8 @@ make clean      # Remove temporary files in build/
 make cleanall   # Also remove PDFs in docs/
 ```
 
+---
+
 ## Customization
 
 You can create your own course variant while reusing the provided slides.
@@ -54,6 +59,8 @@ You can create your own course variant while reusing the provided slides.
    make configure COURSE=mycourse
    ```
 
+---
+
 ## Dependencies
 
 These slides rely on styles from the [latex-libs](https://github.com/MatthieuPerrin/latex-libs) project.
@@ -65,17 +72,27 @@ These slides rely on styles from the [latex-libs](https://github.com/MatthieuPer
 make update
 ```
 
+---
 
-## Licensing
+## License
 
-Content is available under the **Creative Commons Attribution-ShareAlike 4.0 International License** (CC BY-SA 4.0).
+All **LaTeX sources, slides, and related teaching materials** in this repository
+are distributed under the **Creative Commons Attribution–ShareAlike 4.0 International** (CC BY-SA 4.0) license.  
 
-This means:
-- You are free to reuse, modify, and redistribute the material.
-- You must give appropriate credit.
-- You must distribute derivatives under the same license.
+- The full legal text of this license is available in [`LICENSE.txt`](LICENSE.txt).  
+- Detailed attributions, image credits, and cross-repository licensing notes
+  are provided in the [organization-wide license file](https://github.com/ProgrammationMultiThread/.github/blob/main/LICENSE.md).
 
-See [`LICENSE.md`](LICENSE.md) for full terms.
+This license applies only to **original educational materials** created for the course.
+Code snippets and external resources may have their own specific licenses
+as indicated in the global attribution file.
+
+### Suggested attribution
+
+> *"Slides and materials from the course **Programmation Concurrente en Multi-Threads** —  
+> © 2025 Matthieu Perrin, licensed under CC BY-SA 4.0."*
+
+---
 
 ## Contributions
 
