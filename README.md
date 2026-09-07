@@ -8,7 +8,7 @@ See the [main organization](https://github.com/ProgrammationMultiThread/) for mo
 ## Structure
 
 ```
-├── LICENSE.md            # License CC-BY-SA 4.0  
+├── LICENSE.md            # CC BY-SA 4.0 license (full legal text)  
 ├── Makefile              # Automatic compilation  
 ├── README.md             # This file  
 ├── build/                # Temporary files used during compilation  

@@ -32,7 +32,7 @@
 
   \begin{exampleblock}{Équivalent en C++}
     \begin{description}
-    \item[Avant C++20 :] Utiliser une variable booléenne comme drapeau.
+    \item[Avant C++20 :] Utiliser une variable booléenne \example{atomique} comme drapeau.
     \item[Depuis C++20 :] \lstinline{std::jthread::request_stop()} + \lstinline{std::jthread::get_stop_token()}
     \end{description}
   \end{exampleblock}
