@@ -1,17 +1,13 @@
 % SPDX-License-Identifier: CC-BY-SA-4.0
 % Author: Matthieu Perrin
 
-\ifdefined\HANDOUT
-  \documentclass[9pt, handout]{beamer}
-  \usetheme{Nantes}
-\else
-  \documentclass[9pt]{beamer}
-  \usetheme[sectionpage]{Nantes}
-\fi
+\documentclass[9pt]{beamer}
+\mode<beamer>{\PassOptionsToPackage{sectionpage}{beamerthemeNantes}}
+\usetheme{Nantes}
 
 \usepackage{src/sty/config}
 
-\title{Programmation Concurrente en Multi-Threads}
+\title[Programmation Concurrente en Multi-Threads]{Programmation Concurrente en Multi-Threads}
 
 \author[Matthieu Perrin]{
   \structure{Matthieu \textsc{Perrin}}\\[2mm]
@@ -23,7 +19,6 @@
 }
 
 \date{
-  Nantes Université\\
   Master en Informatique, première année\\
   Parcours ALMA\\
   2026-2027
@@ -43,7 +38,7 @@
   \on[text, bottom=-5mm]{\scriptsize
     \begin{description}
     \item[\href{https://github.com/ProgrammationMultiThread/.github/blob/main/LICENSE.md}{Licence :}] \href{https://creativecommons.org/licenses/by-sa/4.0/}{CC BY-SA 4.0} (\ccbysa{}) — Matthieu Perrin \textit{(sauf mention contraire)}
-    \item[Code source :]\vspace{-.5mm}  \url{https://github.com/ProgrammationMultiThread/}
+    \item[Code source :]\vspace{-.5mm}  \url{https://github.com/ProgrammationMultiThread}
     \end{description}
   }
 \end{frame}

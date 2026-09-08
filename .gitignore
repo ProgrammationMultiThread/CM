@@ -1,15 +1,9 @@
 # LaTeX compilation files and folders
-build/
-docs/*.pdf
-
-# External dependency
-latex-libs/
-
-# Non-free images
-src/img/time.png
-
-# Configuration files
-.current_course.mk
+/.current_course.mk
+/latex-libs/
+/build/
+/docs/*
+!/docs/.nojekyll
 
 # Auxiliary LaTeX Files 
 *.aux
@@ -40,3 +34,7 @@ src/img/time.png
 *.tmp
 *.swp
 .DS_Store
+Thumbs.db
+
+# Non-free images
+src/img/time.png

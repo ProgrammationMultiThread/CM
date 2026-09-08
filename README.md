@@ -1,107 +1,125 @@
-# Concurrent Multithreaded Programming - CM
+# ProgrammationMultiThread/CM
 
-This repository contains modular and reusable teaching materials used to build the slides for the Concurrent Multithreaded Programming course at Nantes University. 
-See the [main organization](https://github.com/ProgrammationMultiThread/) for more information on the course and additional resources.
+This repository contains modular and reusable teaching materials used to build the slides for the Concurrent Multithreaded Programming course at Nantes Université.  
+See the [course organization](https://github.com/ProgrammationMultiThread/) for the course description and additional resources.
 
----
+## Repository structure
 
-## Structure
-
+```text
+├── LICENSE.txt               # CC BY-SA 4.0 legal text
+├── Makefile                  # Build, configuration, and maintenance commands
+├── README.md                 # This file
+├── build/                    # Temporary LaTeX compilation files
+├── docs/                     # Generated PDFs
+├── latex-libs/               # Automatically downloaded LaTeX dependency
+└── src/
+    ├── courses/              # Course drivers
+    ├── archives/             # Optional archived course drivers
+    ├── frames/               # Reusable slides organized by topic
+    ├── img/                  # Redistributable images used in the slides
+    └── sty/                  # Repository-specific styles and configuration
 ```
-├── LICENSE.md            # CC BY-SA 4.0 license (full legal text)  
-├── Makefile              # Automatic compilation  
-├── README.md             # This file  
-├── build/                # Temporary files used during compilation  
-├── latex-libs/           # Dependency from [latex-libs](https://github.com/MatthieuPerrin/latex-libs)  
-├── docs/                 # Final PDF files (i.e. compiled course)  
-├── src/                  # LaTeX source files  
-│   ├── main/             # Main document files for the course  
-│   ├── frame/            # Individual slides organized by topic (one file per slide)  
-│   ├── img/              # Images used in the slides  
-│   └── sty/              # Style files  
-```
 
----
+Every `.tex` file directly inside a subdirectory of courses is treated as a document driver. Files in `src/frames/` can be included directly by name; other resources under `src/` can be addressed by their relative path, for example `sty/config` or `plots/example`.
+
+## Requirements
+
+Compilation requires:
+
+- GNU Make;
+- a LaTeX distribution providing `pdflatex` and the packages used by the slides;
+- an internet connection for the first build.
 
 ## Compilation
 
-To build the course PDF:
+Build every slide deck and its handout version for the current course:
 
 ```bash
 make
 ```
 
-This creates `docs/PCMT.pdf` and `docs/PCMT-handout.pdf`.
+For the selected course, this produces:
 
-Build individually:
-
-```bash
-make slides     # Builds docs/PCMT.pdf
-make handout    # Builds docs/PCMT-handout.pdf
-
-make clean      # Remove temporary files in build/
-make cleanall   # Also remove PDFs in docs/
+```text
+docs/<course>/cours.pdf
+docs/<course>/handout/cours.pdf
 ```
 
----
+The main build targets are:
 
-## Customization
+```bash
+make slide           # Build all slide decks for the current course
+make handout         # Build all handouts for the current course
+make cours           # Build both variants of cours.tex
+make cours-slide     # Build only the slides, with one LaTeX pass
+make cours-handout   # Build only the handout, with one LaTeX pass
+make all-courses     # Build all current courses, excluding archives
+```
 
-You can create your own course variant while reusing the provided slides.
+The aggregate targets use two LaTeX passes. The document-specific `-slide` and `-handout` targets use one pass for faster incremental work.
 
-- Create a new main file in `src/main/`, for example:
-   ```bash
-   cp src/main/PCMT.tex src/main/mycourse.tex
-   ```
-- Edit `src/main/mycourse.tex` to change the course metadata and the slides you want to include.
-- Then configure the Makefile to compile your own course `docs/mycourse.pdf` and `docs/mycourse-handout.pdf`
-   ```bash
-   make configure COURSE=mycourse
-   ```
+To remove generated files:
 
----
+```bash
+make clean           # Remove temporary compilation files
+make cleanall        # Also remove generated PDFs
+```
+
+## Course selection and reuse
+
+List the available courses and document drivers:
+
+```bash
+make list
+```
+
+Select a course persistently for local work:
+
+```bash
+make configure COURSE=course-name
+```
+
+For a one-off build without changing the persistent selection:
+
+```bash
+make COURSE=course-name cours
+```
+
+To create another course variant, copy an existing course directory and edit its drivers:
+
+```bash
+cp -r src/courses/existing-course src/courses/new-course
+make configure COURSE=new-course
+```
+
+Course directories under `src/archives/` can be selected in exactly the same way. The `src/archives/` directory is optional, is never created automatically, and is excluded from `make all-courses`.
 
 ## Dependencies
 
-These slides rely on styles from the [latex-libs](https://github.com/MatthieuPerrin/latex-libs) project.
-- On the first build, the Makefile automatically clones the library into `./latex-libs` (internet required).
-- Subsequent builds work offline.
-- Update both this repo and the library with:
+The slides rely on styles from the [latex-libs](https://github.com/MatthieuPerrin/latex-libs) project. On the first build, the Makefile automatically clones this dependency into `latex-libs/`. Subsequent builds can run offline.
+
+Update both this repository and the local dependency with:
 
 ```bash
 make update
 ```
 
----
-
 ## License
 
-All **LaTeX sources, slides, and related teaching materials** in this repository
-are distributed under the **Creative Commons Attribution–ShareAlike 4.0 International** (CC BY-SA 4.0) license.  
+Except where otherwise stated, the original LaTeX sources and teaching materials in this repository are distributed under the [Creative Commons Attribution–ShareAlike 4.0 International license](LICENSE.txt).
 
-- The full legal text of this license is available in [`LICENSE.txt`](LICENSE.txt).  
-- Detailed attributions, image credits, and cross-repository licensing notes
-  are provided in the [organization-wide license file](https://github.com/ProgrammationMultiThread/.github/blob/main/LICENSE.md).
-
-This license applies only to **original educational materials** created for the course.
-Code snippets and external resources may have their own specific licenses
-as indicated in the global attribution file.
-
-### Suggested attribution
-
-> *"Slides and materials from the course **Programmation Concurrente en Multi-Threads** —  
-> © 2025 Matthieu Perrin, licensed under CC BY-SA 4.0."*
-
----
+Third-party materials, images, code excerpts, attribution requirements, and exceptions are documented in the [organization-wide licensing notice](https://github.com/ProgrammationMultiThread/.github/blob/main/LICENSE.md).
 
 ## Contributions
 
-Contributions are welcome!
+Contributions are welcome. In particular, you may propose corrections, improve existing slides or visuals, add new material, or translate existing content.
 
-Each slide is in a separate file, making it easy to reuse or improve specific parts. You can:
-- Propose new slides
-- Improve existing content or visuals
-- Translate to other languages
+Please follow these guidelines:
 
-Use pull requests to suggest changes.
-For major changes, please open an issue first to discuss your ideas.
+- keep reusable slides in `src/frames/`, preferably one slide per file;
+- do not commit generated PDFs or files from `build/` and `latex-libs/`;
+- ensure that contributed material is original or compatible with the repository license;
+- provide the source, author, and licensing information for any third-party material;
+- verify the relevant build targets before submitting a pull request.
+
+For substantial changes, please open an issue before starting the work.
